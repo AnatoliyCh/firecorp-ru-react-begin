@@ -8,7 +8,6 @@ class LoginForm extends Component {
     btnLogin = (e) => {
         e.preventDefault();
         this.props.history.push(`/administrator`);
-
     };
 
     render() {
