@@ -5,11 +5,11 @@ import Popper from 'popper.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import LoginForm from "./app/components/LoginForm";
-import Administrator from "./app/components/Administrator";
+import LoginForm from "./app/LoginForm";
+import Administrator from "./app/Administrator";
 
 //переделать
-import App from './app/components/App/App';
+import App from './app/App/App';
 
 ReactDOM.render((
     <BrowserRouter>

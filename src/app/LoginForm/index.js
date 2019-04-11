@@ -1,12 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom'
 import './styles.css';
 import {ButtonStandart} from "../ButtonStandart/ButtonStandart";
 
 class LoginForm extends Component {
-    onBtnClickHandler = (e) => {
-        e.preventDefault()
-    }
-    render(){
+    //отправка login и password на сервер
+    btnLogin = (e) => {
+        e.preventDefault();
+        this.props.history.push(`/administrator`);
+    };
+
+    render() {
         return (
             <div className="center-page container">
                 <div className="row justify-content-center">
@@ -26,7 +30,8 @@ class LoginForm extends Component {
                                 </div>
                             </div>
                             <div className="card-footer text-center">
-                                <ButtonStandart inscription="Войти" style="btn btn-outline-primary col-md-6"/>
+                                <ButtonStandart inscription="Войти" func={this.btnLogin}
+                                                style="btn btn-outline-primary col-md-6"/>
                             </div>
                         </form>
                     </div>
@@ -35,4 +40,5 @@ class LoginForm extends Component {
         )
     }
 }
+
 export default LoginForm;
