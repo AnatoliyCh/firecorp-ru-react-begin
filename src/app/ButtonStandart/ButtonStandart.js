@@ -7,6 +7,7 @@ export class  ButtonStandart extends Component {
             <button
                 type="submit"
                 className={this.props.style}
+                onClick={this.props.func}
             > {this.props.inscription}
             </button>
         )
