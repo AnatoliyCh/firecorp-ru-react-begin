@@ -1,15 +1,13 @@
-import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom'
 import './styles.css';
-import {ButtonStandart} from "../ButtonStandart/ButtonStandart";
+import React, {Component} from 'react';
+import { connect } from 'react-redux';
 
-class LoginForm extends Component {
+class LoginPage extends Component {
     //отправка login и password на сервер
     btnLogin = (e) => {
         e.preventDefault();
         this.props.history.push(`/administrator`);
     };
-
     render() {
         return (
             <div className="center-page container">
@@ -17,7 +15,7 @@ class LoginForm extends Component {
                     <div className="col-md-6">
                         <form className="card">
                             <div className="card-header text-center">
-                                <label>Вход</label>
+                                <label>Авторизация</label>
                             </div>
                             <div className="card-body">
                                 <div className="form-group">
@@ -30,8 +28,10 @@ class LoginForm extends Component {
                                 </div>
                             </div>
                             <div className="card-footer text-center">
-                                <ButtonStandart inscription="Войти" func={this.btnLogin}
-                                                style="btn btn-outline-primary col-md-6"/>
+                                <button
+                                    className="btn btn-outline-primary col-md-6"
+                                    onClick={this.btnLogin}>Войти
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -41,4 +41,11 @@ class LoginForm extends Component {
     }
 }
 
-export default LoginForm;
+// приклеиваем данные из store
+const mapStateToProps = store => {
+    //console.log(store);
+    return {
+        token: store.token,
+    }
+};
+export default connect(mapStateToProps)(LoginPage)
