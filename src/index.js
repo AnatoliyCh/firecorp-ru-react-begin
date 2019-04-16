@@ -1,28 +1,25 @@
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { ConnectedRouter } from 'connected-react-router'
+import store, { history } from './config/store'
+import App from './app'
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-// import $ from 'jquery';
-// import Popper from 'popper.js';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { store } from './config/store';
-import { Provider } from 'react-redux';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import LoginForm from "./app/commonComponents/LoginPage";
-import Administrator from "./app/Administrator";
+import 'bootstrap/dist/js/bootstrap.bundle.js';
+import $ from 'jquery';
+import Popper from 'popper.js';
 
-import {
-    ROOT_DIRECTORY,
-    PATH_ADMINISTRATOR,
-} from './app/commonComponents/const';
+import 'sanitize.css/sanitize.css'
+import './index.css'
 
+const target = document.querySelector('#root');
 
-ReactDOM.render((
-    <BrowserRouter>
-        <Provider store={store}>
-            <Switch>
-                <Route exact path={ROOT_DIRECTORY} component={LoginForm}/>
-                <Route path={PATH_ADMINISTRATOR} component={Administrator}/>
-            </Switch>
-        </Provider>
-    </BrowserRouter>
-), document.getElementById('root'));
+render(
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+        <App />
+    </ConnectedRouter>
+  </Provider>,
+  target
+);
