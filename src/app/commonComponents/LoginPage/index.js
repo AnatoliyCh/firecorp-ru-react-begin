@@ -43,7 +43,7 @@ class LoginPage extends Component {
 
 // приклеиваем данные из store
 const mapStateToProps = store => {
-    //console.log(store);
+    console.log(store.token);
     return {
         token: store.token,
     }

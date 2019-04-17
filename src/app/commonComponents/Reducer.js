@@ -2,6 +2,6 @@ const initialState = {
     token: 'null',
 };
 
-export function tokenReducer(state = initialState) {
+export default (state = initialState) => {
     return state
 }

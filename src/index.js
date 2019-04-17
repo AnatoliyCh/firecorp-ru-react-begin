@@ -1,25 +1,22 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'connected-react-router'
-import store, { history } from './config/store'
-import App from './app'
+import React from 'react';
+import {render} from 'react-dom';
+import {Provider} from 'react-redux';
+import {ConnectedRouter} from 'connected-react-router';
+import store, {history} from './config/Store';
+import App from './app';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import $ from 'jquery';
 import Popper from 'popper.js';
 
-import 'sanitize.css/sanitize.css'
-import './index.css'
-
 const target = document.querySelector('#root');
 
 render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-        <App />
-    </ConnectedRouter>
-  </Provider>,
-  target
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <App/>
+        </ConnectedRouter>
+    </Provider>,
+    target
 );
