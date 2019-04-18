@@ -20,7 +20,6 @@ class LoginPage extends Component {
         }).catch(function (error) {
             console.log('Не вышло... \n', error.message);
         });
-        this.props.history.push(`/administrator`);
     };
 
     render() {
