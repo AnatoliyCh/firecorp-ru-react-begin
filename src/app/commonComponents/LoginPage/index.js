@@ -1,13 +1,15 @@
 import './styles.css';
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 class LoginPage extends Component {
     //отправка login и password на сервер
     btnLogin = (e) => {
         e.preventDefault();
-        this.props.history.push(`/administrator`);
+        //this.props.history.push(`/administrator`);
+
     };
+
     render() {
         return (
             <div className="center-page container">
@@ -43,9 +45,9 @@ class LoginPage extends Component {
 
 // приклеиваем данные из store
 const mapStateToProps = store => {
-    console.log(store.token);
+    console.log(store);
     return {
-        token: store.token,
+        user: store.user,
     }
 };
 export default connect(mapStateToProps)(LoginPage)
