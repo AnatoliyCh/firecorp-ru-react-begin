@@ -2,12 +2,25 @@ import './styles.css';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import * as allConst from '../Const'
+
 class LoginPage extends Component {
     //отправка login и password на сервер
     btnLogin = (e) => {
         e.preventDefault();
-        //this.props.history.push(`/administrator`);
-
+        fetch(`${allConst.IP_HOST}` + '/api/user/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({login: 'root', password: '1234'})
+        }).then(function (response) {
+            console.log("Ответ: response \n", response);
+            return response.json()
+        }).then(data => {
+            console.log("Ответ: data \n", data);
+        }).catch(function (error) {
+            console.log('Не вышло... \n', error.message);
+        });
+        this.props.history.push(`/administrator`);
     };
 
     render() {
