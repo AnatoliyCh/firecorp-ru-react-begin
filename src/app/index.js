@@ -3,7 +3,6 @@ import {Switch, Route} from 'react-router-dom'
 import ChiefTO from './chiefTO';
 import Administrator from './Administrator';
 import LoginPage from './commonComponents/LoginPage';
-
 import * as allConst from './commonComponents/Const'
 
 const App = () => (

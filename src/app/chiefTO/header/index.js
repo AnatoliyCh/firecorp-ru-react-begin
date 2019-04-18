@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import {Link} from "react-router-dom";
-
+import './index.css';
 const Header = ({match}) => (
     <Fragment>
         <nav className="navbar navbar-expand-xl navbar-light bg-light">
