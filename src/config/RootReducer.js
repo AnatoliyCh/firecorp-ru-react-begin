@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import counter from '../app/chiefTO/home/ducks';
-import tokenReducer from "../app/commonComponents/Reducer";
+import userReducer from "../app/commonComponents/Reducer";
 
 export default combineReducers({
-  token: tokenReducer,
+  user: userReducer,
   counter
 })
