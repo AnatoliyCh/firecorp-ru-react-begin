@@ -8,44 +8,42 @@ $('.modal').modal('toggle');
 
 const Locations = () => (
     <Fragment>
-        <div className="container-fluid">
-            <div className="row">
-                <form className="col-sm-8 col-xl-10 mt-3">
-                    <input className="form-control" type="search" placeholder="Поиск" aria-label="Search"/>
-                </form>
-                <div className="col-sm-4 col-xl-2 mt-3">
-                    <button className="btn btn-outline-danger col-12" data-toggle="modal"
-                            data-target="#myModal">Добавить локацию
-                    </button>
-                </div>
+        <div className="row">
+            <form className="col-sm-8 col-xl-10 mt-3">
+                <input className="form-control" type="search" placeholder="Поиск по локациям" aria-label="Search"/>
+            </form>
+            <div className="col-sm-4 col-xl-2 mt-3">
+                <button className="btn btn-outline-danger col-12" data-toggle="modal"
+                        data-target="#myModal">Добавить локацию
+                </button>
             </div>
-            <table className="table mt-3">
-                <thead className="thead-light">
-                <tr>
-                    <th scope="col">Название</th>
-                    <th scope="col">Кол-во объектов</th>
-                    <th scope="col">Техники</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
         </div>
+        <table className="table mt-3">
+            <thead className="thead-light">
+            <tr>
+                <th scope="col">Название</th>
+                <th scope="col">Кол-во объектов</th>
+                <th scope="col">Техники</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr>
+            </tbody>
+        </table>
 
         {/*Модальное окно добавления локации*/}
         <div id="myModal" class="modal fade" role="dialog">
@@ -57,7 +55,8 @@ const Locations = () => (
                     </div>
                     <div class="modal-body pt-4 pb-4">
                         <label htmlFor="addLocation">Название</label>
-                        <input className="form-control" id="addLocation" type="search" placeholder="Введите название локации" aria-label="Search"/>
+                        <input className="form-control" id="addLocation" type="search"
+                               placeholder="Введите название локации" aria-label="Search"/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Добавить</button>
