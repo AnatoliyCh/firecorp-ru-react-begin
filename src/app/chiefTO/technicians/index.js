@@ -1,7 +1,18 @@
 import React, {Component, Fragment} from 'react'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import {
+    get_list_technicians,
+} from './ducks'
 
 class Technicians extends Component {
+    componentDidMount() {
+        this.props.get_list_technicians();
+    }
+
     render() {
+        const list_technicians = Object.values(this.props.list_technicians);
+
         return (
             <Fragment>
                 <div className="row">
@@ -20,36 +31,53 @@ class Technicians extends Component {
                             </select>
                         </div>
                     </div>
-                    <table className="table mt-3">
-                        <thead className="thead-light">
-                        <tr>
-                            <th scope="col">Название</th>
-                            <th scope="col">Кол-во объектов</th>
-                            <th scope="col">Техники</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
+                <table className="table mt-3 text-center">
+                    <thead className="thead-light">
+                    <tr className="d-flex">
+                        <th className="col-1"> </th>
+                        <th className="col-5">ФИО</th>
+                        <th className="col-2">Телефон</th>
+                        <th className="col-2">Локация</th>
+                        <th className="col-2">Статус</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {list_technicians.map(technician => {
+                        const phone = ((technician.account || {}).loginPhone || {}).value;
+                        return (
+                            <tr className="d-flex">
+                                <td className="col-1">
+                                    <img src={require("../../../static/HeaderLogo.jpg")} className="ml-2 mr-2 round-img"
+                                         width="30" height="30" alt=""/>
+                                </td>
+                                <td className="col-5">{technician.lastName} {technician.firstName} {technician.middleName}</td>
+                                <td className="col-2">{phone}</td>
+                                <td className="col-2">Локация</td>
+                                <td className="col-2">Статус</td>
+                            </tr>
+                        )
+                    })}
+                    </tbody>
+                </table>
             </Fragment>
         )
     }
 }
 
-export default Technicians
+const mapStateToProps = ({listTechnicians}) => ({
+    list_technicians: listTechnicians.list_technicians
+});
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            get_list_technicians,
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Technicians)
