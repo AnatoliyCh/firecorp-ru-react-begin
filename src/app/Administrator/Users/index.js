@@ -1,10 +1,9 @@
-import React, {Component} from 'react';
-import $ from "jquery";
+import React, {Component, Fragment} from 'react';
 
 import './styles.css';
 import * as allConst from '../../commonComponents/Const';
+import Loading from '../../commonComponents/Loading';
 import UsersList from './UsersList';
-import {USER_DATA} from "../../commonComponents/Const";
 
 class Users extends Component {
     state = {
@@ -21,7 +20,7 @@ class Users extends Component {
         // eslint-disable-next-line
         fetch(`${allConst.IP_HOST}` + '/api/user/list', {
             method: 'GET',
-            headers: {'SessionToken': `${USER_DATA.sessionToken}`},
+            headers: {'SessionToken': `${allConst.USER_DATA.sessionToken}`},
         }).then(function (response) {
             return response.json();
         }).then(data => {
@@ -54,7 +53,6 @@ class Users extends Component {
         this.setState({lists: usersLists});
         this.setState({isLoading: false});
     };
-
     getListsToComponents = () => {
         let components = null;
         if (!!this.state.lists) {
@@ -68,13 +66,19 @@ class Users extends Component {
     render() {
         console.log(this.state.lists);
         return (
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-12 col-md-12">
-                        {this.state.isLoading ? null : this.getListsToComponents()}
-                    </div>
-                </div>
-            </div>
+            <Fragment>
+                {
+                    this.state.isLoading ? <Loading/>
+                        :
+                        <div className="container">
+                            <div className="row justify-content-center">
+                                <div className="col-12 col-md-12">
+                                    {this.state.isLoading ? Loading : this.getListsToComponents()}
+                                </div>
+                            </div>
+                        </div>
+                }
+            </Fragment>
         )
     }
 }

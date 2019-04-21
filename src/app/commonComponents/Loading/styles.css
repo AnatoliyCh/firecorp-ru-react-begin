@@ -1,0 +1,28 @@
+.loadAnimation {
+    /*выравнивание на середину*/
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    /*анимация*/
+    animation-name: rotation; /*назвение*/
+    animation-duration: 10s; /*Задаем продолжительность одного цикла анимации.*/
+    animation-iteration-count: infinite; /*Задаем количество повторений цикла, в нашем случае — бесконечность..*/
+    animation-timing-function: linear; /*Ну и указываем плавный тип анимации..*/
+}
+
+@keyframes rotation { /*Создаем ключевые кадры для анимации с именем «rotation».*/
+    /*Старт цикла, картинка повернута на 0 градусов о.О*/
+    0% {
+        transform: rotate(0deg);
+    }
+    /*Конец цикла, картинка повернута на 360 градусов, т.е. ее полный оборот.*/
+    100% {
+        transform: rotate(360deg);
+    }
+}
