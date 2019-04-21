@@ -67,7 +67,8 @@ class LoginPage extends Component {
     redirect = () =>{
         switch (this.props.user.account.typeId){
             case 2:
-                this.props.history.push(`${allConst.PATH_ADMINISTRATOR}`);
+                // eslint-disable-next-line
+                this.props.history.push(`${allConst.PATH_ADMINISTRATOR}` + '/users');
                 break;
             case 3:
                 this.props.history.push(`${allConst.PATH_CHIEFTO}`);
