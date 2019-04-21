@@ -18,7 +18,7 @@ class Users extends Component {
 
     getAPIUsers = () => {
         // eslint-disable-next-line
-        fetch(`${allConst.IP_HOST}` + '/api/user/list', {
+        fetch(`${allConst.IP_HOST}${allConst.ALL_USERS_PATH}`, {
             method: 'GET',
             headers: {'SessionToken': `${allConst.USER_DATA.sessionToken}`},
         }).then(function (response) {
@@ -35,6 +35,7 @@ class Users extends Component {
             let usersNew = [];//отсортированные и обработанные пользователи
             data.forEach(function (itemData) {
                 //сортировка и обработка
+                // eslint-disable-next-line
                 if (i == itemData.typeId) {
                     usersNew.push({
                         login: itemData.account.login,
@@ -64,7 +65,6 @@ class Users extends Component {
     };
 
     render() {
-        console.log(this.state.lists);
         return (
             <Fragment>
                 {
@@ -73,7 +73,7 @@ class Users extends Component {
                         <div className="container">
                             <div className="row justify-content-center">
                                 <div className="col-12 col-md-12">
-                                    {this.state.isLoading ? Loading : this.getListsToComponents()}
+                                    {this.getListsToComponents()}
                                 </div>
                             </div>
                         </div>
