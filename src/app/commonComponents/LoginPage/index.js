@@ -35,6 +35,8 @@ class LoginPage extends Component {
             errorStatus.statusText = null;
             this.setState({warning: false});
             this.setData(data);
+            //добавление данных в LocalStorage
+            localStorage.setItem('UserData', JSON.stringify(data));
             this.redirect();
         }).catch((error) => {
             switch (errorStatus.statusText) {

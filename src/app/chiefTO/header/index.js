@@ -1,5 +1,9 @@
 import React, {Fragment} from 'react'
 import {Link} from "react-router-dom";
+import './index.css';
+import {USER_DATA} from "../../commonComponents/Const";
+
+const USER_FIO = `${USER_DATA.lastName} ${USER_DATA.firstName[0]}.${USER_DATA.middleName[0]}.`;
 
 const Header = ({match}) => (
     <Fragment>
@@ -27,12 +31,11 @@ const Header = ({match}) => (
                         <div className="row">
                             <div className="header-profile_text text-right">
                                 <p>Начальник ТО</p>
-                                <p>Филлипенко К.Е.</p>
+                                <p>{USER_FIO}</p>
                             </div>
                             <img src={require("./img/logo.jpg")} className="ml-2 mr-2 round-img" width="50" height="50"
                                  alt=""/>
                         </div>
-
                     </div>
                 </ul>
             </div>
@@ -40,5 +43,4 @@ const Header = ({match}) => (
     </Fragment>
 );
 
-export default Header
-
+export default Header;

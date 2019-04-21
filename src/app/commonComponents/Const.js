@@ -7,6 +7,8 @@ export const PATH_ACCOUNTANT = '/accountant';//Бухгалтер
 export const PATH_STOREKEEPER = '/storekeeper';//Кладовщик
 export const PATH_LAWYER = '/lawyer';//Юрист
 
+export const USER_DATA = JSON.parse(localStorage.getItem('UserData'));
+
 export const ROLES = new Map([
     [2, 'Администратор'],
     [3, 'Начальник ТО'],
