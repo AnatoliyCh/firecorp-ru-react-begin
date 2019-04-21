@@ -35,7 +35,7 @@ class Technicians extends Component {
                 <table className="table mt-3 text-center">
                     <thead className="thead-light">
                     <tr className="d-flex">
-                        <th className="col-1"> </th>
+                        <th className="col-1"></th>
                         <th className="col-5">ФИО</th>
                         <th className="col-2">Телефон</th>
                         <th className="col-2">Локация</th>
@@ -43,10 +43,10 @@ class Technicians extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {list_technicians.map(technician => {
+                    {list_technicians.map((technician, i) => {
                         const phone = ((technician.account || {}).loginPhone || {}).value;
                         return (
-                            <tr key={technician.oid} className="d-flex">
+                            <tr key={technician.oid + i.toString()} className="d-flex">
                                 <td className="col-1">
                                     <img src={require("../../../static/HeaderLogo.jpg")} className="ml-2 mr-2 round-img"
                                          width="30" height="30" alt=""/>

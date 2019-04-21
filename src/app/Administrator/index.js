@@ -4,7 +4,7 @@ import {Switch, Route} from "react-router";
 import Header from "./Header";
 import Users from "./Users";
 import Archived from "./Archived";
-import Page404 from "../commonComponents/page404";
+import Page404 from "../commonComponents/Page404";
 
 const Administrator = ({match}) => {
     return (
