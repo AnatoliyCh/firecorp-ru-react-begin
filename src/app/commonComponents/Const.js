@@ -7,6 +7,9 @@ export const PATH_ACCOUNTANT = '/accountant';//Бухгалтер
 export const PATH_STOREKEEPER = '/storekeeper';//Кладовщик
 export const PATH_LAWYER = '/lawyer';//Юрист
 
+/*Requests constants*/
+export const ALL_USERS_PATH = '/api/user/list';
+
 // Данные пользователя и проверка на отстутсвие данных о пользователе в localStorage
 export const USER_DATA = JSON.parse(localStorage.getItem('UserData')) == null ? "" : JSON.parse(localStorage.getItem('UserData'));
 
