@@ -15,12 +15,37 @@ class Technicians extends Component {
                             <select className="form-control" id="addProfessor">
                                 <option className="dropdown-item" disabled selected>Статус</option>
                                 <option className="dropdown-item">Уволен</option>
-                                <option>Пидор</option>
+                                <option>В отпуске</option>
                                 )}
                             </select>
                         </div>
                     </div>
-
+                    <table className="table mt-3">
+                        <thead className="thead-light">
+                        <tr>
+                            <th scope="col">Название</th>
+                            <th scope="col">Кол-во объектов</th>
+                            <th scope="col">Техники</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </Fragment>
         )
