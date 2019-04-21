@@ -24,9 +24,9 @@ class Technicians extends Component {
                     <div className="btn-group col-sm-4 col-xl-2 mt-3">
                         <div className="form-group">
                             <select className="form-control" id="addProfessor">
-                                <option className="dropdown-item" disabled selected>Статус</option>
+                                <option className="dropdown-item" hidden value=''>Статус</option>
                                 <option className="dropdown-item">Уволен</option>
-                                <option>В отпуске</option>
+                                <option className="dropdown-item">В отпуске</option>
                                 )}
                             </select>
                         </div>
@@ -46,7 +46,7 @@ class Technicians extends Component {
                     {list_technicians.map(technician => {
                         const phone = ((technician.account || {}).loginPhone || {}).value;
                         return (
-                            <tr className="d-flex">
+                            <tr key={technician.oid} className="d-flex">
                                 <td className="col-1">
                                     <img src={require("../../../static/HeaderLogo.jpg")} className="ml-2 mr-2 round-img"
                                          width="30" height="30" alt=""/>
