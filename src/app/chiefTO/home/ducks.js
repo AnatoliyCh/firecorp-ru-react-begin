@@ -2,11 +2,13 @@ export const INCREMENT_REQUESTED = 'counter/INCREMENT_REQUESTED';
 export const INCREMENT = 'counter/INCREMENT';
 export const DECREMENT_REQUESTED = 'counter/DECREMENT_REQUESTED';
 export const DECREMENT = 'counter/DECREMENT';
+export const LOG = 'LOG';
 
 const initialState = {
   count: 0,
   isIncrementing: false,
-  isDecrementing: false
+  isDecrementing: false,
+  pos: "pitch"
 };
 
 export default (state = initialState, action) => {
@@ -36,7 +38,11 @@ export default (state = initialState, action) => {
         count: state.count - 1,
         isDecrementing: !state.isDecrementing
       };
-
+    case LOG:
+      return {
+        ...state,
+        pos: action.pos
+      };
     default:
       return state
   }
@@ -50,6 +56,15 @@ export const increment = () => {
 
     dispatch({
       type: INCREMENT
+    })
+  }
+};
+
+export const log = event => {
+  return dispatch => {
+    dispatch({
+      type: LOG,
+      pos: event.target.value
     })
   }
 };
