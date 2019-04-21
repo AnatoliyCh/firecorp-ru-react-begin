@@ -6,13 +6,14 @@ import * as allConst from '../../commonComponents/Const';
 import UsersList from './UsersList';
 import {USER_DATA} from "../../commonComponents/Const";
 
-var usersLists = [];
-
 class Users extends Component {
-    state  = {
-        lists: null,
+    state = {
+        isLoading: false,//загрузка
+        lists: null,//итоговый массив групп пользователей
     };
+
     componentDidMount() {
+        this.setState({isLoading: true});
         this.getAPIUsers();
     };
 
@@ -22,19 +23,18 @@ class Users extends Component {
             method: 'GET',
             headers: {'SessionToken': `${USER_DATA.sessionToken}`},
         }).then(function (response) {
-            //console.log(response);
             return response.json();
         }).then(data => {
-            console.log(data);
             this.sortData(data);
         }).catch((error) => {
             console.log(error.message);
         });
     };
     sortData = (data) => {
-        allConst.ROLES.forEach(function (itemMap, i, arrMap) {
+        let usersLists = [];//итоговый массив групп пользователей
+        allConst.ROLES.forEach(function (itemMap, i) {
             let usersNew = [];//отсортированные и обработанные пользователи
-            data.forEach(function (itemData, j, arr) {
+            data.forEach(function (itemData) {
                 //сортировка и обработка
                 if (i == itemData.typeId) {
                     usersNew.push({
@@ -51,35 +51,27 @@ class Users extends Component {
             usersLists.push({title: itemMap, data: usersNew});
             usersNew = [];
         });
-        console.log(usersLists);
+        this.setState({lists: usersLists});
+        this.setState({isLoading: false});
     };
 
-    getLists = () => {
-        console.log("tttt");
-        var componentLists = null;
-        if (usersLists.length){
-            componentLists = usersLists.map(function (item) {
-                return <UsersList title={item.title} data={item.data}/>
+    getListsToComponents = () => {
+        let components = null;
+        if (!!this.state.lists) {
+            components = this.state.lists.map(function (item, i) {
+                return <UsersList key={i} title={item.title} data={item.data}/>
             });
         }
-        else componentLists = <UsersList title={allConst.ROLES.get(2)}/>;
-        this.setState({lists: componentLists});
-        return componentLists;
+        return components;
     };
 
     render() {
-        const {lists} = this.state;
+        console.log(this.state.lists);
         return (
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-12 col-md-12">
-                        {lists == null ? null : lists}
-                        {/*<UsersList title={allConst.ROLES.get(2)}/>*/}
-                        {/*<UsersList title={allConst.ROLES.get(3)}/>*/}
-                        {/*<UsersList title={allConst.ROLES.get(4)}/>*/}
-                        {/*<UsersList title={allConst.ROLES.get(5)}/>*/}
-                        {/*<UsersList title={allConst.ROLES.get(6)}/>*/}
-                        {/*<UsersList title={allConst.ROLES.get(7)}/>*/}
+                        {this.state.isLoading ? null : this.getListsToComponents()}
                     </div>
                 </div>
             </div>

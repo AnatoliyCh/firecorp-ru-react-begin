@@ -1,8 +1,16 @@
 import React, {Component} from 'react';
 
-import * as allConst from "../../../commonComponents/Const";
-
 class UsersList extends Component {
+    getDataToComponents = () => {
+        let components = null;
+        if (!!this.props.data && this.props.data.length) {
+            components = this.props.data.map(function (item, i) {
+                return <li className="list-group-item" key={i}>{item.firstName}</li>;
+            });
+        }
+        else components = <li className="list-group-item text-center">Тут пусто!</li>;
+        return components;
+    };
 
     render() {
         return (
@@ -11,9 +19,7 @@ class UsersList extends Component {
                     {this.props.title}
                 </div>
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item">Cras justo odio</li>
-                    <li className="list-group-item">Dapibus ac facilisis in</li>
-                    <li className="list-group-item">Vestibulum at eros</li>
+                    {this.getDataToComponents()}
                 </ul>
             </div>
         )
