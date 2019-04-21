@@ -3,8 +3,7 @@ import {Link} from "react-router-dom";
 import './index.css';
 import {USER_DATA} from "../../commonComponents/Const";
 
-// const USER_FIO = `${USER_DATA.lastName} ${USER_DATA.firstName[0]}.${USER_DATA.middleName[0]}.`;
-const USER_FIO = '1 2 3';
+const USER_FIO = `${USER_DATA.lastName} ${USER_DATA.firstName[0]}.${USER_DATA.middleName[0]}.`;
 
 const Header = ({match}) => (
     <Fragment>
