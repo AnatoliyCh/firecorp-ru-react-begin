@@ -9,6 +9,7 @@ export const PATH_LAWYER = '/lawyer';//Юрист
 
 /*Requests constants*/
 export const ALL_USERS_PATH = '/api/user/list';
+export const ALL_FACILITY_PATH = '/api/facility/list';
 
 // Данные пользователя и проверка на отстутсвие данных о пользователе в localStorage
 export const USER_DATA = JSON.parse(localStorage.getItem('UserData')) == null ? "" : JSON.parse(localStorage.getItem('UserData'));
