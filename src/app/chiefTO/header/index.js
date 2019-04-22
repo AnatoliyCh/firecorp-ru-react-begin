@@ -35,7 +35,7 @@ const Header = ({match}) => (
                                 <p>{allConst.ROLES.get(3)}</p>
                                 <p>{USER_FIO}</p>
                             </div>
-                            <img src={require("../../../static/HeaderLogo.jpg")} className="ml-2 mr-2 round-img" width="50" height="50"
+                            <img src={require("../../../static/EmptyUser.jpg")} className="ml-2 mr-2 round-img" width="50" height="50"
                                  alt=""/>
                         </div>
                     </div>

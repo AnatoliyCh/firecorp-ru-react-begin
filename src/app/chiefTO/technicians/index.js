@@ -3,22 +3,33 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {
     get_list_technicians,
+    get_search_list_technicians,
 } from './ducks'
 
 class Technicians extends Component {
     componentDidMount() {
         this.props.get_list_technicians();
     }
+    /*Функция для поиска техников (фильтрование списков техников)*/
+    search_technicians = event => {
+        const value = event.target.value.toLowerCase();
+
+        const filterList = this.props.list_technicians.filter(technician => {
+            const FIO = `${technician.lastName} ${technician.firstName} ${technician.middleName}`;
+            return FIO.toLowerCase().includes(value);
+        });
+        this.props.get_search_list_technicians(filterList);
+    };
 
     render() {
-        const list_technicians = Object.values(this.props.list_technicians);
+        const list_technicians = Object.values(this.props.search_list_technicians);
 
         return (
             <Fragment>
                 <div className="row">
                     <form className="col-sm-8 col-xl-10 mt-3">
                         <input className="form-control" type="search" placeholder="Поиск по сотрудникам"
-                               aria-label="Search"/>
+                               aria-label="Search" onChange={this.search_technicians}/>
                     </form>
 
                     <div className="btn-group col-sm-4 col-xl-2 mt-3">
@@ -48,7 +59,7 @@ class Technicians extends Component {
                         return (
                             <tr key={technician.oid + i.toString()} className="d-flex">
                                 <td className="col-1">
-                                    <img src={require("../../../static/HeaderLogo.jpg")} className="ml-2 mr-2 round-img"
+                                    <img src={require("../../../static/EmptyUser.jpg")} className="ml-2 mr-2 round-img"
                                          width="30" height="30" alt=""/>
                                 </td>
                                 <td className="col-5">{technician.lastName} {technician.firstName} {technician.middleName}</td>
@@ -66,13 +77,15 @@ class Technicians extends Component {
 }
 
 const mapStateToProps = ({listTechnicians}) => ({
-    list_technicians: listTechnicians.list_technicians
+    list_technicians: listTechnicians.list_technicians,
+    search_list_technicians: listTechnicians.search_list_technicians
 });
 
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
             get_list_technicians,
+            get_search_list_technicians,
         },
         dispatch
     );

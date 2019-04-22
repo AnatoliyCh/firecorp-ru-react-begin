@@ -5,6 +5,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 import $ from 'jquery';
 import {
     get_list_facility,
+    get_search_list_facility,
 } from './ducks'
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -15,16 +16,24 @@ class Facility extends Component {
     componentDidMount() {
         this.props.get_list_facility();
     }
+    /*Функция для поиска объектов (фильтрование списков объектов)*/
+    search_facility = event => {
+        const value = event.target.value.toLowerCase();
 
+        const filterList = this.props.list_facility.filter(facility => {
+            return facility.name.toLowerCase().includes(value);
+        });
+        this.props.get_search_list_facility(filterList);
+    };
     render() {
-        const list_facility = Object.values(this.props.list_facility);
+        const list_facility = Object.values(this.props.search_list_facility);
 
         return (
             <Fragment>
                 <div className="row">
                     <form className="col-sm-8 col-xl-10 mt-3">
                         <input className="form-control" type="search" placeholder="Поиск по объектам"
-                               aria-label="Search"/>
+                               aria-label="Search" onChange={this.search_facility}/>
                     </form>
                     <div className="col-sm-4 col-xl-2 mt-3">
                         <button className="btn btn-outline-danger col-12" data-toggle="modal"
@@ -94,13 +103,15 @@ class Facility extends Component {
 }
 
 const mapStateToProps = ({listFacility}) => ({
-    list_facility: listFacility.list_facility
+    list_facility: listFacility.list_facility,
+    search_list_facility: listFacility.search_list_facility
 });
 
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
             get_list_facility,
+            get_search_list_facility
         },
         dispatch
     );
