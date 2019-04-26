@@ -6,6 +6,7 @@ import $ from 'jquery';
 import {
     get_list_facility,
     get_search_list_facility,
+    reverse_list_facility
 } from './ducks'
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -46,7 +47,7 @@ class Facility extends Component {
                     <tr className="d-flex">
 
                         <th className="col-1">id</th>
-                        <th className="col-1">Название</th>
+                        <th className="col-1 sort-button" onClick={this.props.reverse_list_facility}>Название</th>
                         <th className="col-2">Контрагент</th>
                         <th className="col-2">Адрес объекта</th>
                         <th className="col-1">Локация</th>
@@ -111,7 +112,8 @@ const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
             get_list_facility,
-            get_search_list_facility
+            get_search_list_facility,
+            reverse_list_facility
         },
         dispatch
     );

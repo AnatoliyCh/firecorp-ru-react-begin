@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {
     get_list_technicians,
     get_search_list_technicians,
+    reverse_list_technicians
 } from './ducks'
 
 class Technicians extends Component {
@@ -19,6 +20,7 @@ class Technicians extends Component {
             return FIO.toLowerCase().includes(value);
         });
         this.props.get_search_list_technicians(filterList);
+        console.log(this.props);
     };
 
     render() {
@@ -47,7 +49,7 @@ class Technicians extends Component {
                     <thead className="thead-light">
                     <tr className="d-flex">
                         <th className="col-1"></th>
-                        <th className="col-5">ФИО</th>
+                        <th className="col-5 sort-button" onClick={this.props.reverse_list_technicians}>ФИО</th>
                         <th className="col-2">Телефон</th>
                         <th className="col-2">Локация</th>
                         <th className="col-2">Статус</th>
@@ -86,6 +88,7 @@ const mapDispatchToProps = dispatch =>
         {
             get_list_technicians,
             get_search_list_technicians,
+            reverse_list_technicians
         },
         dispatch
     );
