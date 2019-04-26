@@ -9,3 +9,10 @@
 .sort-button:hover {
     cursor: pointer;
 }
+.font-awesome-button {
+    background-color: white;
+    border: none;
+}
+.font-awesome-button:focus {
+    outline: none;
+}

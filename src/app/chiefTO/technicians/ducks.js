@@ -6,7 +6,8 @@ export const REVERSE_LIST_TECHNICIANS = 'REVERSE_LIST_TECHNICIANS';
 
 const initialState = {
     list_technicians: [],
-    search_list_technicians: []
+    search_list_technicians: [],
+    sortUp_technicians: true
 };
 
 /*reducers*/
@@ -25,7 +26,8 @@ export default (state = initialState, action) => {
         case REVERSE_LIST_TECHNICIANS:
             return {
                 ...state,
-                search_list_technicians: state.search_list_technicians.slice().reverse()
+                search_list_technicians: state.search_list_technicians.slice().reverse(),
+                sortUp_technicians: !state.sortUp_technicians
             };
         default:
             return state

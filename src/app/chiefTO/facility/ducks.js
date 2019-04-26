@@ -5,7 +5,8 @@ export const GET_SEARCH_LIST_FACILITY = 'GET_SEARCH_LIST_FACILITY';
 export const REVERSE_LIST_FACILITY = 'REVERSE_LIST_FACILITY';
 const initialState = {
     list_facility: [],
-    search_list_facility: []
+    search_list_facility: [],
+    sortUp_facility: true
 };
 
 /*reducers*/
@@ -24,7 +25,8 @@ export default (state = initialState, action) => {
         case REVERSE_LIST_FACILITY:
             return {
                 ...state,
-                search_list_facility: state.search_list_facility.slice().reverse()
+                search_list_facility: state.search_list_facility.slice().reverse(),
+                sortUp_facility: !state.sortUp_facility
             };
         default:
             return state
