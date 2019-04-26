@@ -40,7 +40,7 @@ class LoginPage extends Component {
             this.redirect();
         }).catch((error) => {
             switch (errorStatus.statusText) {
-                case 'Illegal login':
+                case 'Not Found':
                     this.setState({warning: true});
                     break;
                 case 'Illegal Password':

@@ -8,8 +8,8 @@ export const PATH_STOREKEEPER = '/storekeeper';//Кладовщик
 export const PATH_LAWYER = '/lawyer';//Юрист
 
 /*Requests constants*/
-export const ALL_USERS_PATH = '/api/user/list';
-export const ALL_FACILITY_PATH = '/api/facility/list';
+export const ALL_USERS_PATH = '/api/user/list?mode=0';
+export const ALL_FACILITY_PATH = '/api/facility/list?mode=0';
 
 // Данные пользователя и проверка на отстутсвие данных о пользователе в localStorage
 export const USER_DATA = JSON.parse(localStorage.getItem('UserData')) == null ? "" : JSON.parse(localStorage.getItem('UserData'));
