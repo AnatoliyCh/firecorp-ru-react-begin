@@ -15,7 +15,8 @@ export default (state = initialState, action) => {
         case GET_LIST_FACILITY:
             return {
                 ...state,
-                list_facility: action.list_facility
+                list_facility: action.list_facility,
+                sortUp_facility: true
             };
         case GET_SEARCH_LIST_FACILITY:
             return {

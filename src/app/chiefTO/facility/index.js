@@ -23,11 +23,14 @@ class Facility extends Component {
         const filterList = this.props.list_facility.filter(facility => {
             return facility.name.toLowerCase().includes(value);
         });
+        if(!this.props.sortUp_facility) {
+            filterList.reverse();
+        }
         this.props.get_search_list_facility(filterList);
     };
     render() {
         const list_facility = Object.values(this.props.search_list_facility);
-        const arrow = this.props.sortUp_facility ? <i class="fas fa-angle-down"></i> : <i class="fas fa-angle-up"></i>;
+        const arrow = this.props.sortUp_facility ? <i className="fas fa-angle-down"> </i> : <i className="fas fa-angle-up"> </i>;
 
         return (
             <Fragment>

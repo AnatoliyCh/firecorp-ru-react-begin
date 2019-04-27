@@ -16,7 +16,8 @@ export default (state = initialState, action) => {
         case GET_LIST_TECHNICIANS:
             return {
                 ...state,
-                list_technicians: action.list_technicians
+                list_technicians: action.list_technicians,
+                sortUp_technicians: true
             };
         case GET_SEARCH_LIST_TECHNICIANS:
             return {
