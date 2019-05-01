@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react'
-import '../index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import $ from 'jquery';
@@ -24,10 +23,14 @@ class Facility extends Component {
         const filterList = this.props.list_facility.filter(facility => {
             return facility.name.toLowerCase().includes(value);
         });
+        if(!this.props.sortUp_facility) {
+            filterList.reverse();
+        }
         this.props.get_search_list_facility(filterList);
     };
     render() {
         const list_facility = Object.values(this.props.search_list_facility);
+        const arrow = this.props.sortUp_facility ? <i className="fas fa-angle-down"> </i> : <i className="fas fa-angle-up"> </i>;
 
         return (
             <Fragment>
@@ -47,7 +50,7 @@ class Facility extends Component {
                     <tr className="d-flex">
 
                         <th className="col-1">id</th>
-                        <th className="col-1 sort-button" onClick={this.props.reverse_list_facility}>Название</th>
+                        <th className="col-1 sort-button" onClick={this.props.reverse_list_facility}>Название {arrow}</th>
                         <th className="col-2">Контрагент</th>
                         <th className="col-2">Адрес объекта</th>
                         <th className="col-1">Локация</th>
@@ -105,7 +108,8 @@ class Facility extends Component {
 
 const mapStateToProps = ({listFacility}) => ({
     list_facility: listFacility.list_facility,
-    search_list_facility: listFacility.search_list_facility
+    search_list_facility: listFacility.search_list_facility,
+    sortUp_facility: listFacility.sortUp_facility
 });
 
 const mapDispatchToProps = dispatch =>

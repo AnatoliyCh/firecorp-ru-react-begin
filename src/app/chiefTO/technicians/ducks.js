@@ -6,7 +6,8 @@ export const REVERSE_LIST_TECHNICIANS = 'REVERSE_LIST_TECHNICIANS';
 
 const initialState = {
     list_technicians: [],
-    search_list_technicians: []
+    search_list_technicians: [],
+    sortUp_technicians: true
 };
 
 /*reducers*/
@@ -15,7 +16,8 @@ export default (state = initialState, action) => {
         case GET_LIST_TECHNICIANS:
             return {
                 ...state,
-                list_technicians: action.list_technicians
+                list_technicians: action.list_technicians,
+                sortUp_technicians: true
             };
         case GET_SEARCH_LIST_TECHNICIANS:
             return {
@@ -25,7 +27,8 @@ export default (state = initialState, action) => {
         case REVERSE_LIST_TECHNICIANS:
             return {
                 ...state,
-                search_list_technicians: state.search_list_technicians.slice().reverse()
+                search_list_technicians: state.search_list_technicians.slice().reverse(),
+                sortUp_technicians: !state.sortUp_technicians
             };
         default:
             return state
@@ -57,6 +60,7 @@ export const get_list_technicians = () => {
             return comparison;
         }
 
+        /*Получаем только техников по typeid = 4*/
         data = data.filter(user => user.typeId === 4).sort(compare);
         dispatch({
             type: GET_LIST_TECHNICIANS,

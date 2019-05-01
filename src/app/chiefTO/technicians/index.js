@@ -19,13 +19,15 @@ class Technicians extends Component {
             const FIO = `${technician.lastName} ${technician.firstName} ${technician.middleName}`;
             return FIO.toLowerCase().includes(value);
         });
+        if(!this.props.sortUp_technicians) {
+            filterList.reverse();
+        }
         this.props.get_search_list_technicians(filterList);
-        console.log(this.props);
     };
 
     render() {
         const list_technicians = Object.values(this.props.search_list_technicians);
-
+        const arrow = this.props.sortUp_technicians ? <i className="fas fa-angle-down"> </i> : <i className="fas fa-angle-up"> </i>;
         return (
             <Fragment>
                 <div className="row">
@@ -48,8 +50,8 @@ class Technicians extends Component {
                 <table className="table mt-3 text-center">
                     <thead className="thead-light">
                     <tr className="d-flex">
-                        <th className="col-1"></th>
-                        <th className="col-5 sort-button" onClick={this.props.reverse_list_technicians}>ФИО</th>
+                        <th className="col-1"> </th>
+                        <th className="col-5 sort-button" onClick={this.props.reverse_list_technicians}>ФИО {arrow}</th>
                         <th className="col-2">Телефон</th>
                         <th className="col-2">Локация</th>
                         <th className="col-2">Статус</th>
@@ -67,7 +69,7 @@ class Technicians extends Component {
                                 <td className="col-5">{technician.lastName} {technician.firstName} {technician.middleName}</td>
                                 <td className="col-2">{phone}</td>
                                 <td className="col-2">Локация</td>
-                                <td className="col-2">Статус</td>
+                                <td className="col-2">Статус <button className="font-awesome-button"><i className="fas fa-pencil-alt"> </i></button></td>
                             </tr>
                         )
                     })}
@@ -80,7 +82,8 @@ class Technicians extends Component {
 
 const mapStateToProps = ({listTechnicians}) => ({
     list_technicians: listTechnicians.list_technicians,
-    search_list_technicians: listTechnicians.search_list_technicians
+    search_list_technicians: listTechnicians.search_list_technicians,
+    sortUp_technicians: listTechnicians.sortUp_technicians /*Для отображения стрелки сортировки вверх/вниз */
 });
 
 const mapDispatchToProps = dispatch =>
