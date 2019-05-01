@@ -60,6 +60,7 @@ export const get_list_technicians = () => {
             return comparison;
         }
 
+        /*Получаем только техников по typeid = 4*/
         data = data.filter(user => user.typeId === 4).sort(compare);
         dispatch({
             type: GET_LIST_TECHNICIANS,
