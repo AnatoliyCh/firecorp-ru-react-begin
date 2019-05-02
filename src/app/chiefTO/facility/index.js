@@ -71,12 +71,13 @@ class Facility extends Component {
                         const home = (facility.address || {}).home;
                         const office = (facility.address || {}).office === "" ? "" : `оф. ${(facility.address || {}).office}`;
                         const technician = (facility.technecian || {}).oid;
+                        const contractor = (facility.contractor || {}).oid;
 
                         return (
                             <tr key={facility.identifier + i.toString()} className="d-flex">
                                 <td className="col-1">{facility.identifier}</td>
                                 <td className="col-1">{facility.name}</td>
-                                <td className="col-2">*Контрагент*</td>
+                                <td className="col-2">{contractor}</td>
                                 <td className="col-2">{street} {home} {office}</td>
                                 <td className="col-1">Статус</td>
                                 <td className="col-1">Телефон</td>

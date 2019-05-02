@@ -11,6 +11,7 @@ export const PATH_LAWYER = '/lawyer';//Юрист
 export const ALL_USERS_PATH = '/api/user/list?mode=0';
 export const ALL_FACILITY_PATH = '/api/facility/list?mode=0';
 export const ALL_LOCATIONS_PATH = '/api/servicezone/list?mode=0';
+export const ALL_CONTRACTOR_PATH = '/api/contractor/list?mode=0';
 
 // Данные пользователя и проверка на отстутсвие данных о пользователе в localStorage
 export const USER_DATA = JSON.parse(localStorage.getItem('UserData')) == null ? "" : JSON.parse(localStorage.getItem('UserData'));
