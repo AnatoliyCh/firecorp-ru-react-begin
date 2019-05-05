@@ -17,9 +17,9 @@ class UsersList extends Component {
                         <td id="tdPassword"> Пароль: {item.account.password !== "" ? item.account.password : "---"}</td>
                         <td id="tdLoginPhone"> Телефон: {item.account.loginPhone.value !== "" ? item.account.loginPhone.value : "---"}</td>
                         <td id="tdButton">
-                            <button className="font-awesome-button"><i className="fas fa-user-edit fa-lg"> </i>
+                            <button className="font-awesome-button" data-toggle="modal" data-target="#myModal" ><i className="fas fa-user-edit fa-lg"> </i>
                             </button>
-                            <button className="font-awesome-button"><i className="far fa-file-archive fa-lg"> </i>
+                            <button className="font-awesome-button" data-toggle="modal" data-target="#myModal" ><i className="far fa-file-archive fa-lg"> </i>
                             </button>
                         </td>
                     </tr>

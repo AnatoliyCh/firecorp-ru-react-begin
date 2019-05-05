@@ -34,8 +34,7 @@ class Users extends Component {
         allConst.ROLES.forEach(function (itemMap, i) {
             let usersNew = [];//отсортированные и обработанные пользователи
             data.forEach(function (itemData) {
-                //сортировка и обработка
-                if (i === itemData.typeId) usersNew.push(itemData);
+                if (i === itemData.typeId) usersNew.push(itemData);//сортировка
             });
             usersLists.push({title: itemMap, data: usersNew});
             usersNew = [];
