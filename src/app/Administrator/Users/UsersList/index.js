@@ -26,7 +26,7 @@ class UsersList extends Component {
                 );
             });
         }
-        else components = <tr>Тут пусто!</tr>;
+        else components = <tr>Нет данных</tr>;
         return components;
     };
 
