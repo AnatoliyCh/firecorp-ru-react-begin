@@ -1,14 +1,32 @@
 import React, {Component} from 'react';
+import './styles.css';
 
 class UsersList extends Component {
+
     getDataToComponents = () => {
         let components = null;
         if (!!this.props.data && this.props.data.length) {
             components = this.props.data.map(function (item, i) {
-                return <li className="list-group-item" key={i}>{item.firstName}</li>;
+                return (
+                    <tr key={i}>
+                        <td id="tdImage">
+                            <img src={require('../../../../static/EmptyUser.jpg')} width="40" height="40" alt=""/>
+                        </td>
+                        <td id="tdName">{item.lastName} {item.firstName} {item.middleName}</td>
+                        <td id="tdLogin"> Логин: {item.account.login !== "" ? item.account.login : "---"}</td>
+                        <td id="tdPassword"> Пароль: {item.account.password !== "" ? item.account.password : "---"}</td>
+                        <td id="tdLoginPhone"> Телефон: {item.account.loginPhone.value !== "" ? item.account.loginPhone.value : "---"}</td>
+                        <td id="tdButton">
+                            <button className="font-awesome-button" data-toggle="modal" data-target="#myModal" ><i className="fas fa-user-edit fa-lg"> </i>
+                            </button>
+                            <button className="font-awesome-button" data-toggle="modal" data-target="#myModal" ><i className="far fa-file-archive fa-lg"> </i>
+                            </button>
+                        </td>
+                    </tr>
+                );
             });
         }
-        else components = <li className="list-group-item text-center">Тут пусто!</li>;
+        else components = <tr>Тут пусто!</tr>;
         return components;
     };
 
@@ -18,9 +36,11 @@ class UsersList extends Component {
                 <div className="card-header">
                     {this.props.title}
                 </div>
-                <ul className="list-group list-group-flush">
+                <table className="table">
+                    <tbody>
                     {this.getDataToComponents()}
-                </ul>
+                    </tbody>
+                </table>
             </div>
         )
     }
