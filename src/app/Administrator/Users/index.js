@@ -35,18 +35,7 @@ class Users extends Component {
             let usersNew = [];//отсортированные и обработанные пользователи
             data.forEach(function (itemData) {
                 //сортировка и обработка
-                // eslint-disable-next-line
-                if (i == itemData.typeId) {
-                    usersNew.push({
-                        login: itemData.account.login,
-                        password: itemData.account.password,
-                        loginPhone: itemData.account.loginPhone.value,
-                        firstName: itemData.firstName,
-                        middleName: itemData.middleName,
-                        lastName: itemData.lastName,
-                        typeId: itemData.typeId,
-                    });
-                }
+                if (i === itemData.typeId) usersNew.push(itemData);
             });
             usersLists.push({title: itemMap, data: usersNew});
             usersNew = [];
