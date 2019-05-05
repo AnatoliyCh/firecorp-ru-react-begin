@@ -1,55 +1,57 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import * as allConst from '../../commonComponents/Const';
-import $ from "jquery";
-
-let user = {
-    typeId: '',
-    firstName: '',
-    lastName: '',
-    middleName: '',
-    account: {
-        login: '',
-        password: '',
-        loginPhone: {
-            value: ''
-        }
-    }
-};
+import $ from 'jquery';
 
 class AddEditDialogBox extends Component {
+    state = {
+        currentRoleKey: 2,//ключ выбранной роли
+    };
+    clearDialog = () => {
+        $('#addLastName').val('');
+        $('#addFirstName').val('');
+        $('#addMiddleName').val('');
+        $('#addLogin').val('');
+        $('#addPassword').val('');
+        $('#addLoginPhone').val('');
+        $('#selectRole').val(2);
+        this.props.common.dialogMode = 0;//создание
+        $('#headerModal').html("Создание");
+    };
     setRole = (event) => {
-        user.typeId = event.currentTarget.value;
+        this.setState({currentRoleKey: event.currentTarget.value});
     };
     clickButton = () => {
-        user.lastName = $('#addLastName').val();
-        user.firstName = $('#addFirstName').val();
-        user.middleName = $('#addMiddleName').val();
-        user.account.login = $('#addLogin').val();
-        user.account.password = $('#addPassword').val();
-        user.account.loginPhone.value = $('#addLoginPhone').val();
-        if (user.typeId === '') user.typeId = 2;
-        console.log(user);
-        this.addUser();
+        let user = {
+            typeId: this.state.currentRoleKey,
+            firstName: $('#addFirstName').val(),
+            lastName: $('#addLastName').val(),
+            middleName: $('#addMiddleName').val(),
+            account: {
+                login: $('#addLogin').val(),
+                password: $('#addPassword').val(),
+                loginPhone: {
+                    value: $('#addLoginPhone').val(),
+                }
+            }
+        };
+        this.props.common.dialogMode === 0 ? this.addUserAPI(user) : this.editUserAPI();
     };
-    addUser = () => {
+    addUserAPI = (data) => {
+        // eslint-disable-next-line
         fetch(`${allConst.IP_HOST}` + '/api/user/add', {
             method: 'POST',
-            headers: {'SessionToken': `${allConst.USER_DATA.sessionToken}`},
-            body: JSON.stringify(user)
+            headers: {SessionToken: `${allConst.USER_DATA.sessionToken}`},
+            body: JSON.stringify(data)
         }).then(function (response) {
             return response.json();
         }).then(data => {
-            $('#addLastName').val('');
-            $('#addFirstName').val('');
-            $('#addMiddleName').val('');
-            $('#addLogin').val('');
-            $('#addPassword').val('');
-            $('#addLoginPhone').val('');
+            this.clearDialog();
         }).catch((error) => {
             console.log(error.message);
         });
     };
-    editUser = () => {
+    editUserAPI = () => {
 
     };
 
@@ -63,8 +65,10 @@ class AddEditDialogBox extends Component {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h4 className="modal-title">Создание / Редактирование</h4>
-                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            <h4 id="headerModal"
+                                className="modal-title">{this.props.common.dialogMode === 0 ? 'Создание' : 'Редактирование'}</h4>
+                            <button type="button" className="close" data-dismiss="modal"
+                                    onClick={this.clearDialog}>&times;</button>
                         </div>
                         <div className="modal-body pt-4 pb-4">
 
@@ -93,7 +97,7 @@ class AddEditDialogBox extends Component {
                                    placeholder="Введите телефон" aria-label="Search"/>
 
                             <label htmlFor="role">Роль</label>
-                            <select className="form-control" onClick={this.setRole}>
+                            <select id="selectRole" className="form-control" onClick={this.setRole}>
                                 {itemsSetRoles}
                             </select>
 
@@ -110,4 +114,16 @@ class AddEditDialogBox extends Component {
     }
 }
 
-export default AddEditDialogBox;
+// приклеиваем данные из store
+const mapStateToProps = store => {
+    return {
+        common: store.user,
+    }
+};
+const mapDispatchToProps = dispatch => {
+    return {}
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AddEditDialogBox)
