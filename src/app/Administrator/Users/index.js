@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react';
-
 import './styles.css';
 import * as allConst from '../../commonComponents/Const';
 import Loading from '../../commonComponents/Loading';
