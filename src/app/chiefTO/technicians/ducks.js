@@ -2,10 +2,12 @@ import {ALL_USERS_PATH, IP_HOST, USER_DATA} from "../../commonComponents/Const";
 
 export const GET_LIST_TECHNICIANS = 'GET_LIST_TECHNICIANS';
 export const GET_SEARCH_LIST_TECHNICIANS = 'GET_SEARCH_LIST_TECHNICIANS';
+export const REVERSE_LIST_TECHNICIANS = 'REVERSE_LIST_TECHNICIANS';
 
 const initialState = {
     list_technicians: [],
-    search_list_technicians: []
+    search_list_technicians: [],
+    sortUp_technicians: true
 };
 
 /*reducers*/
@@ -14,12 +16,19 @@ export default (state = initialState, action) => {
         case GET_LIST_TECHNICIANS:
             return {
                 ...state,
-                list_technicians: action.list_technicians
+                list_technicians: action.list_technicians,
+                sortUp_technicians: true
             };
         case GET_SEARCH_LIST_TECHNICIANS:
             return {
                 ...state,
                 search_list_technicians: action.search_list_technicians
+            };
+        case REVERSE_LIST_TECHNICIANS:
+            return {
+                ...state,
+                search_list_technicians: state.search_list_technicians.slice().reverse(),
+                sortUp_technicians: !state.sortUp_technicians
             };
         default:
             return state
@@ -32,12 +41,25 @@ export const get_list_technicians = () => {
         method: "GET",
         headers: {'SessionToken': USER_DATA.sessionToken}
     }).then(function (response) {
-        if (response.status === 401) {
-            document.location.href = "/";
-        }
+
         return response.json()
     }).then(data => {
-        data = data.filter(user => user.typeId === 4);
+        function compare(a, b) {
+            // Используем toUpperCase() для преобразования регистра
+            const nameA = a.lastName.toUpperCase();
+            const nameB = b.lastName.toUpperCase();
+
+            let comparison = 0;
+            if (nameA > nameB) {
+                comparison = 1;
+            } else if (nameA < nameB) {
+                comparison = -1;
+            }
+            return comparison;
+        }
+
+        /*Получаем только техников по typeid = 4*/
+        data = data.filter(user => user.typeId === 4).sort(compare);
         dispatch({
             type: GET_LIST_TECHNICIANS,
             list_technicians: data,
@@ -57,6 +79,14 @@ export const get_search_list_technicians = (data) => {
         dispatch({
             type: GET_SEARCH_LIST_TECHNICIANS,
             search_list_technicians: data
+        });
+    }
+};
+
+export const reverse_list_technicians = () => {
+    return dispatch => {
+        dispatch({
+            type: REVERSE_LIST_TECHNICIANS
         });
     }
 };

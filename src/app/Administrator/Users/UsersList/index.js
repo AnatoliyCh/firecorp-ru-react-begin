@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
+import './styles.css';
+import TableItem from './TableItem';
 
 class UsersList extends Component {
     getDataToComponents = () => {
         let components = null;
         if (!!this.props.data && this.props.data.length) {
             components = this.props.data.map(function (item, i) {
-                return <li className="list-group-item" key={i}>{item.firstName}</li>;
+                return <TableItem key={i} data={item}/>;
             });
         }
-        else components = <li className="list-group-item text-center">Тут пусто!</li>;
+        else components = <tr className="emptyData" >Нет данных</tr>;
         return components;
     };
 
@@ -18,9 +20,11 @@ class UsersList extends Component {
                 <div className="card-header">
                     {this.props.title}
                 </div>
-                <ul className="list-group list-group-flush">
+                <table className="table">
+                    <tbody>
                     {this.getDataToComponents()}
-                </ul>
+                    </tbody>
+                </table>
             </div>
         )
     }

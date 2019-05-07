@@ -1,14 +1,14 @@
 import React, {Component, Fragment} from 'react';
-
+import UsersList from './UsersList';
+import {connect} from 'react-redux';
+import {setArrayUserArrays} from '../Reducer';
 import './styles.css';
 import * as allConst from '../../commonComponents/Const';
 import Loading from '../../commonComponents/Loading';
-import UsersList from './UsersList';
 
 class Users extends Component {
     state = {
         isLoading: false,//загрузка
-        lists: null,//итоговый массив групп пользователей
     };
 
     componentDidMount() {
@@ -34,30 +34,17 @@ class Users extends Component {
         allConst.ROLES.forEach(function (itemMap, i) {
             let usersNew = [];//отсортированные и обработанные пользователи
             data.forEach(function (itemData) {
-                //сортировка и обработка
-                // eslint-disable-next-line
-                if (i == itemData.typeId) {
-                    usersNew.push({
-                        login: itemData.account.login,
-                        password: itemData.account.password,
-                        loginPhone: itemData.account.loginPhone.value,
-                        firstName: itemData.firstName,
-                        middleName: itemData.middleName,
-                        lastName: itemData.lastName,
-                        typeId: itemData.typeId,
-                    });
-                }
+                if (i === itemData.typeId) usersNew.push(itemData);//сортировка
             });
             usersLists.push({title: itemMap, data: usersNew});
-            usersNew = [];
         });
-        this.setState({lists: usersLists});
+        this.props.setArrayUserArraysInStore(usersLists);
         this.setState({isLoading: false});
     };
     getListsToComponents = () => {
         let components = null;
-        if (!!this.state.lists) {
-            components = this.state.lists.map(function (item, i) {
+        if (!!this.props.arrayUserArrays) {
+            components = this.props.arrayUserArrays.map(function (item, i) {
                 return <UsersList key={i} title={item.title} data={item.data}/>
             });
         }
@@ -65,6 +52,7 @@ class Users extends Component {
     };
 
     render() {
+        console.log('render');
         return (
             <Fragment>
                 {
@@ -83,4 +71,17 @@ class Users extends Component {
     }
 }
 
-export default Users;
+// приклеиваем данные из store
+const mapStateToProps = store => {
+    return store.administratorReducer;
+};
+//функции для ассинхронного ввода
+const mapDispatchToProps = dispatch => {
+    return {
+        setArrayUserArraysInStore: array => dispatch(setArrayUserArrays(array)),
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Users)

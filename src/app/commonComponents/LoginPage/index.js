@@ -1,11 +1,7 @@
-import './styles.css';
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import $ from 'jquery';
-
+import './styles.css';
 import * as allConst from '../Const';
-import {setToken, setAccount} from '../Reducer';
-
 import AlertWarning from '../Alerts/Warning';
 
 const illegalLogin = 'Неверные логин или пароль!';
@@ -24,7 +20,6 @@ class LoginPage extends Component {
         // eslint-disable-next-line
         fetch(`${allConst.IP_HOST}` + '/api/user/login', {
             method: 'POST',
-            //headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({login: $("#inpLogin").val(), password: $("#inpPassword").val()})
         }).then(function (response) {
             errorStatus.status = response.status;
@@ -34,13 +29,11 @@ class LoginPage extends Component {
             errorStatus.status = null;
             errorStatus.statusText = null;
             this.setState({warning: false});
-            this.setData(data);
-            //добавление данных в LocalStorage
-            localStorage.setItem('UserData', JSON.stringify(data));
+            localStorage.setItem('UserData', JSON.stringify(data));//добавление данных в LocalStorage
             this.redirect();
         }).catch((error) => {
             switch (errorStatus.statusText) {
-                case 'Illegal login':
+                case 'Not Found':
                     this.setState({warning: true});
                     break;
                 case 'Illegal Password':
@@ -51,27 +44,15 @@ class LoginPage extends Component {
             }
         });
     };
-    setData = (data) => {
-        this.props.setTokenAction(data.sessionToken);
-        let account = {
-            typeId: data.typeId,
-            login: data.account.login,
-            password: data.account.password,
-            phone: data.account.loginPhone.value,
-            firstName: data.firstName,
-            middleName: data.middleName,
-            lastName: data.lastName,
-        };
-        this.props.setAccountAction(account);
-    };
-    redirect = () =>{
-        switch (this.props.user.account.typeId){
+    redirect = () => {
+        switch (allConst.USER_DATA.typeId) {
             case 2:
                 // eslint-disable-next-line
                 this.props.history.push(`${allConst.PATH_ADMINISTRATOR}` + '/users');
                 break;
             case 3:
-                this.props.history.push(`${allConst.PATH_CHIEFTO}`);
+                // eslint-disable-next-line
+                this.props.history.push(`${allConst.PATH_CHIEFTO}` + '/technicians');
                 break;
             case 5:
                 this.props.history.push(`${allConst.PATH_CHIEF}`);
@@ -123,20 +104,4 @@ class LoginPage extends Component {
         )
     }
 }
-
-// приклеиваем данные из store
-const mapStateToProps = store => {
-    return {
-        user: store.user,
-    }
-};
-const mapDispatchToProps = dispatch => {
-    return {
-        setTokenAction: token => dispatch(setToken(token)),
-        setAccountAction: account => dispatch(setAccount(account)),
-    }
-};
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LoginPage)
+export default LoginPage;
