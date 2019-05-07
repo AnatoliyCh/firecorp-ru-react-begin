@@ -6,6 +6,7 @@ import $ from 'jquery';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {
+    add_location,
     get_list_locations,
     get_search_list_locations,
     reverse_list_locations
@@ -13,7 +14,12 @@ import {
 
 $('#addLocation').modal('toggle');
 $('#editLocation').modal('toggle');
+
 class Locations extends Component {
+    state = {
+        name: ""
+    };
+
     componentDidMount() {
         this.props.get_list_locations();
     }
@@ -29,6 +35,19 @@ class Locations extends Component {
             filterList.reverse();
         }
         this.props.get_search_list_locations(filterList);
+    };
+
+    handleSubmitAddLocation = event => {
+        event.preventDefault();
+        console.log(this.state.name);
+        const data = JSON.stringify({name: this.state.name});
+        this.props.add_location(data);
+        //this.props.get_list_locations();
+        console.log(this.props);
+    };
+    handleChangeNameLocation = event => {
+        event.preventDefault();
+        this.setState({name: event.target.value});
     };
 
     render() {
@@ -55,7 +74,7 @@ class Locations extends Component {
                             onClick={this.props.reverse_list_locations}>Название {arrow}</th>
                         <th className="col">Кол-во объектов</th>
                         <th className="col">Техники</th>
-                        <th className="col-1"> </th>
+                        <th className="col-1"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -80,19 +99,22 @@ class Locations extends Component {
                 <div id="addLocation" className="modal fade" role="dialog">
                     <div className="modal-dialog">
                         <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Создание локации</h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div className="modal-body pt-4 pb-4">
-                                <label htmlFor="addLocation">Название</label>
-                                <input className="form-control" id="addLocation" type="search"
-                                       placeholder="Введите название локации" aria-label="Search"/>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-danger" data-dismiss="modal">Добавить
-                                </button>
-                            </div>
+                            <form id="addLocation" onSubmit={this.handleSubmitAddLocation}>
+                                <div className="modal-header">
+                                    <h4 className="modal-title">Создание локации</h4>
+                                    <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div className="modal-body pt-4 pb-4">
+                                    <label htmlFor="addLocation">Название</label>
+                                    <input className="form-control" id="addLocation" type="text"
+                                           placeholder="Введите название локации"
+                                           onChange={this.handleChangeNameLocation}/>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="submit" className="btn btn-outline-danger">Добавить
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -111,7 +133,7 @@ class Locations extends Component {
                                        placeholder="Введите название локации" aria-label="Search"/>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-danger" data-dismiss="modal">Добавить
+                                <button type="button" className="btn btn-outline-danger">Добавить
                                 </button>
                             </div>
                         </div>
@@ -131,6 +153,7 @@ const mapStateToProps = ({listLocations}) => ({
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
+            add_location,
             get_list_locations,
             get_search_list_locations,
             reverse_list_locations
