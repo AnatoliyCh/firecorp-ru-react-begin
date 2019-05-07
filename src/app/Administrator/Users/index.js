@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react';
-
 import './styles.css';
 import * as allConst from '../../commonComponents/Const';
 import Loading from '../../commonComponents/Loading';
@@ -34,19 +33,7 @@ class Users extends Component {
         allConst.ROLES.forEach(function (itemMap, i) {
             let usersNew = [];//отсортированные и обработанные пользователи
             data.forEach(function (itemData) {
-                //сортировка и обработка
-                // eslint-disable-next-line
-                if (i == itemData.typeId) {
-                    usersNew.push({
-                        login: itemData.account.login,
-                        password: itemData.account.password,
-                        loginPhone: itemData.account.loginPhone.value,
-                        firstName: itemData.firstName,
-                        middleName: itemData.middleName,
-                        lastName: itemData.lastName,
-                        typeId: itemData.typeId,
-                    });
-                }
+                if (i === itemData.typeId) usersNew.push(itemData);//сортировка
             });
             usersLists.push({title: itemMap, data: usersNew});
             usersNew = [];
