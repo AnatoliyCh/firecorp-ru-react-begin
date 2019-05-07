@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import $ from 'jquery';
 import './styles.css';
 import * as allConst from '../Const';
@@ -105,19 +104,4 @@ class LoginPage extends Component {
         )
     }
 }
-
-// приклеиваем данные из store
-const mapStateToProps = store => {
-    return {
-        //user: store.user,
-    }
-};
-const mapDispatchToProps = dispatch => {
-    return {
-        //setTokenAction: token => dispatch(setToken(token)),
-    }
-};
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LoginPage)
+export default LoginPage;

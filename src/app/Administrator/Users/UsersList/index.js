@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import './styles.css';
-import TrItem from './TrItem';
+import TableItem from './TableItem';
 
 class UsersList extends Component {
     getDataToComponents = () => {
         let components = null;
         if (!!this.props.data && this.props.data.length) {
             components = this.props.data.map(function (item, i) {
-                return <TrItem key={i} data={item}/>;
+                return <TableItem key={i} data={item}/>;
             });
         }
-        else components = <tr>Нет данных</tr>;
+        else components = <tr className="emptyData" >Нет данных</tr>;
         return components;
     };
 

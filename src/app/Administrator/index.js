@@ -3,7 +3,7 @@ import {Switch, Route} from 'react-router';
 import Header from './Header';
 import AddEditDialogBox from './AddEditDialogBox';
 import Users from './Users';
-import Archived from './Archived';
+import Archived from './ArchivedUsers';
 import Page404 from '../commonComponents/Page404';
 
 const Administrator = ({match}) => {
