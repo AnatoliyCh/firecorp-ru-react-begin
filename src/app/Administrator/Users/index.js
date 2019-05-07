@@ -73,7 +73,7 @@ class Users extends Component {
 const mapStateToProps = store => {
     return store.administratorReducer;
 };
-//функции для ввода данных
+//функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
     return {
         setArrayUserArraysInStore: array => dispatch(setArrayUserArrays(array)),
