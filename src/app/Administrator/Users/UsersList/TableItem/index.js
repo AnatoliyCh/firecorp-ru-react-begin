@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import './styles.css';
 import $ from "jquery";
+import {setDialogMode} from "../../../../commonComponents/Reducer";
 
 class TableItem extends Component {
     btnEdit = () => {
-        this.props.common.dialogMode = 1;//редактирование
+        this.props.setDialogModeInStore(1);//редактирование
         $('#addLastName').val(this.props.data.lastName);
         $('#addFirstName').val(this.props.data.firstName);
         $('#addMiddleName').val(this.props.data.middleName);
@@ -44,13 +45,13 @@ class TableItem extends Component {
 };
 // приклеиваем данные из store
 const mapStateToProps = store => {
-    return {
-        common: store.user,
-    }
+    return store.commonReducer;
 };
-//функции из reducer
+//функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
-    return {}
+    return {
+        setDialogModeInStore: mode => dispatch(setDialogMode(mode)),
+    }
 };
 export default connect(
     mapStateToProps,
