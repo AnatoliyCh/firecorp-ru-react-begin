@@ -1,21 +1,14 @@
 {
-  "name": "web_client_group",
   "private": true,
-  "homepage": "https://anatoliych.github.io/web_client_group/",
   "scripts": {
     "dev": "react-scripts start",
     "start": "serve -s build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "now-start": "serve -s ./build",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "precommit": "pretty-quick --staged",
     "heroku-postbuild": "npm run build"
   },
   "devDependencies": {
-    "prettier": "1.16.4",
     "react-scripts": "2.1.8"
   },
   "dependencies": {
