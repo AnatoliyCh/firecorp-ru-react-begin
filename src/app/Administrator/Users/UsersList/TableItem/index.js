@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import './styles.css';
 import $ from "jquery";
 
-class TrItem extends Component {
+class TableItem extends Component {
     btnEdit = () => {
         this.props.common.dialogMode = 1;//редактирование
         $('#addLastName').val(this.props.data.lastName);
@@ -34,9 +34,8 @@ class TrItem extends Component {
                             onClick={this.btnEdit}><i
                         className="fas fa-user-edit fa-lg"> </i>
                     </button>
-                    <button className="font-awesome-button" data-toggle="modal" data-target="#myModal"
-                            onClick={this.btnArchive}><i
-                        className="far fa-file-archive fa-lg"> </i>
+                    <button className="font-awesome-button" onClick={this.btnArchive}>
+                        <i className="far fa-file-archive fa-lg" />
                     </button>
                 </td>
             </tr>
@@ -56,4 +55,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(TrItem)
+)(TableItem)
