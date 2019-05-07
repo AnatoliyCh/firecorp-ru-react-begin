@@ -70,6 +70,7 @@ class Users extends Component {
         )
     }
 }
+
 // приклеиваем данные из store
 const mapStateToProps = store => {
     return store.administratorReducer;
