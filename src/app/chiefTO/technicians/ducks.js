@@ -41,9 +41,7 @@ export const get_list_technicians = () => {
         method: "GET",
         headers: {'SessionToken': USER_DATA.sessionToken}
     }).then(function (response) {
-        if (response.status === 401) {
-            document.location.href = "/";
-        }
+
         return response.json()
     }).then(data => {
         function compare(a, b) {

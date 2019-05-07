@@ -3,14 +3,16 @@
   "private": true,
   "homepage": "https://anatoliych.github.io/web_client_group/",
   "scripts": {
+    "dev": "react-scripts start",
+    "start": "serve -s build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
     "now-start": "serve -s ./build",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "precommit": "pretty-quick --staged"
+    "precommit": "pretty-quick --staged",
+    "heroku-postbuild": "npm run build"
   },
   "devDependencies": {
     "prettier": "1.16.4",
@@ -33,7 +35,7 @@
     "redux": "4.0.1",
     "redux-thunk": "2.3.0",
     "sanitize.css": "7.0.3",
-    "serve": "10.1.2"
+    "serve": "^10.1.2"
   },
   "browserslist": [
     ">0.2%",
