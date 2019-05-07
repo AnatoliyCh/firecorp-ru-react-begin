@@ -1,7 +1,7 @@
 import * as allConst from "../commonComponents/Const";
 
 const initialState = {
-    arrayUserArrays: [],//итоговый массив групп пользователей (<название>, <список>)
+    arrayUserArrays: [],//итоговый массив групп пользователей (<title>, <data>)
 };
 
 export default (state = initialState, action) => {
@@ -9,10 +9,14 @@ export default (state = initialState, action) => {
         case 'SET_ARRAY_USER_ARRAYS':
             return {...state, arrayUserArrays: action.payload};
         case 'SET_USER_IN_ARRAY':
-            for (var item in state.arrayUserArrays)
-                if (state.arrayUserArrays[item].title === allConst.ROLES.get(action.payload.typeId))
-                    state.arrayUserArrays[item].data.push(action.payload);
-            return {...state, arrayUserArrays: state.arrayUserArrays};
+            let tmpArr = [...state.arrayUserArrays];
+            for (var item in tmpArr){
+                if (tmpArr[item].title === allConst.ROLES.get(action.payload.typeId)){
+                    tmpArr[item].data.push(action.payload);
+                    break;
+                }
+            }
+            return {...state, arrayUserArrays: tmpArr};
         default:
             return state
     }

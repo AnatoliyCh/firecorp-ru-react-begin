@@ -52,6 +52,7 @@ class Users extends Component {
     };
 
     render() {
+        console.log('render');
         return (
             <Fragment>
                 {

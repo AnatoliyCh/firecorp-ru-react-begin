@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import * as allConst from '../../commonComponents/Const';
 import $ from 'jquery';
 import {setDialogMode} from "../../commonComponents/Reducer";
-import {setUserInArray} from "../Reducer";
+import {setArrayUserArrays, setUserInArray} from "../Reducer";
 
 class AddEditDialogBox extends Component {
     state = {
@@ -25,7 +25,7 @@ class AddEditDialogBox extends Component {
     };
     clickButton = () => {
         let user = {
-            typeId: this.state.currentRoleKey,
+            typeId: +(this.state.currentRoleKey),
             firstName: $('#addFirstName').val(),
             lastName: $('#addLastName').val(),
             middleName: $('#addMiddleName').val(),
@@ -38,6 +38,7 @@ class AddEditDialogBox extends Component {
             }
         };
         this.props.dialogMode === 0 ? this.addUserAPI(user) : this.editUserAPI();
+        this.clearDialog();
     };
     addUserAPI = (data) => {
         // eslint-disable-next-line
@@ -48,8 +49,7 @@ class AddEditDialogBox extends Component {
         }).then(function (response) {
             return response.json();
         }).then(response => {
-            this.props.setUserInArrayStore(data);
-            this.clearDialog();
+            if (Number.isInteger(response)) this.props.setUserInArrayStore(data);
         }).catch((error) => {
             console.log(error.message);
         });
@@ -119,13 +119,17 @@ class AddEditDialogBox extends Component {
 
 // приклеиваем данные из store
 const mapStateToProps = store => {
-    return store.commonReducer;
+    return {
+        dialogMode: store.commonReducer.dialogMode,
+        arrayUserArrays: store.administratorReducer.arrayUserArrays,
+    }
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
     return {
         setDialogModeInStore: mode => dispatch(setDialogMode(mode)),
         setUserInArrayStore: user => dispatch(setUserInArray(user)),
+        //setArrayUserArraysInStore: array => dispatch(setArrayUserArrays(array)),
     }
 };
 export default connect(
