@@ -10,7 +10,7 @@ class UsersList extends Component {
                 return <TableItem key={i} data={item}/>;
             });
         }
-        else components = <tr>Нет данных</tr>;
+        else components = <tr className="emptyData" >Нет данных</tr>;
         return components;
     };
 

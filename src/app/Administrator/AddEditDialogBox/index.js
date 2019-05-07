@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import * as allConst from '../../commonComponents/Const';
 import $ from 'jquery';
 import {setDialogMode} from "../../commonComponents/Reducer";
-import {setArrayUserArrays, setUserInArray} from "../Reducer";
+import {setUserInArray} from "../Reducer";
 
 class AddEditDialogBox extends Component {
     state = {
@@ -129,7 +129,6 @@ const mapDispatchToProps = dispatch => {
     return {
         setDialogModeInStore: mode => dispatch(setDialogMode(mode)),
         setUserInArrayStore: user => dispatch(setUserInArray(user)),
-        //setArrayUserArraysInStore: array => dispatch(setArrayUserArrays(array)),
     }
 };
 export default connect(
