@@ -39,11 +39,8 @@ class Locations extends Component {
 
     handleSubmitAddLocation = event => {
         event.preventDefault();
-        console.log(this.state.name);
         const data = JSON.stringify({name: this.state.name});
         this.props.add_location(data);
-        //this.props.get_list_locations();
-        console.log(this.props);
     };
     handleChangeNameLocation = event => {
         event.preventDefault();

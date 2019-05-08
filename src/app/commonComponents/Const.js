@@ -1,4 +1,4 @@
-export const IP_HOST = 'https://cors-anywhere.herokuapp.com/http://217.71.138.9:4567';
+export const IP_HOST = 'http://217.71.138.9:4567';
 export const ROOT_DIRECTORY = '/';
 export const PATH_ADMINISTRATOR = '/administrator';//Администратор
 export const PATH_CHIEFTO = '/chiefto';//Начальник ТО
