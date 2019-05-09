@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {setArrayUserArrays} from '../Reducer';
 import './styles.css';
 import * as allConst from '../../commonComponents/Const';
-import Loading from '../../commonComponents/Loading';
+import Loading from '../../commonComponents/Loading/SpinnerCustom/index';
 
 class Users extends Component {
     state = {
