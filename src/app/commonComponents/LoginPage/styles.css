@@ -5,7 +5,10 @@
     width: 50%;
     height: 50%;
 }
-
+.spinnerDanger {
+    text-align: center;
+    margin-bottom: 20px;
+}
 /*.Absolute-Center.is-Responsive {*/
     /*width: 50%;*/
     /*height: 50%;*/

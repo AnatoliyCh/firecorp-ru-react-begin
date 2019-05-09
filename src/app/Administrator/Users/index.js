@@ -18,9 +18,9 @@ class Users extends Component {
 
     getAPIUsers = () => {
         // eslint-disable-next-line
-        fetch(`${allConst.IP_HOST}${allConst.ALL_USERS_PATH}`, {
+        fetch(`${allConst.IP_HOST}${allConst.PATH_USERS_ACTUAL}`, {
             method: 'GET',
-            headers: {'SessionToken': `${allConst.USER_DATA.sessionToken}`},
+            headers: {SessionToken: `${allConst.USER_DATA.sessionToken}`},
         }).then(function (response) {
             return response.json();
         }).then(data => {
@@ -52,7 +52,6 @@ class Users extends Component {
     };
 
     render() {
-        console.log('render');
         return (
             <Fragment>
                 {

@@ -5,7 +5,7 @@ import * as allConst from '../../commonComponents/Const';
 import {USER_DATA} from "../../commonComponents/Const";
 
 // Получении ФИО и проверка на отстутсвие данных о пользователе в localStorage
-const USER_FIO = JSON.parse(localStorage.getItem('UserData')) == null ? "" : `${USER_DATA.lastName} ${USER_DATA.firstName[0]}.${USER_DATA.middleName[0]}.`;
+var USER_FIO = JSON.parse(localStorage.getItem('UserData')) == null ? "" : `${USER_DATA.lastName} ${USER_DATA.firstName[0]}.${USER_DATA.middleName[0]}.`;
 //
 const Header = ({match}) => (
     <Fragment>
