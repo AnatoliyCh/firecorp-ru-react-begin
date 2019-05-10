@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import './styles.css';
 import $ from "jquery";
+import {setDialogMode} from "../../../../commonComponents/Reducer";
 
-class TrItem extends Component {
+class TableItem extends Component {
     btnEdit = () => {
-        this.props.common.dialogMode = 1;//редактирование
+        this.props.setDialogModeInStore(1);//редактирование
         $('#addLastName').val(this.props.data.lastName);
         $('#addFirstName').val(this.props.data.firstName);
         $('#addMiddleName').val(this.props.data.middleName);
@@ -34,9 +35,8 @@ class TrItem extends Component {
                             onClick={this.btnEdit}><i
                         className="fas fa-user-edit fa-lg"> </i>
                     </button>
-                    <button className="font-awesome-button" data-toggle="modal" data-target="#myModal"
-                            onClick={this.btnArchive}><i
-                        className="far fa-file-archive fa-lg"> </i>
+                    <button className="font-awesome-button" onClick={this.btnArchive}>
+                        <i className="far fa-file-archive fa-lg" />
                     </button>
                 </td>
             </tr>
@@ -45,15 +45,15 @@ class TrItem extends Component {
 };
 // приклеиваем данные из store
 const mapStateToProps = store => {
-    return {
-        common: store.user,
-    }
+    return store.commonReducer;
 };
-//функции из reducer
+//функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
-    return {}
+    return {
+        setDialogModeInStore: mode => dispatch(setDialogMode(mode)),
+    }
 };
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(TrItem)
+)(TableItem)

@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as allConst from '../../commonComponents/Const';
 import $ from 'jquery';
+import {setDialogMode} from "../../commonComponents/Reducer";
+import {setUserInArray} from "../Reducer";
 
 class AddEditDialogBox extends Component {
     state = {
@@ -15,7 +17,7 @@ class AddEditDialogBox extends Component {
         $('#addPassword').val('');
         $('#addLoginPhone').val('');
         $('#selectRole').val(2);
-        this.props.common.dialogMode = 0;//создание
+        this.props.setDialogModeInStore(0);//создание
         $('#headerModal').html("Создание");
     };
     setRole = (event) => {
@@ -23,7 +25,7 @@ class AddEditDialogBox extends Component {
     };
     clickButton = () => {
         let user = {
-            typeId: this.state.currentRoleKey,
+            typeId: +(this.state.currentRoleKey),
             firstName: $('#addFirstName').val(),
             lastName: $('#addLastName').val(),
             middleName: $('#addMiddleName').val(),
@@ -35,7 +37,8 @@ class AddEditDialogBox extends Component {
                 }
             }
         };
-        this.props.common.dialogMode === 0 ? this.addUserAPI(user) : this.editUserAPI();
+        this.props.dialogMode === 0 ? this.addUserAPI(user) : this.editUserAPI();
+        this.clearDialog();
     };
     addUserAPI = (data) => {
         // eslint-disable-next-line
@@ -45,8 +48,8 @@ class AddEditDialogBox extends Component {
             body: JSON.stringify(data)
         }).then(function (response) {
             return response.json();
-        }).then(data => {
-            this.clearDialog();
+        }).then(response => {
+            if (Number.isInteger(response)) this.props.setUserInArrayStore(data);
         }).catch((error) => {
             console.log(error.message);
         });
@@ -66,7 +69,7 @@ class AddEditDialogBox extends Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 id="headerModal"
-                                className="modal-title">{this.props.common.dialogMode === 0 ? 'Создание' : 'Редактирование'}</h4>
+                                className="modal-title">{this.props.dialogMode === 0 ? 'Создание' : 'Редактирование'}</h4>
                             <button type="button" className="close" data-dismiss="modal"
                                     onClick={this.clearDialog}>&times;</button>
                         </div>
@@ -117,11 +120,16 @@ class AddEditDialogBox extends Component {
 // приклеиваем данные из store
 const mapStateToProps = store => {
     return {
-        common: store.user,
+        dialogMode: store.commonReducer.dialogMode,
+        arrayUserArrays: store.administratorReducer.arrayUserArrays,
     }
 };
+//функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
-    return {}
+    return {
+        setDialogModeInStore: mode => dispatch(setDialogMode(mode)),
+        setUserInArrayStore: user => dispatch(setUserInArray(user)),
+    }
 };
 export default connect(
     mapStateToProps,

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import $ from 'jquery';
 import './styles.css';
 import * as allConst from '../Const';
 import AlertWarning from '../Alerts/Warning';
+import SpinnerDanger from '../Loading/BootstrapBorderSpinnerDanger';
 
 const illegalLogin = 'Неверные логин или пароль!';
 var errorStatus = {
@@ -13,13 +13,15 @@ var errorStatus = {
 
 class LoginPage extends Component {
     state = {
-        warning: false,
+        warning: false,//неверные данные
+        isLoading: false,//получение данных из api
     };
     //отправка login и password на сервер
     btnLogin = (e) => {
         e.preventDefault();
-        // eslint-disable-next-line
-        fetch(`${allConst.IP_HOST}` + '/api/user/login', {
+        this.setState({isLoading: true});
+        this.setState({warning: false});
+        fetch(`${allConst.IP_HOST}${allConst.PATH_API_USER_LOGIN}`, {
             method: 'POST',
             body: JSON.stringify({login: $("#inpLogin").val(), password: $("#inpPassword").val()})
         }).then(function (response) {
@@ -29,10 +31,11 @@ class LoginPage extends Component {
         }).then(data => {
             errorStatus.status = null;
             errorStatus.statusText = null;
-            this.setState({warning: false});
-            localStorage.setItem('UserData', JSON.stringify(data));//добавление данных в LocalStorage
-            this.redirect();
+            allConst.setCurrentUser(data);//добавление данных в LocalStorage
+            this.setState({isLoading: false});
+            allConst.redirect();
         }).catch((error) => {
+            this.setState({isLoading: false});
             switch (errorStatus.statusText) {
                 case 'Not Found':
                     this.setState({warning: true});
@@ -41,35 +44,10 @@ class LoginPage extends Component {
                     this.setState({warning: true});
                     break;
                 default:
+                    console.log(error);
                     break;
             }
         });
-    };
-    redirect = () => {
-        switch (allConst.USER_DATA.typeId) {
-            case 2:
-                // eslint-disable-next-line
-                this.props.history.push(`${allConst.PATH_ADMINISTRATOR}` + '/users');
-                break;
-            case 3:
-                // eslint-disable-next-line
-                this.props.history.push(`${allConst.PATH_CHIEFTO}` + '/technicians');
-                break;
-            case 5:
-                this.props.history.push(`${allConst.PATH_CHIEF}`);
-                break;
-            case 6:
-                this.props.history.push(`${allConst.PATH_ACCOUNTANT}`);
-                break;
-            case 7:
-                this.props.history.push(`${allConst.PATH_STOREKEEPER}`);
-                break;
-            case 8:
-                this.props.history.push(`${allConst.PATH_LAWYER}`);
-                break;
-            default:
-                break;
-        }
     };
 
     render() {
@@ -92,6 +70,7 @@ class LoginPage extends Component {
                                 </div>
                             </div>
                             {(this.state.warning) ? AlertWarning(illegalLogin) : null}
+                            {(this.state.isLoading) ? <div className="spinnerDanger"> <SpinnerDanger /> </div> : null}
                             <div className="card-footer text-center">
                                 <button
                                     className="btn btn-outline-primary col-md-6"
@@ -106,18 +85,4 @@ class LoginPage extends Component {
     }
 }
 
-// приклеиваем данные из store
-const mapStateToProps = store => {
-    return {
-        //user: store.user,
-    }
-};
-const mapDispatchToProps = dispatch => {
-    return {
-        //setTokenAction: token => dispatch(setToken(token)),
-    }
-};
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LoginPage)
+export default LoginPage;
