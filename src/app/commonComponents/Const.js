@@ -19,13 +19,13 @@ export const ALL_USERS_PATH = "/api/user/list?mode=0";//<-- отказываем
 export const PATH_USERS_ACTUAL = "/api/user/list?mode=0";//--> переходим
 export const PATH_USERS_ALL = "/api/user/list?mode=1";
 export const PATH_USERS_DELETED = "/api/user/list?mode=2";
-export const ALL_FACILITY_PATH = "/api/facility/list?mode=0";
+export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
 export const ALL_LOCATIONS_PATH = "/api/servicezone/list?mode=0";
 export const ALL_CONTRACTOR_PATH = "/api/contractor/list?mode=0";
 
 export const PATH_API_USER_LOGIN = "/api/user/login";//авторизация пользователя
 
-export const ADD_FACILITY_PATH = "/api/servicezone/add";
+export const ADD_LOCATION_PATH = "/api/servicezone/add";
 
 // Данные пользователя и проверка на отстутсвие данных о пользователе в localStorage
 export const USER_DATA = JSON.parse(localStorage.getItem('UserData')) == null ? "" : JSON.parse(localStorage.getItem('UserData'));
@@ -37,8 +37,8 @@ export function setCurrentUser(newCurrentUser) {
 
 //возвращение текущего пользователя
 export function getCurrentUser() {
-    let сurrentUser = JSON.parse(localStorage.getItem('UserData')) == null ? 'empty' : JSON.parse(localStorage.getItem('UserData'));
-    return сurrentUser;
+    return JSON.parse(localStorage.getItem('UserData')) == null ? 'empty' : JSON.parse(localStorage.getItem('UserData'));
+
 }
 
 export const ROLES = new Map([
@@ -73,8 +73,8 @@ export function redirect(typeId) {
                 document.location.href = `${PATH_LAWYER}`;
                 break;
             default://если нет такого id => на вход
-                setCurrentUser({});
+                //setCurrentUser({});
                 document.location.href = `${ROOT_DIRECTORY}`;
                 break;
         }
-};
+}

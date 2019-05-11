@@ -62,7 +62,7 @@ class Facility extends Component {
                         <th className="col-1">Кол-во работ</th>
                         <th className="col-2">Техник</th>
                         <th className="col-1">Статус</th>
-                        <th className="col-1"> </th>
+                        <th className="col-1"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -70,18 +70,19 @@ class Facility extends Component {
                         const street = (facility.address || {}).street;
                         const home = (facility.address || {}).home;
                         const office = (facility.address || {}).office === "" ? "" : `оф. ${(facility.address || {}).office}`;
-                        const technician = (facility.technecian || {}).oid;
-                        const contractor = (facility.contractor || {}).oid;
+                        //const technician = (facility.technecian || {}).oid;
+                        const contractorName = ((facility.contractor || {}).ref || {}).name;
+                        const contractorINN = ((facility.contractor || {}).ref || {}).INN;
 
                         return (
-                            <tr key={facility.identifier + i.toString()} className="d-flex">
+                            <tr key={i.toString()} className="d-flex">
                                 <td className="col-1">{facility.identifier}</td>
                                 <td className="col-1">{facility.name}</td>
-                                <td className="col-2">{contractor}</td>
+                                <td className="col-2">{contractorName} {<br/>} {`ИНН: ${contractorINN}`}</td>
                                 <td className="col-2">{street} {home} {office}</td>
                                 <td className="col-1">Статус</td>
                                 <td className="col-1">Телефон</td>
-                                <td className="col-2">{technician}</td>
+                                <td className="col-2">{/*technician*/}</td>
                                 <td className="col-1">Статус</td>
                                 <td className="col-1">
                                     <button className="font-awesome-button" data-toggle="modal"
