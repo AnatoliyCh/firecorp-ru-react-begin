@@ -5,6 +5,7 @@ import {setArrayUserArrays} from '../Reducer';
 import './styles.css';
 import * as allConst from '../../commonComponents/Const';
 import Loading from '../../commonComponents/Loading/SpinnerCustom/index';
+import Footer from '../../commonComponents/Footer';
 
 class Users extends Component {
     state = {
@@ -57,13 +58,16 @@ class Users extends Component {
                 {
                     this.state.isLoading ? <Loading/>
                         :
-                        <div className="container">
-                            <div className="row justify-content-center">
-                                <div className="col-12 col-md-12">
-                                    {this.getListsToComponents()}
+                        <Fragment>
+                            <div className="container">
+                                <div className="row justify-content-center">
+                                    <div className="col-12 col-md-12">
+                                        {this.getListsToComponents()}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <Footer/>
+                        </Fragment>
                 }
             </Fragment>
         )

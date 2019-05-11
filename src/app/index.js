@@ -1,10 +1,10 @@
 import React from 'react'
 import {Switch, Route} from 'react-router-dom'
+import * as allConst from './commonComponents/Const'
 import ChiefTO from './chiefTO';
 import Administrator from './Administrator';
 import LoginPage from './commonComponents/LoginPage';
 import Page404 from './commonComponents/Page404';
-import * as allConst from './commonComponents/Const'
 
 const App = () => (
     <Switch>
