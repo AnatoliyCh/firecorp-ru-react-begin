@@ -1,7 +1,6 @@
-import {ADD_FACILITY_PATH, ALL_LOCATIONS_PATH, IP_HOST} from "../../commonComponents/Const";
+import {ADD_LOCATION_PATH, ALL_LOCATIONS_PATH, IP_HOST} from "../../commonComponents/Const";
 import $ from 'jquery';
 import * as allConst from "../../commonComponents/Const";
-
 export const GET_LIST_LOCATIONS = 'GET_LIST_LOCATIONS';
 export const GET_SEARCH_LIST_LOCATIONS = 'GET_SEARCH_LIST_LOCATIONS';
 export const REVERSE_LIST_LOCATIONS = 'REVERSE_LIST_LOCATIONS';
@@ -51,7 +50,8 @@ export default (state = initialState, action) => {
         case ADD_LOCATION:
             return {
                 ...state,
-                list_locations: state.list_locations.push(action.new_location)
+                list_locations: [...state.list_locations, action.new_location],
+                search_list_locations: [...state.search_list_locations, action.new_location]
             };
         default:
             return state
@@ -88,7 +88,7 @@ export const get_list_locations = () => {
 
 export const add_location = body => {
     return dispatch => {
-        fetch(`${IP_HOST}${ADD_FACILITY_PATH}`, {
+        fetch(`${IP_HOST}${ADD_LOCATION_PATH}`, {
             method: "POST",
             headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
             body: body
