@@ -1,11 +1,14 @@
 import React, {Component, Fragment} from 'react';
-import UsersList from './UsersList';
+import $ from 'jquery';
+import UsersList from './UsersList/index';
 import {connect} from 'react-redux';
-import {setArrayUserArrays} from '../Reducer';
+import {setArrayUserArrays} from '../../Reducer';
+import {setDialogMode} from '../../../commonComponents/Reducer';
 import './styles.css';
-import * as allConst from '../../commonComponents/Const';
-import Loading from '../../commonComponents/Loading/SpinnerCustom/index';
-import Footer from '../../commonComponents/Footer';
+import * as allConst from '../../../commonComponents/Const';
+import Loading from '../../../commonComponents/Loading/SpinnerCustom/index';
+import SpinnerDanger from '../../../commonComponents/Loading/BootstrapBorderSpinnerDangerSmall';
+import Footer from '../../../commonComponents/Footer';
 
 class Users extends Component {
     state = {
@@ -18,7 +21,6 @@ class Users extends Component {
     };
 
     getAPIUsers = () => {
-        // eslint-disable-next-line
         fetch(`${allConst.IP_HOST}${allConst.PATH_USERS_ACTUAL}`, {
             method: 'GET',
             headers: {SessionToken: `${allConst.USER_DATA.sessionToken}`},
@@ -51,6 +53,9 @@ class Users extends Component {
         }
         return components;
     };
+    btnNewUserOnClick = () => {
+        this.props.setDialogModeInStore(0);
+    };
 
     render() {
         return (
@@ -62,6 +67,22 @@ class Users extends Component {
                             <div className="container">
                                 <div className="row justify-content-center">
                                     <div className="col-12 col-md-12">
+                                        <div className="div_UsersRowBtnNewUser">
+                                            <div className="btn-group" role="group"
+                                                 aria-label="Button group with nested dropdown">
+                                                <button id="btnNewUser" className="btn btn-outline-secondary"
+                                                        onClick={this.btnNewUserOnClick}
+                                                        data-toggle="modal" data-target="#myModal"
+                                                        disabled={this.props.isSetAPIAddUser}>
+                                                    <i className="fas fa-user-plus fa-lg"/> Создание нового пользователя
+                                                </button>
+                                                {this.props.isSetAPIAddUser === true ?
+                                                    <button type="button" className="btn btn-outline-secondary "
+                                                            disabled={true}>
+                                                        <SpinnerDanger/>
+                                                    </button> : null}
+                                            </div>
+                                        </div>
                                         {this.getListsToComponents()}
                                     </div>
                                 </div>
@@ -82,6 +103,7 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
     return {
         setArrayUserArraysInStore: array => dispatch(setArrayUserArrays(array)),
+        setDialogModeInStore: mode => dispatch(setDialogMode(mode)),
     }
 };
 export default connect(

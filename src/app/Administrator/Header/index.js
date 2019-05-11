@@ -19,10 +19,6 @@ const Header = ({match}) => (
                 <div className="navbar-nav mr-auto">
                     <Link to={`${match.url}/users`} className="nav-item nav-link">Пользователи</Link>
                     <Link to={`${match.url}/archived`} className="nav-item nav-link">Архив</Link>
-                    <button id="btnNewUser" className="btn btn-sm btn-outline-secondary"
-                            data-toggle="modal" data-target="#myModal">
-                        <i className="fas fa-user-plus fa-lg"/> Создание нового пользователя
-                    </button>
                 </div>
                 <div className="textRight">
                     <div>{allConst.ROLES.get(allConst.USER_DATA.typeId)}</div>

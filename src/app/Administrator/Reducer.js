@@ -2,6 +2,7 @@ import * as allConst from "../commonComponents/Const";
 
 const initialState = {
     arrayUserArrays: [],//итоговый массив групп пользователей (<title>, <data>)
+    isSetAPIAddUser: false,//если добавляем пользователя
 };
 
 export default (state = initialState, action) => {
@@ -16,7 +17,9 @@ export default (state = initialState, action) => {
                     break;
                 }
             }
-            return {...state, arrayUserArrays: tmpArr};
+            return {...state, arrayUserArrays: tmpArr, isSetAPIAddUser: false};
+        case 'IS_SET_API_ADD_USER':
+            return {...state, isSetAPIAddUser: action.payload};
         default:
             return state
     }
@@ -35,5 +38,13 @@ export function setUserInArray(user) {
     return {
         type: 'SET_USER_IN_ARRAY',
         payload: user,
+    }
+};
+
+//действиe для сущности isSetAPIAddUser(добавление нового пользователя и обновление списка текущих(для блокировки кнопки загрузки на время добавления))
+export function isSetAPIAddUser(bool) {
+    return {
+        type: 'IS_SET_API_ADD_USER',
+        payload: bool,
     }
 };

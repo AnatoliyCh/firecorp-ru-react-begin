@@ -3,7 +3,7 @@ import $ from 'jquery';
 import './styles.css';
 import * as allConst from '../Const';
 import AlertWarning from '../Alerts/Warning';
-import SpinnerDanger from '../Loading/BootstrapBorderSpinnerDanger';
+import SpinnerDanger from '../Loading/BootstrapBorderSpinnerDangerDefault';
 
 const illegalLogin = 'Неверные логин или пароль!';
 var errorStatus = {

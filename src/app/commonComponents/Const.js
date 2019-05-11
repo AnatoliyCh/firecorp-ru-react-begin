@@ -1,17 +1,17 @@
-export const IP_HOST = 'https://cors-anywhere.herokuapp.com/http://217.71.138.9:4567';
-export const ROOT_DIRECTORY = '/';
+export const IP_HOST = "https://cors-anywhere.herokuapp.com/http://217.71.138.9:4567";
+export const ROOT_DIRECTORY = "/";
 
-export const PATH_ADMINISTRATOR = '/administrator';//администратор
-export const PATH_ADMINISTRATOR_USERS_ACTUAL = '/users';//актуальные пользователи
-export const PATH_ADMINISTRATOR_USERS_DELETED = '/archived';//удаленные пользователи
+export const PATH_ADMINISTRATOR = "/administrator";//администратор
+export const PATH_ADMINISTRATOR_USERS_ACTUAL = "/users";//актуальные пользователи
+export const PATH_ADMINISTRATOR_USERS_DELETED = "/archived";//удаленные пользователи
 
-export const PATH_CHIEFTO = '/chiefto';//начальник ТО
-export const PATH_CHIEFTO_TECHNICIANS = '/technicians';//техники
+export const PATH_CHIEFTO = "/chiefto";//начальник ТО
+export const PATH_CHIEFTO_TECHNICIANS = "/technicians";//техники
 
-export const PATH_CHIEF = '/сhief';//начальник
-export const PATH_ACCOUNTANT = '/accountant';//бухгалтер
-export const PATH_STOREKEEPER = '/storekeeper';//кладовщик
-export const PATH_LAWYER = '/lawyer';//юрист
+export const PATH_CHIEF = "/сhief";//начальник
+export const PATH_ACCOUNTANT = "/accountant";//бухгалтер
+export const PATH_STOREKEEPER = "/storekeeper";//кладовщик
+export const PATH_LAWYER = "/lawyer";//юрист
 
 /*Requests constants*/
 export const ALL_USERS_PATH = "/api/user/list?mode=0";//<-- отказываемся
@@ -24,6 +24,7 @@ export const ALL_LOCATIONS_PATH = "/api/servicezone/list?mode=0";
 export const ALL_CONTRACTOR_PATH = "/api/contractor/list?mode=0";
 
 export const PATH_API_USER_LOGIN = "/api/user/login";//авторизация пользователя
+export const PATH_API_USER_ADD = "/api/user/add";//создание пользователя
 
 export const ADD_LOCATION_PATH = "/api/servicezone/add";
 
