@@ -1,5 +1,6 @@
-import {ADD_FACILITY_PATH, ALL_LOCATIONS_PATH, IP_HOST, USER_DATA} from "../../commonComponents/Const";
+import {ADD_FACILITY_PATH, ALL_LOCATIONS_PATH, IP_HOST} from "../../commonComponents/Const";
 import $ from 'jquery';
+import * as allConst from "../../commonComponents/Const";
 
 export const GET_LIST_LOCATIONS = 'GET_LIST_LOCATIONS';
 export const GET_SEARCH_LIST_LOCATIONS = 'GET_SEARCH_LIST_LOCATIONS';
@@ -62,7 +63,7 @@ export const get_list_locations = () => {
     return dispatch => {
         fetch(`${IP_HOST}${ALL_LOCATIONS_PATH}`, {
             method: "GET",
-            headers: {'SessionToken': USER_DATA.sessionToken}
+            headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
         }).then(function (response) {
             if (response.status === 401) {
                 document.location.href = "/";
@@ -89,7 +90,7 @@ export const add_location = body => {
     return dispatch => {
         fetch(`${IP_HOST}${ADD_FACILITY_PATH}`, {
             method: "POST",
-            headers: {'SessionToken': USER_DATA.sessionToken},
+            headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
             body: body
         }).then(function (response) {
             if (response.status === 401) {

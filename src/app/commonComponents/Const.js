@@ -1,4 +1,4 @@
-export const IP_HOST = 'http://217.71.138.9:4567';
+export const IP_HOST = 'https://cors-anywhere.herokuapp.com/http://217.71.138.9:4567';
 export const ROOT_DIRECTORY = '/';
 
 export const PATH_ADMINISTRATOR = '/administrator';//администратор
@@ -37,8 +37,8 @@ export function setCurrentUser(newCurrentUser) {
 
 //возвращение текущего пользователя
 export function getCurrentUser() {
-    let сurrentUser = JSON.parse(localStorage.getItem('UserData')) == null ? 'empty' : JSON.parse(localStorage.getItem('UserData'));
-    return сurrentUser;
+    return JSON.parse(localStorage.getItem('UserData')) == null ? 'empty' : JSON.parse(localStorage.getItem('UserData'));
+
 }
 
 export const ROLES = new Map([
@@ -73,8 +73,8 @@ export function redirect(typeId) {
                 document.location.href = `${PATH_LAWYER}`;
                 break;
             default://если нет такого id => на вход
-                setCurrentUser({});
+                //setCurrentUser({});
                 document.location.href = `${ROOT_DIRECTORY}`;
                 break;
         }
-};
+}

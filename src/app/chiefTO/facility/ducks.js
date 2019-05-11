@@ -1,8 +1,12 @@
-import {ALL_CONTRACTOR_PATH, ALL_FACILITY_PATH, ALL_USERS_PATH, IP_HOST, USER_DATA} from "../../commonComponents/Const";
+import {ALL_CONTRACTOR_PATH, ALL_FACILITY_PATH, ALL_USERS_PATH, IP_HOST} from "../../commonComponents/Const";
+import * as allConst from '../../commonComponents/Const';
 
 export const GET_LIST_FACILITY = 'GET_LIST_FACILITY';
 export const GET_SEARCH_LIST_FACILITY = 'GET_SEARCH_LIST_FACILITY';
 export const REVERSE_LIST_FACILITY = 'REVERSE_LIST_FACILITY';
+
+
+
 const initialState = {
     list_facility: [],
     search_list_facility: [],
@@ -39,7 +43,7 @@ export const get_list_facility = () => {
 
     return dispatch => fetch(`${IP_HOST}${ALL_FACILITY_PATH}`, {
         method: "GET",
-        headers: {'SessionToken': USER_DATA.sessionToken}
+        headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
     }).then(function (response) {
         if (response.status === 401) {
             document.location.href = "/";
@@ -66,7 +70,7 @@ export const get_list_facility = () => {
         /*Получение техников привязанных к объектам*/
         fetch(`${IP_HOST}${ALL_USERS_PATH}`, {
             method: "GET",
-            headers: {'SessionToken': USER_DATA.sessionToken}
+            headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
         }).then(function (response) {
             if (response.status === 401) {
                 document.location.href = "/";
@@ -89,7 +93,7 @@ export const get_list_facility = () => {
             /*Контрагенты*/
             fetch(`${IP_HOST}${ALL_CONTRACTOR_PATH}`, {
                 method: "GET",
-                headers: {'SessionToken': USER_DATA.sessionToken}
+                headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
             }).then(function (response) {
                 if (response.status === 401) {
                     document.location.href = "/";
@@ -101,7 +105,7 @@ export const get_list_facility = () => {
                     let findContractor = dataContractors.find(contractor => contractor.oid === (facility.contractor || {}).oid);
                     if (findContractor) {
                         //let FIO = `${findContractor.lastName} ${findContractor.firstName[0]}.${findTechnician.middleName[0]}.`;
-                        (facility.contractor || {}).oid = findContractor.INN;
+                        (facility.contractor || {}).oid = `${findContractor.name} \tИНН: ${findContractor.INN}`;
                     } else {
                         (facility.contractor || {}).oid = "";
                     }
