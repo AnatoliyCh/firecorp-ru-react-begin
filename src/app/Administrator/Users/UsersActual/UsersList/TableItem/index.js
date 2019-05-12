@@ -49,11 +49,13 @@ class TableItem extends Component {
                 <td id="tdLogin"> Логин: {this.props.data.account.login !== "" ? this.props.data.account.login : "--"}</td>
                 <td id="tdPassword"> Пароль: {this.props.data.account.password !== "" ? this.props.data.account.password : "--"}</td>
                 <td id="tdLoginPhone"> Телефон: {this.props.data.account.loginPhone.value !== "" ? this.props.data.account.loginPhone.value : "--"}</td>
-                <td id="tdButton">
+                <td id="tdEdit" className="align-middle">
                     <button className="btn btn-outline-secondary"
                             data-toggle="modal" data-target="#myModal" onClick={this.btnEdit}>
                         <i className="fas fa-user-edit fa-lg"/>
                     </button>
+                </td>
+                <td id="tdArchive" className="align-middle">
                     <button className="btn btn-outline-secondary" onClick={this.btnArchive}>
                         <i className="far fa-file-archive fa-lg"/>
                     </button>

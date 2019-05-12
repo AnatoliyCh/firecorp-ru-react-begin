@@ -17,10 +17,13 @@ const Header = ({match}) => (
             <div className="collapse navbar-collapse" id="navbarNav">
                 <div className="navbar-nav mr-auto">
                     <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Пользователи
-                        </a>
+                        {
+                            // eslint-disable-next-line
+                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Пользователи
+                            </a>
+                        }
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_USERS_ACTUAL}`}>Актуальные</a>
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_USERS_ARCHIVED}`}>Архив</a>
