@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as allConst from '../../../commonComponents/Const';
 import $ from 'jquery';
-import {setUserInArray, isSetAPIAddUser} from '../../Reducer';
+import {setAPIUserInArray, isSetAPIAddUser, updateAPIUser} from '../../Reducer';
 
 class AddEditDialogBoxUsers extends Component {
     state = {
@@ -42,7 +42,7 @@ class AddEditDialogBoxUsers extends Component {
             }
         };
         this.props.isSetAPIAddUserFunc(true);//блокируем кнопку добавления, отменяем в Reducer
-        this.props.dialogMode === 0 ? this.addUserAPI(user) : this.editUserAPI();
+        this.props.dialogMode === 0 ? this.addUserAPI(user) : this.editUserAPI(user);
     };
     addUserAPI = (data) => {
         fetch(`${allConst.IP_HOST}${allConst.PATH_API_USER_ADD}`, {
@@ -52,13 +52,31 @@ class AddEditDialogBoxUsers extends Component {
         }).then(function (response) {
             return response.json();
         }).then(response => {
-            if (Number.isInteger(response)) this.props.setUserInArrayStore(data);
+            if (Number.isInteger(response)) this.props.setUserInArrayFunc(data);
         }).catch((error) => {
             console.log(error.message);
         });
     };
-    editUserAPI = () => {
-
+    editUserAPI = (newDataUser) => {
+        if (this.props.indexUserToArray[0] !== -1 && this.props.indexUserToArray[1] !== -1) {
+            let newUser = this.props.arrayUserArrays[this.props.indexUserToArray[0]].data[this.props.indexUserToArray[1]];
+            newUser.typeId = +($('#selectRole').val());
+            newUser.firstName = newDataUser.firstName;
+            newUser.lastName = newDataUser.lastName;
+            newUser.middleName = newDataUser.middleName;
+            newUser.account = newDataUser.account;
+            fetch(`${allConst.IP_HOST}${allConst.PATH_API_USER_UPDATE}`, {
+                method: 'POST',
+                headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
+                body: JSON.stringify(newUser),
+            }).then(function (response) {
+                return response.json();
+            }).then(data => {
+                if (data === "") this.props.updateUserFunc(newUser);
+            }).catch((error) => {
+                console.log(error.message);
+            });
+        }
     };
 
     render() {
@@ -72,7 +90,7 @@ class AddEditDialogBoxUsers extends Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 id="headerModal"
-                                className="modal-title">{this.props.dialogMode === 0 ? 'Создание' : 'Редактирование'}</h4>
+                                className="modal-title"> Создание </h4>
                             <button type="button" className="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div className="modal-body pt-4 pb-4">
@@ -108,7 +126,7 @@ class AddEditDialogBoxUsers extends Component {
 
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-outline-danger" data-dismiss="modal"
+                            <button type="button" id="btn" className="btn btn-outline-danger" data-dismiss="modal"
                                     onClick={this.clickButton}>Добавить
                             </button>
                         </div>
@@ -123,15 +141,16 @@ class AddEditDialogBoxUsers extends Component {
 const mapStateToProps = store => {
     return {
         dialogMode: store.commonReducer.dialogMode,
+        indexUserToArray: store.administratorReducer.indexUserToArray,
         arrayUserArrays: store.administratorReducer.arrayUserArrays,
-        isSetAPIAddUser: store.administratorReducer.isSetAPIAddUser,
     }
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
     return {
-        setUserInArrayStore: user => dispatch(setUserInArray(user)),
+        setUserInArrayFunc: user => dispatch(setAPIUserInArray(user)),
         isSetAPIAddUserFunc: bool => dispatch(isSetAPIAddUser(bool)),
+        updateUserFunc: newUser => dispatch(updateAPIUser(newUser)),
     }
 };
 export default connect(

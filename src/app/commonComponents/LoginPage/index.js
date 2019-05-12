@@ -70,7 +70,7 @@ class LoginPage extends Component {
                                 </div>
                             </div>
                             {(this.state.warning) ? AlertWarning(illegalLogin) : null}
-                            {(this.state.isLoading) ? <div className="spinnerDanger"> <SpinnerDanger /> </div> : null}
+                            {(this.state.isLoading) ? <div className="spinnerDanger"><SpinnerDanger/></div> : null}
                             <div className="card-footer text-center">
                                 <button
                                     className="btn btn-outline-primary col-md-6"

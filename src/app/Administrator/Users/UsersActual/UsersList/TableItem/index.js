@@ -3,10 +3,13 @@ import {connect} from "react-redux";
 import './styles.css';
 import $ from "jquery";
 import {setDialogMode} from "../../../../../commonComponents/Reducer";
+import {setIndexUserToArray, setAPIUserInArchive} from "../../../../Reducer";
+import * as allConst from "../../../../../commonComponents/Const";
 
 class TableItem extends Component {
     btnEdit = () => {
-        this.props.setDialogModeInStore(1);//редактирование
+        this.props.setDialogModeFunc(1);//редактирование
+        this.props.setIndexUserToArrayFunc([this.props.indArr, this.props.indItem]);//указываем где находится данный пользователь
         $('#addLastName').val(this.props.data.lastName);
         $('#addFirstName').val(this.props.data.firstName);
         $('#addMiddleName').val(this.props.data.middleName);
@@ -15,9 +18,25 @@ class TableItem extends Component {
         $('#addLoginPhone').val(this.props.data.account.loginPhone.value);
         $('#selectRole').val(this.props.data.typeId);
         $('#headerModal').html("Редактирование");
+        $('#btn').html("Обновить");
     };
     btnArchive = () => {
-
+        let tmpUser = this.props.data;
+        tmpUser.valid = false;
+        fetch(`${allConst.IP_HOST}${allConst.PATH_API_USER_UPDATE}`, {
+            method: 'POST',
+            headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
+            body: JSON.stringify(tmpUser),
+        }).then(function (response) {
+            return response.json();
+        }).then(data => {
+            if (data === "") {
+                this.props.setIndexUserToArrayFunc([this.props.indArr, this.props.indItem]);
+                this.props.setUserInArrayFunc();
+            }
+        }).catch((error) => {
+            console.log(error.message);
+        });
     };
 
     render() {
@@ -45,12 +64,14 @@ class TableItem extends Component {
 };
 // приклеиваем данные из store
 const mapStateToProps = store => {
-    return store.commonReducer;
+    return store.administratorReducer;
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
     return {
-        setDialogModeInStore: mode => dispatch(setDialogMode(mode)),
+        setDialogModeFunc: mode => dispatch(setDialogMode(mode)),
+        setUserInArrayFunc: () => dispatch(setAPIUserInArchive()),
+        setIndexUserToArrayFunc: indUserArr => dispatch(setIndexUserToArray(indUserArr)),
     }
 };
 export default connect(

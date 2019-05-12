@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react';
-import $ from 'jquery';
 import UsersList from './UsersList/index';
 import {connect} from 'react-redux';
 import {setArrayUserArrays} from '../../Reducer';
@@ -23,7 +22,7 @@ class Users extends Component {
     getAPIUsers = () => {
         fetch(`${allConst.IP_HOST}${allConst.PATH_USERS_ACTUAL}`, {
             method: 'GET',
-            headers: {SessionToken: `${allConst.USER_DATA.sessionToken}`},
+            headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
         }).then(function (response) {
             return response.json();
         }).then(data => {
@@ -48,13 +47,13 @@ class Users extends Component {
         let components = null;
         if (!!this.props.arrayUserArrays) {
             components = this.props.arrayUserArrays.map(function (item, i) {
-                return <UsersList key={i} title={item.title} data={item.data}/>
+                return <UsersList key={i} title={item.title} data={item.data} indArr={i}/>
             });
         }
         return components;
     };
     btnNewUserOnClick = () => {
-        this.props.setDialogModeInStore(0);
+        this.props.setDialogModeFunc(0);
     };
 
     render() {
@@ -68,17 +67,13 @@ class Users extends Component {
                                 <div className="row justify-content-center">
                                     <div className="col-12 col-md-12">
                                         <div className="div_UsersRowBtnNewUser">
-                                            <div className="btn-group" role="group"
-                                                 aria-label="Button group with nested dropdown">
-                                                <button id="btnNewUser" className="btn btn-outline-secondary"
-                                                        onClick={this.btnNewUserOnClick}
-                                                        data-toggle="modal" data-target="#myModal"
-                                                        disabled={this.props.isSetAPIAddUser}>
+                                            <div className="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                                <button id="btnNewUser" className="btn btn-outline-secondary" onClick={this.btnNewUserOnClick}
+                                                        data-toggle="modal" data-target="#myModal" disabled={this.props.isSetAPIAddUser}>
                                                     <i className="fas fa-user-plus fa-lg"/> Создание нового пользователя
                                                 </button>
                                                 {this.props.isSetAPIAddUser === true ?
-                                                    <button type="button" className="btn btn-outline-secondary "
-                                                            disabled={true}>
+                                                    <button type="button" className="btn btn-outline-secondary" disabled={true}>
                                                         <SpinnerDanger/>
                                                     </button> : null}
                                             </div>
@@ -103,7 +98,7 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
     return {
         setArrayUserArraysInStore: array => dispatch(setArrayUserArrays(array)),
-        setDialogModeInStore: mode => dispatch(setDialogMode(mode)),
+        setDialogModeFunc: mode => dispatch(setDialogMode(mode)),
     }
 };
 export default connect(

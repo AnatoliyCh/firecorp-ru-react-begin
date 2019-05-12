@@ -15,7 +15,7 @@ const Administrator = ({match}) => {
             <AddEditDialogBoxUsers/>
             <Switch>
                 <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS_ACTUAL}`} component={UsersActual}/>
-                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS_DELETED}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS_ARCHIVED}`} component={UsersArchive}/>
                 <Route component={Page404}/>
             </Switch>
         </Fragment>
