@@ -6,11 +6,11 @@ class UsersList extends Component {
     getDataToComponents = () => {
         let components = null;
         if (!!this.props.data && this.props.data.length) {
-            components = this.props.data.map(function (item, i) {
-                return <TableItem key={i} data={item}/>;
+            components = this.props.data.map((item, i) => {
+                return <TableItem key={i} data={item} indArr={this.props.indArr} indItem={i}/>;
             });
         }
-        else components = <tr className="emptyData" >Нет данных</tr>;
+        else components = <tr key={0} id="nn" className="emptyData"> <td>Нет данных</td> </tr>;
         return components;
     };
 

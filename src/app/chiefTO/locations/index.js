@@ -39,11 +39,8 @@ class Locations extends Component {
 
     handleSubmitAddLocation = event => {
         event.preventDefault();
-        console.log(this.state.name);
         const data = JSON.stringify({name: this.state.name});
         this.props.add_location(data);
-        //this.props.get_list_locations();
-        console.log(this.props);
     };
     handleChangeNameLocation = event => {
         event.preventDefault();
@@ -80,7 +77,7 @@ class Locations extends Component {
                     <tbody>
                     {list_locations.map((location, i) => {
                         return (
-                            <tr key={location.oid + i.toString()} className="d-flex">
+                            <tr key={i.toString()} className="d-flex">
                                 <td className="col">{location.name}</td>
                                 <td className="col">Кол-во объектов</td>
                                 <td className="col">Техники</td>
@@ -96,6 +93,7 @@ class Locations extends Component {
                 </table>
 
                 {/*Модальное окно добавления локации*/}
+
                 <div id="addLocation" className="modal fade" role="dialog">
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -108,7 +106,7 @@ class Locations extends Component {
                                     <label htmlFor="addLocation">Название</label>
                                     <input className="form-control" id="addLocation" type="text"
                                            placeholder="Введите название локации"
-                                           onChange={this.handleChangeNameLocation}/>
+                                           onChange={this.handleChangeNameLocation} required/>
                                 </div>
                                 <div className="modal-footer">
                                     <button type="submit" className="btn btn-outline-danger">Добавить

@@ -67,7 +67,7 @@ class Technicians extends Component {
                     {list_technicians.map((technician, i) => {
                         const phone = ((technician.account || {}).loginPhone || {}).value;
                         return (
-                            <tr key={technician.oid + i.toString()} className="d-flex">
+                            <tr key={i.toString()} className="d-flex">
                                 <td className="col-1">
                                     <img src={require("../../../static/EmptyUser.jpg")} className="ml-2 mr-2 round-img"
                                          width="30" height="30" alt=""/>
