@@ -9,6 +9,7 @@ import {
 } from './ducks'
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import {getFIO} from "../../commonComponents/Const";
 
 $('#addFacility').modal('toggle');
 $('#editFacility').modal('toggle');
@@ -70,7 +71,8 @@ class Facility extends Component {
                         const street = (facility.address || {}).street;
                         const home = (facility.address || {}).home;
                         const office = (facility.address || {}).office === "" ? "" : `оф. ${(facility.address || {}).office}`;
-                        //const technician = (facility.technecian || {}).oid;
+                        const technician = getFIO((((facility.technecian || {}).ref || {}).user || {}).ref);
+
                         const contractorName = ((facility.contractor || {}).ref || {}).name;
                         const contractorINN = ((facility.contractor || {}).ref || {}).INN;
 
@@ -82,7 +84,7 @@ class Facility extends Component {
                                 <td className="col-2">{street} {home} {office}</td>
                                 <td className="col-1">Статус</td>
                                 <td className="col-1">Телефон</td>
-                                <td className="col-2">{/*technician*/}</td>
+                                <td className="col-2">{technician}</td>
                                 <td className="col-1">Статус</td>
                                 <td className="col-1">
                                     <button className="font-awesome-button" data-toggle="modal"

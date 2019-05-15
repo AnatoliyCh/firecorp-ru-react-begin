@@ -43,6 +43,10 @@ export function getCurrentUser() {
 
 }
 
+export function getFIO(user) {
+    return user === undefined ? "" : `${user.lastName} ${user.firstName[0]}.${user.middleName[0]}.`;
+}
+
 export const ROLES = new Map([
     [2, "Администратор"],
     [3, "Начальник ТО"],

@@ -11,6 +11,7 @@ import {
     get_search_list_locations,
     reverse_list_locations
 } from './ducks'
+import {getFIO} from "../../commonComponents/Const";
 
 $('#addLocation').modal('toggle');
 $('#editLocation').modal('toggle');
@@ -81,11 +82,12 @@ class Locations extends Component {
                     </thead>
                     <tbody>
                     {list_locations.map((location, i) => {
+                        let technicians = location.technicians.map(technician => getFIO((technician.user || {}).ref));
                         return (
                             <tr key={i.toString()} className="d-flex">
                                 <td className="col">{location.name}</td>
                                 <td className="col">Кол-во объектов</td>
-                                <td className="col">Техники</td>
+                                <td className="col">{technicians.map(technician => technician)}</td>
                                 <td className="col-1">
                                     <button className="font-awesome-button" data-toggle="modal"
                                             data-target="#editLocation"><i className="fas fa-pencil-alt"> </i>
