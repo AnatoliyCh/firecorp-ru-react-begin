@@ -82,7 +82,7 @@ class Locations extends Component {
                     </thead>
                     <tbody>
                     {list_locations.map((location, i) => {
-                        let technicians = location.technicians.map(technician => getFIO((technician.user || {}).ref));
+                        let technicians = location.technicians === undefined ? [] : location.technicians.map(technician => getFIO((technician.user || {}).ref));
                         return (
                             <tr key={i.toString()} className="d-flex">
                                 <td className="col">{location.name}</td>

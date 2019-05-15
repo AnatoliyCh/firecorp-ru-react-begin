@@ -72,18 +72,17 @@ class Facility extends Component {
                         const home = (facility.address || {}).home;
                         const office = (facility.address || {}).office === "" ? "" : `оф. ${(facility.address || {}).office}`;
                         const technician = getFIO((((facility.technecian || {}).ref || {}).user || {}).ref);
-
+                        const location = ((((facility.technecian || {}).ref || {}).zone || {}).ref || {}).name;
                         const contractorName = ((facility.contractor || {}).ref || {}).name;
                         const contractorINN = ((facility.contractor || {}).ref || {}).INN;
-
                         return (
                             <tr key={i.toString()} className="d-flex">
                                 <td className="col-1">{facility.identifier}</td>
                                 <td className="col-1">{facility.name}</td>
                                 <td className="col-2">{contractorName} {<br/>} {`ИНН: ${contractorINN}`}</td>
                                 <td className="col-2">{street} {home} {office}</td>
-                                <td className="col-1">Статус</td>
-                                <td className="col-1">Телефон</td>
+                                <td className="col-1">{location}</td>
+                                <td className="col-1">Кол-во работ</td>
                                 <td className="col-2">{technician}</td>
                                 <td className="col-1">Статус</td>
                                 <td className="col-1">
