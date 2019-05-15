@@ -37,10 +37,15 @@ class Locations extends Component {
         this.props.get_search_list_locations(filterList);
     };
 
+    clearDialog = () => {
+        $('#addLocationName').val('');
+    };
+
     handleSubmitAddLocation = event => {
         event.preventDefault();
         const data = JSON.stringify({name: this.state.name});
         this.props.add_location(data);
+        this.clearDialog();
     };
     handleChangeNameLocation = event => {
         event.preventDefault();
@@ -103,8 +108,8 @@ class Locations extends Component {
                                     <button type="button" className="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div className="modal-body pt-4 pb-4">
-                                    <label htmlFor="addLocation">Название</label>
-                                    <input className="form-control" id="addLocation" type="text"
+                                    <label htmlFor="addLocationName">Название</label>
+                                    <input className="form-control" id="addLocationName" type="text"
                                            placeholder="Введите название локации"
                                            onChange={this.handleChangeNameLocation} required/>
                                 </div>
