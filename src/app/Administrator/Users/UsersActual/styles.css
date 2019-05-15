@@ -1,0 +1,21 @@
+.card {
+    margin-top: 20px;
+}
+
+.btn:focus, .btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+#btnNewUser {
+    margin-left: 0px;
+}
+
+.div_UsersRowBtnNewUser {
+    margin-top: 20px;
+    display: block;
+}
+
+.div_UsersRowBtnNewUser > * {
+    display: inline-block;
+}

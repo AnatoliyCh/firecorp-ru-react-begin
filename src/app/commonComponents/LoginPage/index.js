@@ -3,7 +3,7 @@ import $ from 'jquery';
 import './styles.css';
 import * as allConst from '../Const';
 import AlertWarning from '../Alerts/Warning';
-import SpinnerDanger from '../Loading/BootstrapBorderSpinnerDanger';
+import SpinnerDanger from '../Loading/BootstrapBorderSpinnerDangerDefault';
 
 const illegalLogin = 'Неверные логин или пароль!';
 var errorStatus = {
@@ -70,7 +70,7 @@ class LoginPage extends Component {
                                 </div>
                             </div>
                             {(this.state.warning) ? AlertWarning(illegalLogin) : null}
-                            {(this.state.isLoading) ? <div className="spinnerDanger"> <SpinnerDanger /> </div> : null}
+                            {(this.state.isLoading) ? <div className="spinnerDanger"><SpinnerDanger/></div> : null}
                             <div className="card-footer text-center">
                                 <button
                                     className="btn btn-outline-primary col-md-6"

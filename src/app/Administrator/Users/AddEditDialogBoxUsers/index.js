@@ -1,25 +1,29 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as allConst from '../../commonComponents/Const';
+import * as allConst from '../../../commonComponents/Const';
 import $ from 'jquery';
-import {setDialogMode} from "../../commonComponents/Reducer";
-import {setUserInArray} from "../Reducer";
+import {setAPIUserInArray, isSetAPIAddUser, updateAPIUser} from '../../Reducer';
 
-class AddEditDialogBox extends Component {
+class AddEditDialogBoxUsers extends Component {
     state = {
         currentRoleKey: 2,//ключ выбранной роли
     };
-    clearDialog = () => {
-        $('#addLastName').val('');
-        $('#addFirstName').val('');
-        $('#addMiddleName').val('');
-        $('#addLogin').val('');
-        $('#addPassword').val('');
-        $('#addLoginPhone').val('');
-        $('#selectRole').val(2);
-        this.props.setDialogModeInStore(0);//создание
-        $('#headerModal').html("Создание");
+
+    componentDidMount() {
+        //событие после закрытия модального окна
+        $('#myModal').on("hidden.bs.modal", function () {
+            $('#addLastName').val('');
+            $('#addFirstName').val('');
+            $('#addMiddleName').val('');
+            $('#addLogin').val('');
+            $('#addPassword').val('');
+            $('#addLoginPhone').val('');
+            $('#selectRole').val(2);
+            $('#headerModal').html("Создание");
+            //dialogMode = 0 применяется в пользователях
+        });
     };
+
     setRole = (event) => {
         this.setState({currentRoleKey: event.currentTarget.value});
     };
@@ -37,25 +41,42 @@ class AddEditDialogBox extends Component {
                 }
             }
         };
-        this.props.dialogMode === 0 ? this.addUserAPI(user) : this.editUserAPI();
-        this.clearDialog();
+        this.props.isSetAPIAddUserFunc(true);//блокируем кнопку добавления, отменяем в Reducer
+        this.props.dialogMode === 0 ? this.addUserAPI(user) : this.editUserAPI(user);
     };
     addUserAPI = (data) => {
-        // eslint-disable-next-line
-        fetch(`${allConst.IP_HOST}` + '/api/user/add', {
+        fetch(`${allConst.IP_HOST}${allConst.PATH_API_USER_ADD}`, {
             method: 'POST',
-            headers: {SessionToken: `${allConst.USER_DATA.sessionToken}`},
+            headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
             body: JSON.stringify(data)
         }).then(function (response) {
             return response.json();
         }).then(response => {
-            if (Number.isInteger(response)) this.props.setUserInArrayStore(data);
+            if (Number.isInteger(response)) this.props.setUserInArrayFunc(data);
         }).catch((error) => {
             console.log(error.message);
         });
     };
-    editUserAPI = () => {
-
+    editUserAPI = (newDataUser) => {
+        if (this.props.indexUserToArray[0] !== -1 && this.props.indexUserToArray[1] !== -1) {
+            let newUser = this.props.arrayUserArrays[this.props.indexUserToArray[0]].data[this.props.indexUserToArray[1]];
+            newUser.typeId = +($('#selectRole').val());
+            newUser.firstName = newDataUser.firstName;
+            newUser.lastName = newDataUser.lastName;
+            newUser.middleName = newDataUser.middleName;
+            newUser.account = newDataUser.account;
+            fetch(`${allConst.IP_HOST}${allConst.PATH_API_USER_UPDATE}`, {
+                method: 'POST',
+                headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
+                body: JSON.stringify(newUser),
+            }).then(function (response) {
+                return response.json();
+            }).then(data => {
+                if (data === "") this.props.updateUserFunc(newUser);
+            }).catch((error) => {
+                console.log(error.message);
+            });
+        }
     };
 
     render() {
@@ -69,29 +90,28 @@ class AddEditDialogBox extends Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 id="headerModal"
-                                className="modal-title">{this.props.dialogMode === 0 ? 'Создание' : 'Редактирование'}</h4>
-                            <button type="button" className="close" data-dismiss="modal"
-                                    onClick={this.clearDialog}>&times;</button>
+                                className="modal-title"> Создание </h4>
+                            <button type="button" className="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div className="modal-body pt-4 pb-4">
 
-                            <label htmlFor="lastName">Фамилия</label>
+                            <label htmlFor="lastName">Фамилия *</label>
                             <input className="form-control" id="addLastName" type="search"
                                    placeholder="Введите фамилию" aria-label="Search"/>
 
-                            <label htmlFor="firstName">Имя</label>
+                            <label htmlFor="firstName">Имя *</label>
                             <input className="form-control" id="addFirstName" type="search"
                                    placeholder="Введите имя" aria-label="Search"/>
 
-                            <label htmlFor="middleName">Отчетсво</label>
+                            <label htmlFor="middleName">Отчетсво *</label>
                             <input className="form-control" id="addMiddleName" type="search"
                                    placeholder="Введите отчество" aria-label="Search"/>
 
-                            <label htmlFor="login">Логин</label>
+                            <label htmlFor="login">Логин *</label>
                             <input className="form-control" id="addLogin" type="search"
                                    placeholder="Введите логин" aria-label="Search"/>
 
-                            <label htmlFor="password">Пароль</label>
+                            <label htmlFor="password">Пароль *</label>
                             <input className="form-control" id="addPassword" type="search"
                                    placeholder="Введите пароль" aria-label="Search"/>
 
@@ -106,7 +126,7 @@ class AddEditDialogBox extends Component {
 
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-outline-danger" data-dismiss="modal"
+                            <button type="button" id="btn" className="btn btn-outline-danger" data-dismiss="modal"
                                     onClick={this.clickButton}>Добавить
                             </button>
                         </div>
@@ -121,17 +141,19 @@ class AddEditDialogBox extends Component {
 const mapStateToProps = store => {
     return {
         dialogMode: store.commonReducer.dialogMode,
+        indexUserToArray: store.administratorReducer.indexUserToArray,
         arrayUserArrays: store.administratorReducer.arrayUserArrays,
     }
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
     return {
-        setDialogModeInStore: mode => dispatch(setDialogMode(mode)),
-        setUserInArrayStore: user => dispatch(setUserInArray(user)),
+        setUserInArrayFunc: user => dispatch(setAPIUserInArray(user)),
+        isSetAPIAddUserFunc: bool => dispatch(isSetAPIAddUser(bool)),
+        updateUserFunc: newUser => dispatch(updateAPIUser(newUser)),
     }
 };
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(AddEditDialogBox)
+)(AddEditDialogBoxUsers)
