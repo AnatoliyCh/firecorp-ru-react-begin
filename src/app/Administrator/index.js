@@ -1,8 +1,7 @@
 import React, {Fragment} from 'react';
-import {Switch, Route} from 'react-router';
+import {Switch, Route, Redirect} from 'react-router';
 import Header from './Header';
 import * as allConst from '../commonComponents/Const';
-import AddEditDialogBoxUsers from './Users/AddEditDialogBoxUsers';
 import UsersActual from './Users/UsersActual';
 import UsersArchive from './Users/UsersArchive';
 import Page404 from '../commonComponents/Page404';
@@ -12,10 +11,20 @@ const Administrator = ({match}) => {
         <Fragment>
             {allConst.redirect(2)}
             <Header match={match}/>
-            <AddEditDialogBoxUsers/>
             <Switch>
-                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS_ACTUAL}`} component={UsersActual}/>
-                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS_ARCHIVED}`} component={UsersArchive}/>
+                <Redirect exact from={`${match.path}`} to={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS}${allConst.PATH_ADMINISTRATOR_USERS_ACTUAL}`}/> {/* перенапровление с /administrator */}
+                <Redirect exact from={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS}`} to={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS}${allConst.PATH_ADMINISTRATOR_USERS_ACTUAL}`}/> {/* перенапровление с /administrator/users */}
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS}${allConst.PATH_ADMINISTRATOR_USERS_ACTUAL}`} component={UsersActual}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS}${allConst.PATH_ADMINISTRATOR_USERS_ARCHIVED}`} component={UsersArchive}/>
+                <Redirect exact from={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}`} to={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS}${allConst.PATH_ADMINISTRATOR_CATALOG_STREET}`}/> {/* перенапровление с /administrator/catalog */}
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_STREET}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CYTY}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_FACILITY}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_SERVICEZONE}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_IMPLEMENTS}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_JOBTYPE}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CONTRACTOR}`} component={UsersArchive}/>
                 <Route component={Page404}/>
             </Switch>
         </Fragment>

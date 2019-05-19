@@ -2,11 +2,24 @@ export const IP_HOST = "https://cors-anywhere.herokuapp.com/http://217.71.138.9:
 export const ROOT_DIRECTORY = "/";
 
 export const PATH_ADMINISTRATOR = "/administrator";//администратор
-export const PATH_ADMINISTRATOR_USERS_ACTUAL = "/users_actual";//актуальные пользователи
-export const PATH_ADMINISTRATOR_USERS_ARCHIVED = "/users_archived";//удаленные пользователи
+export const PATH_ADMINISTRATOR_USERS = "/users";//корневой путь к пользователям
+export const PATH_ADMINISTRATOR_USERS_ACTUAL = "/actual";//актуальные пользователи
+export const PATH_ADMINISTRATOR_USERS_ARCHIVED = "/archived";//удаленные пользователи
+
+export const PATH_ADMINISTRATOR_CATALOG = "/catalog";//корневой путь к справочникам
+export const PATH_ADMINISTRATOR_CATALOG_STREET = "/street";//улицы
+export const PATH_ADMINISTRATOR_CATALOG_CYTY = "/city";//нас. пункты
+export const PATH_ADMINISTRATOR_CATALOG_FACILITY = "/facility";//объекты
+export const PATH_ADMINISTRATOR_CATALOG_SERVICEZONE = "/servicezone";//локации
+export const PATH_ADMINISTRATOR_CATALOG_IMPLEMENTS = "/implements";//инвентарь
+export const PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE = "/componenttype";//комплектующие
+export const PATH_ADMINISTRATOR_CATALOG_JOBTYPE = "/jobtype";//типы работ (регламенты)
+export const PATH_ADMINISTRATOR_CATALOG_CONTRACTOR = "/contractor";//контрагенты
+
 
 export const PATH_CHIEFTO = "/chiefto";//начальник ТО
 export const PATH_CHIEFTO_TECHNICIANS = "/technicians";//техники
+
 
 export const PATH_CHIEF = "/сhief";//начальник
 export const PATH_ACCOUNTANT = "/accountant";//бухгалтер
@@ -58,7 +71,7 @@ export function redirect(typeId) {
     if (getCurrentUser().typeId !== typeId)
         switch (getCurrentUser().typeId) {
             case 2:
-                document.location.href = `${PATH_ADMINISTRATOR}${PATH_ADMINISTRATOR_USERS_ACTUAL}`;
+                document.location.href = `${PATH_ADMINISTRATOR}${PATH_ADMINISTRATOR_USERS}${PATH_ADMINISTRATOR_USERS_ACTUAL}`;
                 break;
             case 3:
                 document.location.href = `${PATH_CHIEFTO}${PATH_CHIEFTO_TECHNICIANS}`;

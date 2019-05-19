@@ -10,10 +10,6 @@ const Header = ({match}) => (
                 <img src={require('../../../static/HeaderLogo.jpg')} width="30" height="30"
                      className="d-inline-block align-top mr-2" alt=""/>
                 Огнезащитная корпорация</Link>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"> </span>
-            </button>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <div className="navbar-nav mr-auto">
                     <li className="nav-item dropdown">
@@ -25,8 +21,26 @@ const Header = ({match}) => (
                             </a>
                         }
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_USERS_ACTUAL}`}>Актуальные</a>
-                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_USERS_ARCHIVED}`}>Архив</a>
+                            <a className="dropdown-item" href={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS}${allConst.PATH_ADMINISTRATOR_USERS_ACTUAL}`}>Актуальные</a>
+                            <a className="dropdown-item" href={`${match.path}${allConst.PATH_ADMINISTRATOR_USERS}${allConst.PATH_ADMINISTRATOR_USERS_ARCHIVED}`}>Архив</a>
+                        </div>
+                    </li>
+                    <li className="nav-item dropdown">
+                        {
+                            // eslint-disable-next-line
+                            <a className="nav-link dropdown-toggle" href="#"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Справочники
+                            </a>
+                        }
+                        <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_STREET}`}>Улицы</a>
+                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CYTY}`}>Нас. пункты</a>
+                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_FACILITY}`}>Объекты</a>
+                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_SERVICEZONE}`}>Локации</a>
+                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_IMPLEMENTS}`}>Инвентарь</a>
+                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE}`}>Комплектующие</a>
+                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_JOBTYPE}`}>Регламенты</a>
+                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CONTRACTOR}`}>Контрагенты</a>
                         </div>
                     </li>
                 </div>

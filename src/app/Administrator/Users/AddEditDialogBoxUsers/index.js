@@ -20,6 +20,7 @@ class AddEditDialogBoxUsers extends Component {
             $('#addLoginPhone').val('');
             $('#selectRole').val(2);
             $('#headerModal').html("Создание");
+            $('#btn').html("Добавить");
             //dialogMode = 0 применяется в пользователях
         });
     };
