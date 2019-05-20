@@ -7,7 +7,6 @@ import listFacility from '../app/chiefTO/facility/ducks';
 import listLocations from '../app/chiefTO/locations/ducks';
 import administratorReducer from '../app/Administrator/Reducer';
 
-
 export default combineReducers({
     commonReducer,
     administratorReducer,

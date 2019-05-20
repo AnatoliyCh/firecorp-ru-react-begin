@@ -1,5 +1,6 @@
 export const IP_HOST = "https://cors-anywhere.herokuapp.com/http://217.71.138.9:4567";
 export const ROOT_DIRECTORY = "/";
+export const MAP_TOKEN = 'AIzaSyB3FF2GcTqDfgJrRbsAQfMxww7kzRzNhH0';
 
 export const PATH_ADMINISTRATOR = "/administrator";//администратор
 export const PATH_ADMINISTRATOR_USERS_ACTUAL = "/users_actual";//актуальные пользователи

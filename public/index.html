@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
           integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maps-js.apissputnik.ru/v0.3/sputnik_maps_bundle.min.css"/>
+    <script src="https://maps-js.apissputnik.ru/v0.3/sputnik_maps_bundle.min.js"></script>
     <title>React App</title>
 </head>
 
@@ -13,3 +15,75 @@
 <div id="root"></div>
 </body>
 </html>
+
+
+<script>
+    var map1 = L.sm.map('map1', {center: [55.775, 37.624], zoom: 12});
+
+    var markers1 = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [37.5838, 55.7767]
+                },
+                "properties": {
+                    "iconType": "alt3",
+                    "title": "Станция метро Белорусская"
+                },
+                "popupTemplate": "<p>{title}</p>"
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [37.6559, 55.7732]
+                },
+                "properties": {
+                    "title": "Казанский вокзал"
+                },
+                "popupTemplate": "<p>{title}</p>"
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [37.6322, 55.7943]
+                },
+                "properties": {
+                    "markerType": "alt2",
+                    "title": "Рижский вокзал"
+                },
+                "popupTemplate": "<b>{title}</b>"
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [37.5922, 55.7433]
+                },
+                "popupTemplate": "{title}",
+                "properties": {
+                    "title": "просто точка"
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [37.6611, 55.7569]
+                },
+                "properties": {
+                    "title": "Курский вокзал"
+                },
+                "popupTemplate": "<u>{title}</u>"
+
+            }
+        ]
+    };
+
+    L.sm.geoJson(markers1).addTo(map1);
+
+</script>
