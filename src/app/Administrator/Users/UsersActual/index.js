@@ -5,6 +5,7 @@ import {setArrayUserArrays} from '../../Reducer';
 import {setDialogMode} from '../../../commonComponents/Reducer';
 import './styles.css';
 import * as allConst from '../../../commonComponents/Const';
+import AddEditDialogBoxUsers from '../../Users/AddEditDialogBoxUsers';
 import Loading from '../../../commonComponents/Loading/SpinnerCustom/index';
 import SpinnerDanger from '../../../commonComponents/Loading/BootstrapBorderSpinnerDangerSmall';
 import Footer from '../../../commonComponents/Footer';
@@ -67,6 +68,7 @@ class UsersActual extends Component {
                     this.state.isLoading ? <Loading/>
                         :
                         <Fragment>
+                            <AddEditDialogBoxUsers/>
                             <div className="container">
                                 <div className="row justify-content-center">
                                     <div className="col-md-12">
