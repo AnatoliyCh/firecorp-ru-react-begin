@@ -7,7 +7,7 @@ import Locations from "./locations";
 import Technicians from "./technicians";
 import Facility from "./facility";
 import Calender from "./calender";
-import Map from "./map";
+import Map from "./maps";
 
 const ChiefTO = ({match}) => (
     <Fragment>

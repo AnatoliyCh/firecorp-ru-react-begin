@@ -10,6 +10,7 @@ import {
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getFIO} from "../../commonComponents/Const";
+import {withPolling} from "../../commonComponents/withPolling";
 
 $('#addFacility').modal('toggle');
 $('#editFacility').modal('toggle');
@@ -63,7 +64,7 @@ class Facility extends Component {
                         <th className="col-1">Кол-во работ</th>
                         <th className="col-2">Техник</th>
                         <th className="col-1">Статус</th>
-                        <th className="col-1"></th>
+                        <th className="col-1"/>
                     </tr>
                     </thead>
                     <tbody>
@@ -157,7 +158,7 @@ const mapDispatchToProps = dispatch =>
         dispatch
     );
 
-export default connect(
+export default withPolling(get_list_facility)(connect(
     mapStateToProps,
     mapDispatchToProps
-)(Facility)
+)(Facility));

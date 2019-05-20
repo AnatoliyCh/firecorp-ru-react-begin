@@ -74,6 +74,7 @@ export const get_list_facility = () => {
             type: GET_SEARCH_LIST_FACILITY,
             search_list_facility: data
         });
+
         console.log("Список объектов получен \n", data);
     }).catch(function (error) {
         console.log('Список объектов не получен \n', error.message);
