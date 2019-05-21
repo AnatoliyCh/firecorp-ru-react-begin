@@ -3,25 +3,31 @@ import {bindActionCreators} from "redux";
 import {withPolling} from "../../commonComponents/withPolling";
 import {get_list_facility_coordinates} from './ducks'
 import {connect} from "react-redux";
-import { YMaps, Map, Placemark } from "react-yandex-maps";
+import {YMaps, Map, Placemark} from "react-yandex-maps";
 
 class Maps extends Component {
 
     render() {
         const mapData = {
             center: [55.011480, 82.931819],
-            zoom: 12,
+            zoom: 10,
         };
-        let coordinates = this.props.list_facility_coordinates ? this.props.list_facility_coordinates : {};
-        coordinates = coordinates.map(coord => {
+        let coordinatesTechnicians = this.props.list_technicians_coordinates ? this.props.list_technicians_coordinates : {};
+        coordinatesTechnicians = coordinatesTechnicians.map(coord => {
             return [coord[2], coord[1]]
         });
+        let coordinates = this.props.list_facility_coordinates ? this.props.list_facility_coordinates : {};
+        coordinates = coordinates.map(facility => facility.map(coord => {
+            return [coord[2], coord[1]]
 
+        }));
+        coordinates = coordinates.flat();
         return (
             <Fragment>
                 <YMaps>
                     <Map defaultState={mapData} width={"100%"} height={600}>
-                        {coordinates.map((coordinate, i) => <Placemark key={i.toString()} geometry={coordinate} />)}
+                        {coordinatesTechnicians.map((coordinate, i) => <Placemark key={i.toString()} geometry={coordinate}/>)}
+                        {coordinates.map((coordinate, i) => <Placemark key={i.toString()} geometry={coordinate}/>)}
                     </Map>
                 </YMaps>
             </Fragment>
@@ -30,7 +36,8 @@ class Maps extends Component {
 }
 
 const mapStateToProps = ({listFacilityCoordinates}) => ({
-    list_facility_coordinates: listFacilityCoordinates.list_facility_coordinates
+    list_facility_coordinates: listFacilityCoordinates.list_facility_coordinates,
+    list_technicians_coordinates: listFacilityCoordinates.list_technicians_coordinates
 });
 
 const mapDispatchToProps = dispatch =>

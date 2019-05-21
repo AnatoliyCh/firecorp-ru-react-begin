@@ -1,6 +1,5 @@
 export const IP_HOST = "https://cors-anywhere.herokuapp.com/http://217.71.138.9:4567";
 export const ROOT_DIRECTORY = "/";
-export const MAP_TOKEN = 'AIzaSyB3FF2GcTqDfgJrRbsAQfMxww7kzRzNhH0';
 
 export const PATH_ADMINISTRATOR = "/administrator";//администратор
 export const PATH_ADMINISTRATOR_USERS = "/users";//корневой путь к пользователям
@@ -34,6 +33,7 @@ export const PATH_USERS_ACTUAL = "/api/user/list?mode=0";//--> переходи�
 export const PATH_USERS_ALL = "/api/user/list?mode=1";
 export const PATH_USERS_DELETED = "/api/user/list?mode=2";
 export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
+export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
 export const ALL_LOCATIONS_PATH = "/api/servicezone/list?mode=0";
 export const ALL_CONTRACTOR_PATH = "/api/contractor/list?mode=0";
 
