@@ -51,9 +51,6 @@ export const PATH_API_USER_UPDATE = "/api/user/update";//редактирова�
 
 export const ADD_LOCATION_PATH = "/api/servicezone/add";
 
-// Данные пользователя и проверка на отстутсвие данных о пользователе в localStorage
-export const USER_DATA = JSON.parse(localStorage.getItem('UserData')) == null ? "" : JSON.parse(localStorage.getItem('UserData'));
-
 //установка текущего пользователя
 export function setCurrentUser(newCurrentUser) {
     localStorage.setItem('UserData', JSON.stringify(newCurrentUser));

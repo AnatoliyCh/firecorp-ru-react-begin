@@ -1,4 +1,5 @@
-import {PATH_USERS_ALL, IP_HOST, USER_DATA} from "../../commonComponents/Const";
+import {PATH_USERS_ALL, IP_HOST} from "../../commonComponents/Const";
+import * as allConst from "../../commonComponents/Const";
 
 export const GET_LIST_TECHNICIANS = 'GET_LIST_TECHNICIANS';
 export const GET_SEARCH_LIST_TECHNICIANS = 'GET_SEARCH_LIST_TECHNICIANS';
@@ -39,7 +40,7 @@ export default (state = initialState, action) => {
 export const get_list_technicians = () => {
     return dispatch => fetch(`${IP_HOST}${PATH_USERS_ALL}`, {
         method: "GET",
-        headers: {'SessionToken': USER_DATA.sessionToken}
+        headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
     }).then(function (response) {
         if (response.status === 401) {
             document.location.href = "/";
