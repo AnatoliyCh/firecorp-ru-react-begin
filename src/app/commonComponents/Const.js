@@ -33,6 +33,10 @@ export const PATH_USERS_ACTUAL = "/api/user/list?mode=0";
 export const PATH_USERS_ALL = "/api/user/list?mode=1";
 export const PATH_USERS_DELETED = "/api/user/list?mode=2";
 
+export const PATH_STREETS_ACTUAL = "/api/street/list?mode=0";
+export const PATH_STREETS_ALL = "/api/street/list?mode=1";
+export const PATH_STREETS_DELETED = "/api/street/list?mode=2";
+
 export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
 
 export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
