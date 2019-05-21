@@ -10,18 +10,18 @@ export const PATH_ADMINISTRATOR_CATALOG = "/catalog";//корневой путь
 export const PATH_ADMINISTRATOR_CATALOG_STREET = "/street";//улицы
 export const PATH_ADMINISTRATOR_CATALOG_CYTY = "/city";//нас. пункты
 export const PATH_ADMINISTRATOR_CATALOG_FACILITY = "/facility";//объекты
-export const PATH_ADMINISTRATOR_CATALOG_SERVICEZONE = "/servicezone";//локации
+export const PATH_ADMINISTRATOR_CATALOG_SERVICEZONE = "/service_zone";//локации
 export const PATH_ADMINISTRATOR_CATALOG_IMPLEMENTS = "/implements";//инвентарь
-export const PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE = "/componenttype";//комплектующие
-export const PATH_ADMINISTRATOR_CATALOG_JOBTYPE = "/jobtype";//типы работ (регламенты)
+export const PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE = "/component_type";//комплектующие
+export const PATH_ADMINISTRATOR_CATALOG_JOBTYPE = "/job_type";//типы работ
 export const PATH_ADMINISTRATOR_CATALOG_CONTRACTOR = "/contractor";//контрагенты
 
 
-export const PATH_CHIEFTO = "/chiefto";//начальник ТО
+export const PATH_CHIEFTO = "/chief_to";//начальник ТО
 export const PATH_CHIEFTO_TECHNICIANS = "/technicians";//техники
 
 
-export const PATH_CHIEF = "/сhief";//начальник
+export const PATH_CHIEF = "/chief";//начальник
 export const PATH_ACCOUNTANT = "/accountant";//бухгалтер
 export const PATH_STOREKEEPER = "/storekeeper";//кладовщик
 export const PATH_LAWYER = "/lawyer";//юрист
