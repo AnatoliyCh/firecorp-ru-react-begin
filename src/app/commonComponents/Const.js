@@ -16,7 +16,6 @@ export const PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE = "/component_type";//ко
 export const PATH_ADMINISTRATOR_CATALOG_JOBTYPE = "/job_type";//типы работ
 export const PATH_ADMINISTRATOR_CATALOG_CONTRACTOR = "/contractor";//контрагенты
 
-
 export const PATH_CHIEFTO = "/chief_to";//начальник ТО
 export const PATH_CHIEFTO_TECHNICIANS = "/technicians";//техники
 
