@@ -37,11 +37,15 @@ export const PATH_STREETS_ACTUAL = "/api/street/list?mode=0";
 export const PATH_STREETS_ALL = "/api/street/list?mode=1";
 export const PATH_STREETS_DELETED = "/api/street/list?mode=2";
 
-export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
-
 export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
 
-export const ALL_LOCATIONS_PATH = "/api/servicezone/list?mode=0";
+export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
+export const ADD_FACILITY_PATH = "/api/facility/add";
+export const FACILITY_UPDATE_PATH = "/api/facility/update";
+
+export const ALL_LOCATIONS_PATH = "/api/servicezone/list?mode=0&level=7";
+export const ADD_LOCATION_PATH = "/api/servicezone/add";
+export const LOCATION_UPDATE_PATH = "/api/servicezone/update";
 
 export const ALL_CONTRACTOR_PATH = "/api/contractor/list?mode=0";
 
@@ -49,7 +53,7 @@ export const PATH_API_USER_LOGIN = "/api/user/login";//авторизация п
 export const PATH_API_USER_ADD = "/api/user/add";//создание пользователя
 export const PATH_API_USER_UPDATE = "/api/user/update";//редактирование пользователя
 
-export const ADD_LOCATION_PATH = "/api/servicezone/add";
+
 
 //установка текущего пользователя
 export function setCurrentUser(newCurrentUser) {

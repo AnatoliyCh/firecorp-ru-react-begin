@@ -7,18 +7,19 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {
     add_location,
+    edit_location,
     get_list_locations,
     get_search_list_locations,
     reverse_list_locations
 } from './ducks'
 import {getFIO} from "../../commonComponents/Const";
 
-$('#addLocation').modal('toggle');
-$('#editLocation').modal('toggle');
-
 class Locations extends Component {
     state = {
-        name: ""
+        name: "",
+        popupState: "",
+        idEditElement: null,
+        posEditElement: null
     };
 
     componentDidMount() {
@@ -48,6 +49,12 @@ class Locations extends Component {
         this.props.add_location(data);
         this.clearDialog();
     };
+    handleSubmitEditLocation = event => {
+        event.preventDefault();
+        const data = JSON.stringify({name: this.state.name, oid: this.state.idEditElement});
+        this.props.edit_location(data, this.state.posEditElement, this.state.idEditElement);
+        this.clearDialog();
+    };
     handleChangeNameLocation = event => {
         event.preventDefault();
         this.setState({name: event.target.value});
@@ -66,7 +73,9 @@ class Locations extends Component {
                     </form>
                     <div className="col-sm-4 col-xl-2 mt-3">
                         <button className="btn btn-outline-danger col-12" data-toggle="modal"
-                                data-target="#addLocation">Добавить локацию
+                                data-target="#interactLocation"
+                                onClick={() => this.setState({popupState: "add"})}>Добавить
+                            локацию
                         </button>
                     </div>
                 </div>
@@ -84,13 +93,18 @@ class Locations extends Component {
                     {list_locations.map((location, i) => {
                         let technicians = location.technicians === undefined ? [] : location.technicians.map(technician => getFIO((technician.user || {}).ref));
                         return (
-                            <tr key={i.toString()} className="d-flex">
+                            <tr key={i.toString()} data-mydatafield="asdasdasdaad" className="d-flex">
                                 <td className="col">{location.name}</td>
                                 <td className="col">Кол-во объектов</td>
                                 <td className="col">{technicians.map(technician => technician)}</td>
                                 <td className="col-1">
                                     <button className="font-awesome-button" data-toggle="modal"
-                                            data-target="#editLocation"><i className="fas fa-pencil-alt"> </i>
+                                            data-target="#interactLocation" onClick={() => this.setState({
+                                        popupState: "edit",
+                                        idEditElement: location.oid,
+                                        posEditElement: i,
+                                        name: location.name
+                                    })}><i className="fas fa-pencil-alt"> </i>
                                     </button>
                                 </td>
                             </tr>
@@ -99,48 +113,29 @@ class Locations extends Component {
                     </tbody>
                 </table>
 
-                {/*Модальное окно добавления локации*/}
+                {/*Модальное окно добавления/редактирования локации*/}
 
-                <div id="addLocation" className="modal fade" role="dialog">
+                <div id="interactLocation" className="modal fade" role="dialog">
                     <div className="modal-dialog">
                         <div className="modal-content">
-                            <form id="addLocation" onSubmit={this.handleSubmitAddLocation}>
+                            <form id="interactLocation"
+                                  onSubmit={this.state.popupState === "add" ? this.handleSubmitAddLocation : this.handleSubmitEditLocation}>
                                 <div className="modal-header">
-                                    <h4 className="modal-title">Создание локации</h4>
+                                    <h4 className="modal-title">{this.state.popupState === "add" ? 'Создание' : 'Редактирование'} локации</h4>
                                     <button type="button" className="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div className="modal-body pt-4 pb-4">
-                                    <label htmlFor="addLocationName">Название</label>
-                                    <input className="form-control" id="addLocationName" type="text"
+                                    <label htmlFor="interactLocationName">Название</label>
+                                    <input className="form-control" id="interactLocationName" type="text"
                                            placeholder="Введите название локации"
-                                           onChange={this.handleChangeNameLocation} required/>
+                                           onChange={this.handleChangeNameLocation} required value={this.state.name}/>
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="submit" className="btn btn-outline-danger">Добавить
+                                    <button type="submit" className="btn btn-outline-danger">
+                                        {this.state.popupState === "add" ? 'Добавить' : 'Изменить'}
                                     </button>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
-
-                {/*Модальное окно редактирования локации*/}
-                <div id="editLocation" className="modal fade" role="dialog">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Редактирование локации</h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div className="modal-body pt-4 pb-4">
-                                <label htmlFor="addLocation">Название</label>
-                                <input className="form-control" id="addLocation" type="search"
-                                       placeholder="Введите название локации" aria-label="Search"/>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-danger">Добавить
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -159,6 +154,7 @@ const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
             add_location,
+            edit_location,
             get_list_locations,
             get_search_list_locations,
             reverse_list_locations
