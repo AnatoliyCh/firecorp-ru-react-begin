@@ -1,7 +1,10 @@
 import React, {Component, Fragment} from 'react';
-import * as allConst from "../../../commonComponents/Const";
+import {connect} from "react-redux";
 import '../styles.css';
+import * as allConst from "../../../commonComponents/Const";
+import {setArrayStreet} from "../../Reducer";
 import SpinnerDanger from '../../../commonComponents/Loading/BootstrapBorderSpinnerDangerDefault';
+import TableStreets from "./TableStreets";
 
 let typeStreet = new Map([
     [16, "Улица"],
@@ -26,7 +29,8 @@ class Street extends Component {
         }).then(function (response) {
             return response.json();
         }).then(data => {
-            this.sortData(data);
+            this.props.setArrStreetFunc(this.sortData(data));
+            this.setState({isLoading: false});
         }).catch((error) => {
             console.log(error.message);
         });
@@ -37,55 +41,52 @@ class Street extends Component {
             itemData.typeStr = typeStreet.get(itemData.type);
         });
         data.sort((a, b) => {
-            if (a.name.toLowerCase() < b.name.toLowerCase())  return -1;
+            if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
             if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
             return 0;
         });
-        console.log(data);
-        this.setState({isLoading: false});
+        return data;
     };
 
     render() {
+        //<div className="row"> испрвить
         return (
             <Fragment>
-                {
-                    this.state.isLoading ? <div className="catalogSpinner"><SpinnerDanger/></div>
-                        :
-                        <Fragment>
-                            <table className="table table-sm table-hover">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colSpan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </Fragment>
-                }
+                <div className="row">
+                    <form className="col-sm-8 col-xl-10 mt-3">
+                        <input className="form-control" type="search" placeholder="Поиск по названию улиц"
+                               aria-label="Search" onChange=""/>
+                    </form>
+                    <div className="btn-group col-sm-4 col-xl-2 mt-3">
+                        <div className="form-group">
+                            <select className="form-control" id="addProfessor">
+                                <option className="dropdown-item" hidden value=''>Статус</option>
+                                <option className="dropdown-item">Уволен</option>
+                                <option className="dropdown-item">В отпуске</option>
+                                )}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {this.state.isLoading ? <div className="catalogSpinner"><SpinnerDanger/></div> : <TableStreets/>}
             </Fragment>
         )
     }
 }
 
-export default Street;
+// приклеиваем данные из store
+const mapStateToProps = store => {
+    return {
+        arrStreet: store.administratorReducer.arrStreet,
+    }
+};
+//функции для ассинхронного ввода
+const mapDispatchToProps = dispatch => {
+    return {
+        setArrStreetFunc: arr => dispatch(setArrayStreet(arr)),
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Street)

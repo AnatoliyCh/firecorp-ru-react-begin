@@ -4,6 +4,9 @@ const initialState = {
     arrayUserArrays: [],//итоговый массив групп пользователей (<title>, <data>)
     isSetAPIAddUser: false,//если добавляем пользователя
     indexUserToArray: [-1, -1],//id user в arrayUserArrays
+
+    //списки
+    arrStreet: [], //улицы
 };
 
 export default (state = initialState, action) => {
@@ -41,6 +44,9 @@ export default (state = initialState, action) => {
             return {...state, isSetAPIAddUser: action.payload};
         case 'SET_INDEX_USER_TO_ARRAY':
             return {...state, indexUserToArray: action.payload};
+        //списки
+        case 'SET_ARRAY_STREET':
+            return {...state, arrStreet: action.payload};
         default:
             return state
     }
@@ -91,5 +97,15 @@ export function setIndexUserToArray(indUserArr) {
     return {
         type: 'SET_INDEX_USER_TO_ARRAY',
         payload: indUserArr,
+    }
+};
+
+
+//списки
+//действиe для сущности arrStreet(добавление списка улиц)
+export function setArrayStreet(arr) {
+    return {
+        type: 'SET_ARRAY_STREET',
+        payload: arr,
     }
 };
