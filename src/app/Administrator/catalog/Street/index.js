@@ -33,17 +33,15 @@ class Street extends Component {
     };
 
     sortData = (data) => {
-        let streets = [];//sort список улиц
         data.forEach(function (itemData, iData) {
-            streets.push({ name: itemData.name, typeStr: typeStreet.get(itemData.type), typeInt: itemData.type })
+            itemData.typeStr = typeStreet.get(itemData.type);
         });
-        console.log(data);
-        streets.sort((a, b) => {
+        data.sort((a, b) => {
             if (a.name.toLowerCase() < b.name.toLowerCase())  return -1;
             if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
             return 0;
         });
-        console.log(streets);
+        console.log(data);
         this.setState({isLoading: false});
     };
 
@@ -54,7 +52,35 @@ class Street extends Component {
                     this.state.isLoading ? <div className="catalogSpinner"><SpinnerDanger/></div>
                         :
                         <Fragment>
-
+                            <table className="table table-sm table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">First</th>
+                                    <th scope="col">Last</th>
+                                    <th scope="col">Handle</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td colSpan="2">Larry the Bird</td>
+                                    <td>@twitter</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </Fragment>
                 }
             </Fragment>
