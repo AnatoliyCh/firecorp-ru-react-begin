@@ -1,9 +1,8 @@
 import React, {Component, Fragment} from 'react';
-import * as allConst from "../../../../commonComponents/Const";
-import {setArrStreet} from "../../../Reducer";
+import {setArrCities} from "../../../Reducer";
 import {connect} from "react-redux";
 
-class TableStreets extends Component {
+class TableCities extends Component {
 
     getRowsTable = () => {
         return this.props.arrStreet.map((item, i) => {
@@ -58,16 +57,16 @@ class TableStreets extends Component {
 // приклеиваем данные из store
 const mapStateToProps = store => {
     return {
-        arrStreet: store.administratorReducer.arrStreet,
+        arrCities: store.administratorReducer.arrCities,
     }
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
     return {
-        setArrStreetFunc: arr => dispatch(setArrStreet(arr)),
+        setArrCitiesFunc: arr => dispatch(setArrCities(arr)),
     }
 };
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(TableStreets)
+)(TableCities)

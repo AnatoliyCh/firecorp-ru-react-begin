@@ -7,6 +7,8 @@ const initialState = {
 
     //списки
     arrStreet: [], //улицы
+    arrCities: [], //нас. пункты
+
 };
 
 export default (state = initialState, action) => {
@@ -46,6 +48,8 @@ export default (state = initialState, action) => {
             return {...state, indexUserToArray: action.payload};
         //списки
         case 'SET_ARRAY_STREET':
+            return {...state, arrStreet: action.payload};
+        case 'SET_ARRAY_CITIES':
             return {...state, arrStreet: action.payload};
         default:
             return state
@@ -103,9 +107,16 @@ export function setIndexUserToArray(indUserArr) {
 
 //списки
 //действиe для сущности arrStreet(добавление списка улиц)
-export function setArrayStreet(arr) {
+export function setArrStreet(arr) {
     return {
         type: 'SET_ARRAY_STREET',
+        payload: arr,
+    }
+};
+//действиe для сущности arrStreet(добавление списка улиц)
+export function setArrCities(arr) {
+    return {
+        type: 'SET_ARRAY_CITIES',
         payload: arr,
     }
 };

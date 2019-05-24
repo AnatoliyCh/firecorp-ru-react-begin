@@ -1,17 +1,11 @@
-.catalogSpinner {
-    /*выравнивание на середину*/
-    margin: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    bottom: 0;
-    right: 0;
-}
-
-table.table.table-sm.table-hover th.oidTHead, th.oid {
+table.table.table-sm.table-hover th.oidTHead, table.table.table-sm th.oidTHead, th.oid {
     text-align: center;
     width: 5%;
 }
-table.table.table-sm.table-hover td.type {
+table.table.table-sm.table-hover th.type, table.table.table-sm th.type {
     width: 10%;
+}
+
+table.table.table-sm tr td.emptyText {
+    text-align: center;
 }
