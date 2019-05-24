@@ -1,11 +1,10 @@
 import React, {Component, Fragment} from 'react';
-import {setArrCities} from "../../../Reducer";
 import {connect} from "react-redux";
 
 class TableCities extends Component {
 
     getRowsTable = () => {
-        return this.props.arrStreet.map((item, i) => {
+        return this.props.arrCities.map((item, i) => {
             return (
                 <tr key={i}>
                     <th className="oid" scope="row">{item.oid}</th>
@@ -25,7 +24,7 @@ class TableCities extends Component {
                         <thead className="thead-light">
                         <tr>
                             <th className="oidTHead" scope="col">oid</th>
-                            <th className="type" scope="col">Тип</th>
+                            <th className="width_10" scope="col">Тип</th>
                             <th scope="col">Название</th>
                         </tr>
                         </thead>
@@ -38,7 +37,7 @@ class TableCities extends Component {
                         <thead className="thead-light">
                         <tr>
                             <th className="oidTHead" scope="col">oid</th>
-                            <th className="type" scope="col">Тип</th>
+                            <th className="width_10" scope="col">Тип</th>
                             <th scope="col">Название</th>
                         </tr>
                         </thead>
@@ -62,9 +61,7 @@ const mapStateToProps = store => {
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
-    return {
-        setArrCitiesFunc: arr => dispatch(setArrCities(arr)),
-    }
+    return {}
 };
 export default connect(
     mapStateToProps,

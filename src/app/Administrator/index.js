@@ -7,6 +7,8 @@ import UsersArchive from './Users/UsersArchive';
 import Page404 from '../commonComponents/Page404';
 import Street from "./catalog/Street";
 import City from "./catalog/City";
+import Implements from "./catalog/Implements";
+import ComponentType from "./catalog/ComponentType";
 
 
 
@@ -25,8 +27,8 @@ const Administrator = ({match}) => {
                 <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CYTY}`} component={City}/>
                 <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_FACILITY}`} component={UsersArchive}/>
                 <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_SERVICEZONE}`} component={UsersArchive}/>
-                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_IMPLEMENTS}`} component={UsersArchive}/>
-                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_IMPLEMENTS}`} component={Implements}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE}`} component={ComponentType}/>
                 <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_JOBTYPE}`} component={UsersArchive}/>
                 <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CONTRACTOR}`} component={UsersArchive}/>
                 <Route component={Page404}/>

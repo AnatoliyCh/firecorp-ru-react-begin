@@ -8,7 +8,8 @@ const initialState = {
     //списки
     arrStreet: [], //улицы
     arrCities: [], //нас. пункты
-
+    arrImplements: [], //инвентарь
+    arrComponentType: [], //комплектующие
 };
 
 export default (state = initialState, action) => {
@@ -50,7 +51,11 @@ export default (state = initialState, action) => {
         case 'SET_ARRAY_STREET':
             return {...state, arrStreet: action.payload};
         case 'SET_ARRAY_CITIES':
-            return {...state, arrStreet: action.payload};
+            return {...state, arrCities: action.payload};
+        case 'SET_ARRAY_IMPLEMENTS':
+            return {...state, arrImplements: action.payload};
+        case 'SET_ARRAY_COMPONENTTYPE':
+            return {...state, arrComponentType: action.payload};
         default:
             return state
     }
@@ -113,10 +118,26 @@ export function setArrStreet(arr) {
         payload: arr,
     }
 };
-//действиe для сущности arrStreet(добавление списка улиц)
+
+//действиe для сущности arrCities(добавление списка нас. пунктов)
 export function setArrCities(arr) {
     return {
         type: 'SET_ARRAY_CITIES',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrImplements(добавление списка инвентаря)
+export function setArrImplements(arr) {
+    return {
+        type: 'SET_ARRAY_IMPLEMENTS',
+        payload: arr,
+    }
+};
+//действиe для сущности arrComponentType(добавление списка комплектующих)
+export function setArrComponentType(arr) {
+    return {
+        type: 'SET_ARRAY_COMPONENTTYPE',
         payload: arr,
     }
 };

@@ -1,10 +1,10 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 
-class TableStreets extends Component {
+class TableComponentTypes extends Component {
 
     getRowsTable = () => {
-        return this.props.arrStreet.map((item, i) => {
+        return this.props.arrComponentType.map((item, i) => {
             return (
                 <tr key={i}>
                     <th className="oid" scope="row">{item.oid}</th>
@@ -56,7 +56,7 @@ class TableStreets extends Component {
 // приклеиваем данные из store
 const mapStateToProps = store => {
     return {
-        arrStreet: store.administratorReducer.arrStreet,
+        arrComponentType: store.administratorReducer.arrComponentType,
     }
 };
 //функции для ассинхронного ввода
@@ -66,4 +66,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(TableStreets)
+)(TableComponentTypes)

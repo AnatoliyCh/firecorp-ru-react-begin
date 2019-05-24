@@ -8,9 +8,8 @@ import SpinnerDanger from '../../../commonComponents/Loading/BootstrapBorderSpin
 import TableCities from "./TableCities";
 
 let typeCity = new Map([
-    [16, "Улица"],
-    [32, "Проспект"],
-    [48, "Шоссе"],
+    [1, "Город"],
+    [2, "Посёлок"],
 ]);
 
 class City extends Component {
@@ -38,15 +37,12 @@ class City extends Component {
     };
 
     sortData = (data) => {
-        // data.forEach(function (itemData, iData) {
-        //     itemData.typeStr = typeStreet.get(itemData.type);
-        // });
+        data.forEach((itemData) => itemData.typeStr = typeCity.get(itemData.type));
         data.sort((a, b) => {
             if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
             if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
             return 0;
         });
-        console.log(data);
         return data;
     };
 

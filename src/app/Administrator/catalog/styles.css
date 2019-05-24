@@ -2,10 +2,14 @@ table.table.table-sm.table-hover th.oidTHead, table.table.table-sm th.oidTHead, 
     text-align: center;
     width: 5%;
 }
-table.table.table-sm.table-hover th.type, table.table.table-sm th.type {
+table.table.table-sm.table-hover th.width_10, table.table.table-sm th.width_10 {
     width: 10%;
 }
 
 table.table.table-sm tr td.emptyText {
+    text-align: center;
+}
+
+.middleColumn {
     text-align: center;
 }
