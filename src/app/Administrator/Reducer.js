@@ -10,6 +10,7 @@ const initialState = {
     arrCities: [], //нас. пункты
     arrImplements: [], //инвентарь
     arrComponentType: [], //комплектующие
+    arrJobType: [], //типы работ
 };
 
 export default (state = initialState, action) => {
@@ -56,6 +57,8 @@ export default (state = initialState, action) => {
             return {...state, arrImplements: action.payload};
         case 'SET_ARRAY_COMPONENTTYPE':
             return {...state, arrComponentType: action.payload};
+        case 'SET_ARRAY_JOBTYPE':
+            return {...state, arrJobType: action.payload};
         default:
             return state
     }
@@ -134,10 +137,19 @@ export function setArrImplements(arr) {
         payload: arr,
     }
 };
+
 //действиe для сущности arrComponentType(добавление списка комплектующих)
 export function setArrComponentType(arr) {
     return {
         type: 'SET_ARRAY_COMPONENTTYPE',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrJobType(добавление списка типов работ)
+export function setArrJobType(arr) {
+    return {
+        type: 'SET_ARRAY_JOBTYPE',
         payload: arr,
     }
 };

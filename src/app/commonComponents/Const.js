@@ -49,6 +49,10 @@ export const PATH_COMPONENTTYPE_ACTUAL = "/api/componenttype/list?mode=0";
 export const PATH_COMPONENTTYPE_ALL = "/api/componenttype/list?mode=1";
 export const PATH_COMPONENTTYPE_DELETED = "/api/componenttype/list?mode=2";
 
+export const PATH_JOBTYPE_ACTUAL = "/api/jobtype/list?mode=0";
+export const PATH_JOBTYPE_ALL = "/api/jobtype/list?mode=1";
+export const PATH_JOBTYPE_DELETED = "/api/jobtype/list?mode=2";
+
 export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
 
 export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
