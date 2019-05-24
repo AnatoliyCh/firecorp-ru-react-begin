@@ -26,7 +26,6 @@ class ComponentType extends Component {
         }).then(data => {
             this.props.setArrComponentTypeFunc(this.sortData(data));
             this.setState({isLoading: false});
-            console.log(data);
         }).catch((error) => {
             console.log(error.message);
         });

@@ -1,12 +1,12 @@
 table.table.table-sm.table-hover th.oidTHead, table.table.table-sm th.oidTHead, th.oid {
     text-align: center;
-    width: 5%;
+    width: 10%;
 }
 table.table.table-sm.table-hover th.width_10, table.table.table-sm th.width_10 {
     width: 10%;
 }
 
-table.table.table-sm tr td.emptyText {
+table.table.table-sm tr td.emptyText, th.emptyText {
     text-align: center;
 }
 

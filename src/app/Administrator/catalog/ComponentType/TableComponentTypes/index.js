@@ -3,48 +3,59 @@ import {connect} from "react-redux";
 
 class TableComponentTypes extends Component {
 
-    getRowsTable = () => {
+    getTables = () => {
         return this.props.arrComponentType.map((item, i) => {
+            return (
+                <table key={i} className="table table-sm table-hover">
+                    <thead className="thead-light">
+                    <tr>
+                        <th className="middleColumn" scope="col">oid: {item.oid}</th>
+                        <th colSpan="3" className="width_10" scope="col">Тип: {item.name}</th>
+                    </tr>
+                    </thead>
+                    <thead className="thead-light">
+                    <tr>
+                        <th className="oidTHead" scope="col">oid</th>
+                        <th scope="col">Марка</th>
+                        <th className="width_10" scope="col">Количество на складе</th>
+                        <th className="width_10" scope="col">Стоимость единицы</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.getRowsTable(item.components)}
+                    </tbody>
+                </table>
+            )
+        })
+    };
+
+    getRowsTable = (data) => {
+        return data.map((item, i) => {
             return (
                 <tr key={i}>
                     <th className="oid" scope="row">{item.oid}</th>
-                    <td>{item.typeStr}</td>
                     <td>{item.name}</td>
+                    <td>{item.numberOnStore}</td>
+                    <td>{item.costPerUnit}</td>
                 </tr>
             )
         })
     };
 
     render() {
-        let rows = this.getRowsTable();
+        let tables = this.getTables();
         return (
             <Fragment>
-                {rows.length ?
-                    <table className="table table-sm table-hover">
-                        <thead className="thead-light">
-                        <tr>
-                            <th className="oidTHead" scope="col">oid</th>
-                            <th className="width_10" scope="col">Тип</th>
-                            <th scope="col">Название</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {rows}
-                        </tbody>
-                    </table>
+                {tables.length ?
+                    tables
                     :
                     <table className="table table-sm">
                         <thead className="thead-light">
                         <tr>
-                            <th className="oidTHead" scope="col">oid</th>
-                            <th className="width_10" scope="col">Тип</th>
-                            <th scope="col">Название</th>
+                            <th className="emptyText" scope="col">Нет данных!</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr key="0">
-                            <td colSpan="3" className="emptyText">Нет данных!</td>
-                        </tr>
                         </tbody>
                     </table>
                 }
