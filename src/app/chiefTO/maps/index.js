@@ -6,6 +6,9 @@ import {connect} from "react-redux";
 import {YMaps, Map, Placemark} from "react-yandex-maps";
 
 class Maps extends Component {
+    componentDidMount() {
+        this.props.get_list_facility_coordinates();
+    }
 
     render() {
         const mapData = {

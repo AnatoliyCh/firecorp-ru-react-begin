@@ -6,7 +6,7 @@ import Home from "./home";
 import Locations from "./locations";
 import Technicians from "./technicians";
 import Facility from "./facility";
-import Calender from "./calender";
+import Calender from "./calendar";
 import Map from "./maps";
 
 const ChiefTO = ({match}) => (

@@ -6,6 +6,7 @@ import listTechnicians from '../app/chiefTO/technicians/ducks';
 import listFacility from '../app/chiefTO/facility/ducks';
 import listLocations from '../app/chiefTO/locations/ducks';
 import listFacilityCoordinates from '../app/chiefTO/maps/ducks';
+import listMaintenance from '../app/chiefTO/calendar/ducks';
 import administratorReducer from '../app/Administrator/Reducer';
 
 export default combineReducers({
@@ -15,5 +16,6 @@ export default combineReducers({
     listTechnicians,
     listFacility,
     listLocations,
-    listFacilityCoordinates
+    listFacilityCoordinates,
+    listMaintenance
 })
