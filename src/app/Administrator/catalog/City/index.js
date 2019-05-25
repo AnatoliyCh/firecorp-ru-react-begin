@@ -3,11 +3,16 @@ import {connect} from "react-redux";
 import '../styles.css';
 import '../../../commonComponents/styles.css';
 import * as allConst from "../../../commonComponents/Const";
-import {setArrImplements} from "../../Reducer";
+import {setArrCities} from "../../Reducer";
 import SpinnerDanger from '../../../commonComponents/Loading/BootstrapBorderSpinnerDangerDefault';
-import TableImplements from "./TableImplements";
+import TableCities from "./TableCities";
 
-class Implements extends Component {
+let typeCity = new Map([
+    [1, "Город"],
+    [2, "Посёлок"],
+]);
+
+class City extends Component {
     state = {
         isLoading: false,//загрузка
     };
@@ -18,13 +23,13 @@ class Implements extends Component {
     };
 
     getAPICities = () => {
-        fetch(`${allConst.IP_HOST}${allConst.PATH_IMPLEMENTS_ACTUAL}`, {
+        fetch(`${allConst.IP_HOST}${allConst.PATH_CITY_ACTUAL}`, {
             method: 'GET',
             headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
         }).then(function (response) {
             return response.json();
         }).then(data => {
-            this.props.setArrImplementsFunc(this.sortData(data));
+            this.props.setArrCitiesFunc(this.sortData(data));
             this.setState({isLoading: false});
         }).catch((error) => {
             console.log(error.message);
@@ -32,6 +37,7 @@ class Implements extends Component {
     };
 
     sortData = (data) => {
+        data.forEach((itemData) => itemData.typeStr = typeCity.get(itemData.type));
         data.sort((a, b) => {
             if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
             if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
@@ -43,7 +49,7 @@ class Implements extends Component {
     render() {
         return (
             <Fragment>
-                {this.state.isLoading ? <div className="divSpinner"><SpinnerDanger/></div> : <TableImplements/>}
+                {this.state.isLoading ? <div className="divSpinner"><SpinnerDanger/></div> : <TableCities/>}
             </Fragment>
         )
     }
@@ -52,16 +58,16 @@ class Implements extends Component {
 // приклеиваем данные из store
 const mapStateToProps = store => {
     return {
-        arrImplements: store.administratorReducer.arrImplements,
+        arrCities: store.administratorReducer.arrCities,
     }
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
     return {
-        setArrImplementsFunc: arr => dispatch(setArrImplements(arr)),
+        setArrCitiesFunc: arr => dispatch(setArrCities(arr)),
     }
 };
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Implements)
+)(City)

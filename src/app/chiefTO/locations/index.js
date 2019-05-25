@@ -112,7 +112,6 @@ class Locations extends Component {
                     })}
                     </tbody>
                 </table>
-
                 {/*Модальное окно добавления/редактирования локации*/}
 
                 <div id="interactLocation" className="modal fade" role="dialog">

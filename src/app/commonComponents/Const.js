@@ -37,6 +37,22 @@ export const PATH_STREETS_ACTUAL = "/api/street/list?mode=0";
 export const PATH_STREETS_ALL = "/api/street/list?mode=1";
 export const PATH_STREETS_DELETED = "/api/street/list?mode=2";
 
+export const PATH_CITY_ACTUAL = "/api/city/list?mode=0";
+export const PATH_CITY_ALL = "/api/city/list?mode=1";
+export const PATH_CITY_DELETED = "/api/city/list?mode=2";
+
+export const PATH_IMPLEMENTS_ACTUAL = "/api/implements/list?mode=0";
+export const PATH_IMPLEMENTS_ALL = "/api/implements/list?mode=1";
+export const PATH_IMPLEMENTS_DELETED = "/api/implements/list?mode=2";
+
+export const PATH_COMPONENTTYPE_ACTUAL = "/api/componenttype/list?mode=0";
+export const PATH_COMPONENTTYPE_ALL = "/api/componenttype/list?mode=1";
+export const PATH_COMPONENTTYPE_DELETED = "/api/componenttype/list?mode=2";
+
+export const PATH_JOBTYPE_ACTUAL = "/api/jobtype/list?mode=0";
+export const PATH_JOBTYPE_ALL = "/api/jobtype/list?mode=1";
+export const PATH_JOBTYPE_DELETED = "/api/jobtype/list?mode=2";
+
 export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
 export const ALL_MAINTENANCE_PATH = "/api/maintenance/list?mode=0&level=7";
 
@@ -53,8 +69,6 @@ export const ALL_CONTRACTOR_PATH = "/api/contractor/list?mode=0";
 export const PATH_API_USER_LOGIN = "/api/user/login";//авторизация пользователя
 export const PATH_API_USER_ADD = "/api/user/add";//создание пользователя
 export const PATH_API_USER_UPDATE = "/api/user/update";//редактирование пользователя
-
-
 
 //установка текущего пользователя
 export function setCurrentUser(newCurrentUser) {

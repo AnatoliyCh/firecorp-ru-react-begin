@@ -7,6 +7,10 @@ const initialState = {
 
     //списки
     arrStreet: [], //улицы
+    arrCities: [], //нас. пункты
+    arrImplements: [], //инвентарь
+    arrComponentType: [], //комплектующие
+    arrJobType: [], //типы работ
 };
 
 export default (state = initialState, action) => {
@@ -47,6 +51,14 @@ export default (state = initialState, action) => {
         //списки
         case 'SET_ARRAY_STREET':
             return {...state, arrStreet: action.payload};
+        case 'SET_ARRAY_CITIES':
+            return {...state, arrCities: action.payload};
+        case 'SET_ARRAY_IMPLEMENTS':
+            return {...state, arrImplements: action.payload};
+        case 'SET_ARRAY_COMPONENTTYPE':
+            return {...state, arrComponentType: action.payload};
+        case 'SET_ARRAY_JOBTYPE':
+            return {...state, arrJobType: action.payload};
         default:
             return state
     }
@@ -103,9 +115,41 @@ export function setIndexUserToArray(indUserArr) {
 
 //списки
 //действиe для сущности arrStreet(добавление списка улиц)
-export function setArrayStreet(arr) {
+export function setArrStreet(arr) {
     return {
         type: 'SET_ARRAY_STREET',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrCities(добавление списка нас. пунктов)
+export function setArrCities(arr) {
+    return {
+        type: 'SET_ARRAY_CITIES',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrImplements(добавление списка инвентаря)
+export function setArrImplements(arr) {
+    return {
+        type: 'SET_ARRAY_IMPLEMENTS',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrComponentType(добавление списка комплектующих)
+export function setArrComponentType(arr) {
+    return {
+        type: 'SET_ARRAY_COMPONENTTYPE',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrJobType(добавление списка типов работ)
+export function setArrJobType(arr) {
+    return {
+        type: 'SET_ARRAY_JOBTYPE',
         payload: arr,
     }
 };

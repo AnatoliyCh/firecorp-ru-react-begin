@@ -43,7 +43,7 @@ const Header = ({match}) => (
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_SERVICEZONE}`}>Локации</a>
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_IMPLEMENTS}`}>Инвентарь</a>
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE}`}>Комплектующие</a>
-                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_JOBTYPE}`}>Регламенты</a>
+                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_JOBTYPE}`}>Типы работ</a>
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CONTRACTOR}`}>Контрагенты</a>
                         </div>
                     </li>

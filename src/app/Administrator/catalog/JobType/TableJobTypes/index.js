@@ -1,18 +1,28 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 
-class TableStreets extends Component {
+class TableJobTypes extends Component {
 
     getRowsTable = () => {
-        return this.props.arrStreet.map((item, i) => {
+        return this.props.arrJobType.map((item, i) => {
             return (
                 <tr key={i}>
                     <th className="oid" scope="row">{item.oid}</th>
-                    <td>{item.typeStr}</td>
                     <td>{item.name}</td>
+                    <td>{item.description}</td>
+                    <td>{item.duration}</td>
+                    <td>{item.costPerUnit}</td>
+                    <td>{this.getServiceInterval(item.serviceInterval)}</td>
+                    <td>{item.needPhoto ? "Да" : "Нет"}</td>
                 </tr>
             )
         })
+    };
+
+    getServiceInterval = (interval) => {
+        if (interval === 0) return "Разовый";
+        else if (interval === 1) return "Eжемесячно";
+        else if (interval >= 2) return interval + " мес.";
     };
 
     render() {
@@ -24,8 +34,12 @@ class TableStreets extends Component {
                         <thead className="thead-light">
                         <tr>
                             <th className="oidTHead" scope="col">oid</th>
-                            <th className="width_10" scope="col">Тип</th>
                             <th scope="col">Название</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Продолжительность (мин)</th>
+                            <th scope="col">Стоимость единицы (руб)</th>
+                            <th scope="col">Периодичность</th>
+                            <th scope="col">Необходимо фотографировать</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -39,11 +53,16 @@ class TableStreets extends Component {
                             <th className="oidTHead" scope="col">oid</th>
                             <th className="width_10" scope="col">Тип</th>
                             <th scope="col">Название</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Продолжительность (мин)</th>
+                            <th scope="col">Стоимость единицы (руб)</th>
+                            <th scope="col">Периодичность</th>
+                            <th scope="col">Необходимо фотографировать</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr key="0">
-                            <td colSpan="3" className="emptyText">Нет данных!</td>
+                            <td colSpan="8" className="emptyText">Нет данных!</td>
                         </tr>
                         </tbody>
                     </table>
@@ -56,7 +75,7 @@ class TableStreets extends Component {
 // приклеиваем данные из store
 const mapStateToProps = store => {
     return {
-        arrStreet: store.administratorReducer.arrStreet,
+        arrJobType: store.administratorReducer.arrJobType,
     }
 };
 //функции для ассинхронного ввода
@@ -66,4 +85,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(TableStreets)
+)(TableJobTypes)

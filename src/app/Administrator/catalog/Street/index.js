@@ -1,8 +1,9 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import '../styles.css';
+import '../../../commonComponents/styles.css';
 import * as allConst from "../../../commonComponents/Const";
-import {setArrayStreet} from "../../Reducer";
+import {setArrStreet} from "../../Reducer";
 import SpinnerDanger from '../../../commonComponents/Loading/BootstrapBorderSpinnerDangerDefault';
 import TableStreets from "./TableStreets";
 
@@ -63,12 +64,11 @@ class Street extends Component {
                                 <option className="dropdown-item" hidden value=''>Статус</option>
                                 <option className="dropdown-item">Уволен</option>
                                 <option className="dropdown-item">В отпуске</option>
-                                )}
                             </select>
                         </div>
                     </div>
                 </div>
-                {this.state.isLoading ? <div className="catalogSpinner"><SpinnerDanger/></div> : <TableStreets/>}
+                {this.state.isLoading ? <div className="divSpinner"><SpinnerDanger/></div> : <TableStreets/>}
             </Fragment>
         )
     }
@@ -83,7 +83,7 @@ const mapStateToProps = store => {
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
     return {
-        setArrStreetFunc: arr => dispatch(setArrayStreet(arr)),
+        setArrStreetFunc: arr => dispatch(setArrStreet(arr)),
     }
 };
 export default connect(

@@ -1,0 +1,15 @@
+:root {
+    --paddingHeight: 20px;
+}
+
+
+/*наш Spinner оборачиваем в div с этим классом*/
+.divSpinner {
+    /*выравнивание на середину*/
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    bottom: 0;
+    right: 0;
+}
