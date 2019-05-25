@@ -38,6 +38,7 @@ export const PATH_STREETS_ALL = "/api/street/list?mode=1";
 export const PATH_STREETS_DELETED = "/api/street/list?mode=2";
 
 export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
+export const ALL_MAINTENANCE_PATH = "/api/maintenance/list?mode=0&level=7";
 
 export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
 export const ADD_FACILITY_PATH = "/api/facility/add";

@@ -8,6 +8,10 @@ import '../index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import $ from 'jquery';
+import {bindActionCreators} from "redux";
+import {withPolling} from "../../commonComponents/withPolling";
+import {connect} from "react-redux";
+import {get_list_maintenance} from './ducks'
 
 $('#addLocation').modal('toggle');
 $('#editLocation').modal('toggle');
@@ -28,6 +32,9 @@ var keys = {
 class Calendar extends Component {
     constructor(props) {
         super(props);
+        this.props.get_list_maintenance();
+
+
 
         const groups = [
             {id: 1, title: 'group 1'},
@@ -95,7 +102,8 @@ class Calendar extends Component {
     render() {
 
         const {groups, items, defaultTimeStart, defaultTimeEnd} = this.state;
-
+        let data = this.props.list_maintenance;
+        let nameFacility = data.map(maintenance => maintenance);
         return (
             <Fragment>
                 <div className="row mt-3 mb-3 float-right">
@@ -103,6 +111,8 @@ class Calendar extends Component {
                             data-target="#addMaintenance">Добавить заявку
                     </button>
                 </div>
+
+                {console.log("данные", data, nameFacility)}
 
                 <Timeline
                     groups={groups}
@@ -147,4 +157,19 @@ class Calendar extends Component {
     }
 }
 
-export default Calendar
+const mapStateToProps = ({listMaintenance}) => ({
+    list_maintenance: listMaintenance.list_maintenance,
+});
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            get_list_maintenance
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Calendar);

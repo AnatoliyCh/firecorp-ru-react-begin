@@ -1,14 +1,11 @@
 import {
     ADD_FACILITY_PATH,
-    ADD_LOCATION_PATH,
     ALL_FACILITY_PATH,
     FACILITY_UPDATE_PATH,
     IP_HOST,
-    LOCATION_UPDATE_PATH
 } from "../../commonComponents/Const";
 import * as allConst from '../../commonComponents/Const';
 import $ from "jquery";
-import {EDIT_LOCATION} from "../locations/ducks";
 
 export const GET_LIST_FACILITY = 'GET_LIST_FACILITY';
 export const GET_SEARCH_LIST_FACILITY = 'GET_SEARCH_LIST_FACILITY';

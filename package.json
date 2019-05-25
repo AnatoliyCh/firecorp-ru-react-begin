@@ -25,6 +25,7 @@
     "popper.js": "^1.15.0",
     "randomcolor": "^0.5.4",
     "react": "16.8.6",
+    "react-bootstrap-multiselect": "^2.4.1",
     "react-burger-menu": "^2.6.10",
     "react-calendar-timeline": "^0.25.1",
     "react-dom": "16.8.6",
