@@ -1,17 +1,19 @@
 import {
     ADD_FACILITY_PATH,
-    ALL_FACILITY_PATH,
+    ALL_FACILITY_PATH, DELETE_FACILITY_PATH,
     FACILITY_UPDATE_PATH,
     IP_HOST,
 } from "../../commonComponents/Const";
 import * as allConst from '../../commonComponents/Const';
 import $ from "jquery";
+import {DELETE_LOCATION} from "../locations/ducks";
 
 export const GET_LIST_FACILITY = 'GET_LIST_FACILITY';
 export const GET_SEARCH_LIST_FACILITY = 'GET_SEARCH_LIST_FACILITY';
 export const REVERSE_LIST_FACILITY = 'REVERSE_LIST_FACILITY';
 export const ADD_FACILITY = 'ADD_FACILITY';
 export const EDIT_FACILITY = 'EDIT_FACILITY';
+export const DELETE_FACILITY = 'DELETE_FACILITY';
 
 const initialState = {
     list_facility: [],
@@ -47,11 +49,17 @@ export default (state = initialState, action) => {
             };
         case EDIT_FACILITY:
             state.list_facility[action.pos] = action.new_edit_facility;
-            state.search_list_facility[action.pos] = action.new_edit_facility;
             return {
                 ...state,
                 list_facility: [...state.list_facility],
-                search_list_facility: [...state.search_list_facility]
+                search_list_facility: [...state.list_facility]
+            };
+        case DELETE_FACILITY:
+            state.list_facility.splice(action.pos, 1);
+            return {
+                ...state,
+                list_facility: [...state.list_facility],
+                search_list_facility: [...state.list_facility]
             };
         default:
             return state
@@ -136,7 +144,7 @@ export const edit_facility = (body, pos) => {
         fetch(`${IP_HOST}${FACILITY_UPDATE_PATH}`, {
             method: "POST",
             headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
-            body: body
+            body: JSON.stringify(body)
         }).then(function (response) {
             if (response.status === 401) {
                 document.location.href = "/";
@@ -149,7 +157,7 @@ export const edit_facility = (body, pos) => {
 
             dispatch({
                 type: EDIT_FACILITY,
-                new_edit_facility: JSON.parse(body),
+                new_edit_facility: body,
                 pos: pos
             });
 
@@ -159,7 +167,29 @@ export const edit_facility = (body, pos) => {
         });
     }
 };
+export const delete_facility = (id, pos) => {
+    return dispatch => {
+        fetch(encodeURI(`${IP_HOST}${DELETE_FACILITY_PATH}&id=${id}`), {
+            method: "POST",
+            headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
+        }).then(function (response) {
+            if (response.status === 401) {
+                document.location.href = "/";
+            }
+            return response.json()
+        }).then(data => {
 
+            dispatch({
+                type: DELETE_FACILITY,
+                pos: pos
+            });
+
+            console.log("Локация удалена \n", data);
+        }).catch(function (error) {
+            console.log('Локация не удалена \n', error.message);
+        });
+    }
+};
 export const get_search_list_facility = (data) => {
     return dispatch => {
         dispatch({

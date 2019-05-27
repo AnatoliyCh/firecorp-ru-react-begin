@@ -65,6 +65,7 @@ class Technicians extends Component {
                     </thead>
                     <tbody>
                     {list_technicians.map((technician, i) => {
+                        technician = (technician.user || {}).ref;
                         const phone = ((technician.account || {}).loginPhone || {}).value;
                         return (
                             <tr key={i.toString()} className="d-flex">
