@@ -1,13 +1,13 @@
 import React, {Component, Fragment} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
-import $ from 'jquery';
 import {
     get_list_facility,
     get_search_list_facility,
     reverse_list_facility,
     add_facility,
-    edit_facility
+    edit_facility,
+    delete_facility
 } from './ducks'
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -43,18 +43,48 @@ class Facility extends Component {
         }
         this.props.get_search_list_facility(filterList);
     };
-
+    handleSelectAddFacility = () => {
+        this.setState({
+            popupState: "add",
+            id: "",
+            name: "",
+            contractor: "",
+            location: "",
+            address: "",
+            technician: ""
+        });
+    };
+    handleSelectEditFacility = (id, pos, identifier, name, contractor, address, location) => {
+        this.setState({
+            popupState: "edit",
+            idEditElement: id,
+            posEditElement: pos,
+            id: identifier,
+            name: name,
+            contractor: contractor,
+            address: address,
+            location: location
+        })
+    };
     handleSubmitAddFacility = event => {
         event.preventDefault();
         const data = JSON.stringify({identifier: this.state.id, name: this.state.name});
         this.props.add_facility(data);
-        this.clearDialog();
     };
     handleSubmitEditFacility = event => {
         event.preventDefault();
-        const data = JSON.stringify({identifier: this.state.id, name: this.state.name, oid: this.state.idEditElement});
-        this.props.edit_facility(data, this.state.posEditElement, this.state.idEditElement);
-        this.clearDialog();
+        const data = this.props.search_list_facility;
+        data[this.state.posEditElement].identifier = this.state.id;
+        data[this.state.posEditElement].name = this.state.name;
+        /*Потребуется потом!*/
+        //data[this.state.posEditElement].contractor = this.state.contractor;
+        //data[this.state.posEditElement].address = this.state.address;
+        //data[this.state.posEditElement].location = this.state.location;
+        const body = data[this.state.posEditElement];
+        this.props.edit_facility(body, this.state.posEditElement);
+    };
+    handleSubmitDeleteFacility = (id, pos) => {
+        this.props.delete_facility(id, pos);
     };
     handleChangeIdFacility = event => {
         event.preventDefault();
@@ -77,14 +107,6 @@ class Facility extends Component {
         this.setState({address: event.target.value});
     };
 
-    clearDialog = () => {
-        $('#interactFacilityId').val('');
-        $('#interactFacilityName').val('');
-        $('#interactFacilityContractor').val('');
-        $('#interactFacilityLocation').val('');
-        $('#interactFacilityAddress').val('');
-    };
-
     render() {
         const list_facility = Object.values(this.props.search_list_facility);
         const arrow = this.props.sortUp_facility ? <i className="fas fa-angle-down"> </i> :
@@ -100,7 +122,7 @@ class Facility extends Component {
                     <div className="col-sm-4 col-xl-2 mt-3">
                         <button className="btn btn-outline-danger col-12" data-toggle="modal"
                                 data-target="#interactFacility"
-                                onClick={() => this.setState({popupState: "add"})}>Добавить объект
+                                onClick={this.handleSelectAddFacility}>Добавить объект
                         </button>
                     </div>
                 </div>
@@ -142,17 +164,14 @@ class Facility extends Component {
                                 <td className="col-1">
                                     <button className="font-awesome-button" data-toggle="modal"
                                             data-target="#interactFacility"
-                                            onClick={() => this.setState({
-                                                popupState: "edit",
-                                                idEditElement: facility.oid,
-                                                posEditElement: i,
-                                                id: facility.identifier,
-                                                name: facility.name,
-                                                contractor: contractorName,
-                                                address: `${street} ${home} ${office}`,
-                                                location: location,
-                                            })}><i
-                                        className="fas fa-pencil-alt"> </i>
+                                            onClick={() => this.handleSelectEditFacility(facility.oid, i, facility.identifier, facility.name, contractorName, `${street} ${home} ${office}`, location)}>
+                                        <i className="fas fa-pencil-alt"/>
+                                    </button>
+                                    <button type="button" className="btn delete_button"
+                                            data-toggle="modal"
+                                            data-target="#deleteLocation"
+                                            onClick={() => this.handleSubmitDeleteFacility(facility.oid, i)}>
+                                        <i className="fas fa-trash-alt"/>
                                     </button>
                                 </td>
                             </tr>
@@ -232,7 +251,8 @@ const mapDispatchToProps = dispatch =>
             get_search_list_facility,
             reverse_list_facility,
             add_facility,
-            edit_facility
+            edit_facility,
+            delete_facility
         },
         dispatch
     );

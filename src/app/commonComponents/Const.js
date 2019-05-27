@@ -58,11 +58,16 @@ export const ALL_MAINTENANCE_PATH = "/api/maintenance/list?mode=0&level=7";
 
 export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
 export const ADD_FACILITY_PATH = "/api/facility/add";
+export const DELETE_FACILITY_PATH = "/api/entity/delete?entity=Объект";
 export const FACILITY_UPDATE_PATH = "/api/facility/update";
 
 export const ALL_LOCATIONS_PATH = "/api/servicezone/list?mode=0&level=7";
 export const ADD_LOCATION_PATH = "/api/servicezone/add";
+export const DELETE_LOCATION_PATH = "/api/entity/delete?entity=Локация";
 export const LOCATION_UPDATE_PATH = "/api/servicezone/update";
+
+export const ALL_TECHNICIANS_PATH = "/api/technician/list?mode=0&level=7";
+export const TECHNICIANS_UPDATE_PATH = "/api/technician/update";
 
 export const ALL_CONTRACTOR_PATH = "/api/contractor/list?mode=0";
 

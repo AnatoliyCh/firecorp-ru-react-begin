@@ -1,4 +1,4 @@
-import {PATH_USERS_ALL, IP_HOST} from "../../commonComponents/Const";
+import {PATH_USERS_ALL, IP_HOST, ALL_TECHNICIANS_PATH} from "../../commonComponents/Const";
 import * as allConst from "../../commonComponents/Const";
 
 export const GET_LIST_TECHNICIANS = 'GET_LIST_TECHNICIANS';
@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
 
 /*actions*/
 export const get_list_technicians = () => {
-    return dispatch => fetch(`${IP_HOST}${PATH_USERS_ALL}`, {
+    return dispatch => fetch(`${IP_HOST}${ALL_TECHNICIANS_PATH}`, {
         method: "GET",
         headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
     }).then(function (response) {
@@ -61,8 +61,6 @@ export const get_list_technicians = () => {
             return comparison;
         }
 
-        /*Получаем только техников по typeid = 4*/
-        data = data.filter(user => user.typeId === 4).sort(compare);
         dispatch({
             type: GET_LIST_TECHNICIANS,
             list_technicians: data,
@@ -71,9 +69,9 @@ export const get_list_technicians = () => {
             type: GET_SEARCH_LIST_TECHNICIANS,
             search_list_technicians: data
         });
-        console.log("Список пользователей получен \n", data);
+        console.log("Список техников получен \n", data);
     }).catch(function (error) {
-        console.log('Список пользователей не получен \n', error.message);
+        console.log('Список техников не получен \n', error.message);
     });
 };
 
