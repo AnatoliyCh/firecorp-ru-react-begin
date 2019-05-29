@@ -68,9 +68,10 @@ class Locations extends Component {
     handleSubmitEditLocation = event => {
         event.preventDefault();
         const data = this.props.list_locations;
+        const technicians = this.props.list_technicians;
         data[this.state.posEditElement].name = this.state.name;
         const body = data[this.state.posEditElement];
-        this.props.edit_location(body, this.state.posEditElement);
+        this.props.edit_location(body, this.state.posEditElement, technicians, this.state.technicians);
     };
     handleSubmitDeleteLocation = (id, pos) => {
         this.props.delete_location(id, pos);
@@ -81,7 +82,6 @@ class Locations extends Component {
     };
     handleChangeTechnicianLocation = (technicians) => {
         this.setState({technicians: technicians});
-        console.log(`Option selected:`, technicians);
     };
 
     getTechniciansOptions = (list) => {
@@ -103,7 +103,6 @@ class Locations extends Component {
 
         /*Опции для выбора техников*/
         const options = this.getTechniciansOptions(this.props.list_technicians);
-        console.log(this.state.technicians, "tech");
         return (
             <Fragment>
                 <div className="row">

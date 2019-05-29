@@ -55,16 +55,17 @@ class Technicians extends Component {
                 <table className="table mt-3 text-center">
                     <thead className="thead-light">
                     <tr className="d-flex">
-                        <th className="col-1"> </th>
+                        <th className="col-1"></th>
                         <th className="col-5 sort-button" onClick={this.props.reverse_list_technicians}>ФИО {arrow}</th>
                         <th className="col-2">Телефон</th>
-                        <th className="col-2">Локация</th>
+                        <th className="col-2">Локации</th>
                         <th className="col-1">Статус</th>
-                        <th className="col-1"> </th>
+                        <th className="col-1"></th>
                     </tr>
                     </thead>
                     <tbody>
                     {list_technicians.map((technician, i) => {
+                        const locations = technician.zones.map(location => (location.ref || {}).name);
                         technician = (technician.user || {}).ref;
                         const phone = ((technician.account || {}).loginPhone || {}).value;
                         return (
@@ -75,7 +76,9 @@ class Technicians extends Component {
                                 </td>
                                 <td className="col-5">{technician.lastName} {technician.firstName} {technician.middleName}</td>
                                 <td className="col-2">{phone}</td>
-                                <td className="col-2">Локация</td>
+                                <td className="col-2">
+                                    {locations.map(location => `${location}\n`)}
+                                </td>
                                 <td className="col-1">Статус</td>
                                 <td className="col-1">
                                     <button className="font-awesome-button" data-toggle="modal"

@@ -59,18 +59,10 @@ export default (state = initialState, action) => {
                 sortUp_locations: !state.sortUp_locations
             };
         case ADD_LOCATION:
-            state.list_locations[state.list_locations.length] = action.new_location;
             return {
                 ...state,
-                list_locations: [...state.list_locations],
-                search_list_locations: [...state.list_locations]
-            };
-        case ADD_LOCATION2:
-            state.list_locations[state.list_locations.length - 1] = action.new_location;
-            return {
-                ...state,
-                list_locations: [...state.list_locations],
-                search_list_locations: [...state.list_locations]
+                list_locations: [...state.list_locations, action.new_location],
+                search_list_locations: [...state.list_locations, action.new_location]
             };
         case EDIT_LOCATION:
             state.list_locations[action.pos] = action.new_edit_location;
@@ -135,15 +127,17 @@ export const add_location = (body, list_technicians, add_technicians) => {
                 $('#interactLocation').modal('toggle');
             });
             body = Object.assign(JSON.parse(body), {oid: data});
-
             body["technicians"] = [];
 
-            const kostyl = 1;
+            /*В promises добавляются промисы каждого добавленного техника к локации
+            * Только после добавления всех техников будет вызван callback, при котором
+            * все техники будут задиспатчены и отображены*/
+            let promises = [];
             add_technicians.map(technician => {
                 let ind = list_technicians.findIndex(t => t.oid === technician.id);
                 list_technicians[ind].zones = [...list_technicians[ind].zones, {oid: data}];
 
-                fetch(`${IP_HOST}${TECHNICIANS_UPDATE_PATH}`, {
+                let promise = fetch(`${IP_HOST}${TECHNICIANS_UPDATE_PATH}`, {
                     method: "POST",
                     headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
                     body: JSON.stringify(list_technicians[ind])
@@ -160,31 +154,29 @@ export const add_location = (body, list_technicians, add_technicians) => {
                             }
                         }
                     }];
-                    if(kostyl) {
-                        dispatch({
-                            type: ADD_LOCATION,
-                            new_location: body
-                        });
-                    } else {
-                        dispatch({
-                            type: ADD_LOCATION2,
-                            new_location: body
-                        });
-                    }
-
                     console.log("Прикреплен техник к локации \n", d);
                 }).catch(function (e) {
                     console.log('Не прикреплен техник к локации \n', e.message);
                 });
+                promises.push(promise);
             });
-
+            Promise.all(promises)
+                .then(() => {
+                    dispatch({
+                        type: ADD_LOCATION,
+                        new_location: body
+                    });
+                    console.log('Все техники прикреплены к локации')
+                })
+                .catch((e) => console.error('Не все техники прикрепились к локации'));
             console.log("Локация добавлена \n", data);
+        }).catch(function (e) {
+            console.log('Локация не добавлена \n', e.message);
         });
-
     }
 };
 
-export const edit_location = (body, pos) => {
+export const edit_location = (body, pos, list_technicians, edit_technicians) => {
     return dispatch => {
         fetch(`${IP_HOST}${LOCATION_UPDATE_PATH}`, {
             method: "POST",
@@ -200,15 +192,48 @@ export const edit_location = (body, pos) => {
                 $('#interactLocation').modal('toggle');
             });
 
-            dispatch({
-                type: EDIT_LOCATION,
-                new_edit_location: body,
-                pos: pos
+            let promises = [];
+            edit_technicians.map(technician => {
+                let ind = list_technicians.findIndex(t => t.oid === technician.id);
+                list_technicians[ind].zones = [...list_technicians[ind].zones, {oid: body.oid}];
+
+                let promise = fetch(`${IP_HOST}${TECHNICIANS_UPDATE_PATH}`, {
+                    method: "POST",
+                    headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
+                    body: JSON.stringify(list_technicians[ind])
+                }).then(function (response) {
+                    return response.json()
+                }).then(d => {
+
+                    body["technicians"] = [...body["technicians"], {
+                        user: {
+                            ref: {
+                                lastName: technician.value.split(" ")[0],
+                                firstName: technician.value.split(" ")[1][0],
+                                middleName: technician.value.split(" ")[1][2]
+                            }
+                        }
+                    }];
+                    console.log("Прикреплен техник к локации \n", d);
+                }).catch(function (e) {
+                    console.log('Не прикреплен техник к локации \n', e.message);
+                });
+                promises.push(promise);
             });
 
+            Promise.all(promises)
+                .then(() => {
+                    dispatch({
+                        type: EDIT_LOCATION,
+                        new_edit_location: body,
+                        pos: pos
+                    });
+                    console.log('Все техники изменены у локации')
+                })
+                .catch((e) => console.error('Не все техники изменены у локации'));
             console.log("Локация изменена \n", data);
-        }).catch(function (error) {
-            console.log('Локация не изменена \n', error.message);
+        }).catch(function (e) {
+            console.log('Локация не изменена \n', e.message);
         });
     }
 };
