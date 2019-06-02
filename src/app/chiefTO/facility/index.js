@@ -13,7 +13,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getFIO} from "../../commonComponents/Const";
 import {withPolling} from "../../commonComponents/withPolling";
-import Select from "../locations";
+import Select from 'react-select';
 import {get_list_locations} from "../locations/ducks";
 
 class Facility extends Component {
