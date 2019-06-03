@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react'
-import Select from 'react-select';
 import '../index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
@@ -14,16 +13,14 @@ import {
     reverse_list_locations
 } from './ducks'
 import {getFIO} from "../../commonComponents/Const";
-import {get_list_technicians} from "../technicians/ducks";
+import {get_list_technicians, edit_technician} from "../technicians/ducks";
 
 class Locations extends Component {
     state = {
         name: "",
-        technicians: [],
         popupState: "",
         idEditElement: null,
-        posEditElement: null,
-        selectedOption: null,
+        posEditElement: null
     };
 
     componentDidMount() {
@@ -47,23 +44,20 @@ class Locations extends Component {
         this.setState({
             popupState: "add",
             name: "",
-            technicians: []
         });
     };
-    handleSelectEditLocation = (name, id, pos, technicians) => {
+    handleSelectEditLocation = (name, id, pos) => {
         this.setState({
             popupState: "edit",
             name: name,
-            technicians: technicians,
             idEditElement: id,
             posEditElement: pos
         });
     };
     handleSubmitAddLocation = event => {
         event.preventDefault();
-        const technicians = this.props.list_technicians;
         const data = JSON.stringify({name: this.state.name});
-        this.props.add_location(data, technicians, this.state.technicians);
+        this.props.add_location(data);
     };
     handleSubmitEditLocation = event => {
         event.preventDefault();
@@ -73,27 +67,21 @@ class Locations extends Component {
         this.props.edit_location(body, this.state.posEditElement);
     };
     handleSubmitDeleteLocation = (id, pos) => {
+        const data = this.props.list_locations;
+
+        let deletedTechnicians = data[pos].technicians.map(x => x.oid);
+
+        deletedTechnicians.map(technicianOid => {
+            let indEditTechnician = this.props.list_technicians.findIndex(x => x.oid === technicianOid);
+            let indDelLocation = this.props.list_technicians[indEditTechnician].zones.findIndex(x => x.oid === id);
+            this.props.list_technicians[indEditTechnician].zones.splice(indDelLocation, 1);
+            this.props.edit_technician(0, this.props.list_technicians[indEditTechnician]);
+        });
         this.props.delete_location(id, pos);
     };
     handleChangeNameLocation = event => {
         event.preventDefault();
         this.setState({name: event.target.value});
-    };
-    handleChangeTechnicianLocation = (technicians) => {
-        this.setState({technicians: technicians});
-        console.log(`Option selected:`, technicians);
-    };
-
-    getTechniciansOptions = (list) => {
-        return list.map(technician => {
-            let id = technician.oid;
-            technician = (technician.user || {}).ref;
-            return {
-                id: id,
-                value: getFIO(technician),
-                label: getFIO(technician)
-            };
-        });
     };
 
     render() {
@@ -101,9 +89,6 @@ class Locations extends Component {
         const arrow = this.props.sortUp_locations ? <i className="fas fa-angle-down"> </i> :
             <i className="fas fa-angle-up"> </i>;
 
-        /*Опции для выбора техников*/
-        const options = this.getTechniciansOptions(this.props.list_technicians);
-        console.log(this.state.technicians, "tech");
         return (
             <Fragment>
                 <div className="row">
@@ -131,18 +116,17 @@ class Locations extends Component {
                     </thead>
                     <tbody>
                     {list_locations.map((location, i) => {
-                        let techniciansOptions = this.getTechniciansOptions(location.technicians === undefined ? [] : location.technicians);
                         let technicians = location.technicians === undefined ? [] : location.technicians.map(technician => getFIO((technician.user || {}).ref));
                         technicians.map(technician => technician);
                         return (
-                            <tr key={i.toString()} data-mydatafield="asdasdasdaad" className="d-flex">
+                            <tr key={i.toString()} className="d-flex">
                                 <td className="col">{location.name}</td>
                                 <td className="col">Кол-во объектов</td>
                                 <td className="col">{technicians}</td>
                                 <td className="col-1">
                                     <button className="font-awesome-button" data-toggle="modal"
                                             data-target="#interactLocation"
-                                            onClick={() => this.handleSelectEditLocation(location.name, location.oid, i, techniciansOptions)}>
+                                            onClick={() => this.handleSelectEditLocation(location.name, location.oid, i)}>
                                         <i className="fas fa-pencil-alt"/>
                                     </button>
                                     <button type="button" className="btn delete_button"
@@ -176,17 +160,6 @@ class Locations extends Component {
                                            onChange={this.handleChangeNameLocation} required
                                            value={this.state.name}/>
                                 </div>
-                                <div className="modal-body pt-2 pb-2">
-                                    <p>Ответственные техники</p>
-                                    <Select
-                                        value={this.state.technicians}
-                                        onChange={this.handleChangeTechnicianLocation}
-                                        options={options}
-                                        isMulti={true}
-                                        placeholder={"Выберите ответственных техников"}
-                                        className={"multiselect"}
-                                    />
-                                </div>
                                 <div className="modal-footer">
                                     <button type="submit" className="btn btn-outline-danger">
                                         {this.state.popupState === "add" ? 'Добавить' : 'Изменить'}
@@ -217,7 +190,8 @@ const mapDispatchToProps = dispatch =>
             get_list_locations,
             get_search_list_locations,
             reverse_list_locations,
-            get_list_technicians
+            get_list_technicians,
+            edit_technician
         },
         dispatch
     );

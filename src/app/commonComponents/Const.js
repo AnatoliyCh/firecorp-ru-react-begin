@@ -83,7 +83,6 @@ export function setCurrentUser(newCurrentUser) {
 //возвращение текущего пользователя
 export function getCurrentUser() {
     return JSON.parse(localStorage.getItem('UserData')) == null ? 'empty' : JSON.parse(localStorage.getItem('UserData'));
-
 }
 
 export function getFIO(user) {

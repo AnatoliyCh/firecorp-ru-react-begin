@@ -20,6 +20,7 @@
     "gh-pages": "^2.0.1",
     "interactjs": "^1.4.2",
     "jquery": "^3.4.0",
+    "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "new-react-calendar-timeline": "^2.2.0",
     "popper.js": "^1.15.0",

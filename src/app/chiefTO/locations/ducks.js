@@ -3,7 +3,7 @@ import {
     ALL_LOCATIONS_PATH,
     DELETE_LOCATION_PATH,
     IP_HOST,
-    LOCATION_UPDATE_PATH, TECHNICIANS_UPDATE_PATH
+    LOCATION_UPDATE_PATH
 } from "../../commonComponents/Const";
 import $ from 'jquery';
 import * as allConst from "../../commonComponents/Const";
@@ -12,7 +12,6 @@ export const GET_LIST_LOCATIONS = 'GET_LIST_LOCATIONS';
 export const GET_SEARCH_LIST_LOCATIONS = 'GET_SEARCH_LIST_LOCATIONS';
 export const REVERSE_LIST_LOCATIONS = 'REVERSE_LIST_LOCATIONS';
 export const ADD_LOCATION = 'ADD_LOCATION';
-export const ADD_LOCATION2 = 'ADD_LOCATION2';
 export const EDIT_LOCATION = 'EDIT_LOCATION';
 export const DELETE_LOCATION = 'DELETE_LOCATION';
 
@@ -59,18 +58,10 @@ export default (state = initialState, action) => {
                 sortUp_locations: !state.sortUp_locations
             };
         case ADD_LOCATION:
-            state.list_locations[state.list_locations.length] = action.new_location;
             return {
                 ...state,
-                list_locations: [...state.list_locations],
-                search_list_locations: [...state.list_locations]
-            };
-        case ADD_LOCATION2:
-            state.list_locations[state.list_locations.length - 1] = action.new_location;
-            return {
-                ...state,
-                list_locations: [...state.list_locations],
-                search_list_locations: [...state.list_locations]
+                list_locations: [...state.list_locations, action.new_location],
+                search_list_locations: [...state.list_locations, action.new_location]
             };
         case EDIT_LOCATION:
             state.list_locations[action.pos] = action.new_edit_location;
@@ -119,7 +110,7 @@ export const get_list_locations = () => {
     }
 };
 
-export const add_location = (body, list_technicians, add_technicians) => {
+export const add_location = (body) => {
     return dispatch => {
         fetch(`${IP_HOST}${ADD_LOCATION_PATH}`, {
             method: "POST",
@@ -136,51 +127,15 @@ export const add_location = (body, list_technicians, add_technicians) => {
             });
             body = Object.assign(JSON.parse(body), {oid: data});
 
-            body["technicians"] = [];
-
-            const kostyl = 1;
-            add_technicians.map(technician => {
-                let ind = list_technicians.findIndex(t => t.oid === technician.id);
-                list_technicians[ind].zones = [...list_technicians[ind].zones, {oid: data}];
-
-                fetch(`${IP_HOST}${TECHNICIANS_UPDATE_PATH}`, {
-                    method: "POST",
-                    headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
-                    body: JSON.stringify(list_technicians[ind])
-                }).then(function (response) {
-                    return response.json()
-                }).then(d => {
-
-                    body["technicians"] = [...body["technicians"], {
-                        user: {
-                            ref: {
-                                lastName: technician.value.split(" ")[0],
-                                firstName: technician.value.split(" ")[1][0],
-                                middleName: technician.value.split(" ")[1][2]
-                            }
-                        }
-                    }];
-                    if(kostyl) {
-                        dispatch({
-                            type: ADD_LOCATION,
-                            new_location: body
-                        });
-                    } else {
-                        dispatch({
-                            type: ADD_LOCATION2,
-                            new_location: body
-                        });
-                    }
-
-                    console.log("Прикреплен техник к локации \n", d);
-                }).catch(function (e) {
-                    console.log('Не прикреплен техник к локации \n', e.message);
-                });
+            dispatch({
+                type: ADD_LOCATION,
+                new_location: body
             });
 
             console.log("Локация добавлена \n", data);
+        }).catch(function (e) {
+            console.log('Локация не добавлена \n', e.message);
         });
-
     }
 };
 
@@ -207,8 +162,8 @@ export const edit_location = (body, pos) => {
             });
 
             console.log("Локация изменена \n", data);
-        }).catch(function (error) {
-            console.log('Локация не изменена \n', error.message);
+        }).catch(function (e) {
+            console.log('Локация не изменена \n', e.message);
         });
     }
 };

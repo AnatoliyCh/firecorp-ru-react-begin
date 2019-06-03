@@ -13,6 +13,8 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getFIO} from "../../commonComponents/Const";
 import {withPolling} from "../../commonComponents/withPolling";
+import Select from 'react-select';
+import {get_list_locations} from "../locations/ducks";
 
 class Facility extends Component {
     state = {
@@ -24,11 +26,12 @@ class Facility extends Component {
         technician: "",
         popupState: "",
         idEditElement: null,
-        posEditElement: null
+        posEditElement: null,
     };
 
     componentDidMount() {
         this.props.get_list_facility();
+        this.props.get_list_locations();
     }
 
     /*Функция для поиска объектов (фильтрование списков объектов)*/
@@ -98,20 +101,30 @@ class Facility extends Component {
         event.preventDefault();
         this.setState({contractor: event.target.value});
     };
-    handleSelectLocationFacility = event => {
-        event.preventDefault();
-        this.setState({location: event.target.value});
+    handleChangeLocationFacility = (location) => {
+        this.setState({location: location});
     };
     handleChangeAddressFacility = event => {
         event.preventDefault();
         this.setState({address: event.target.value});
     };
-
+    getLocationsOptions = (list) => {
+        return list.map(location => {
+            let id = location.oid;
+            return {
+                id: id,
+                value: location.name,
+                label: location.name
+            };
+        });
+    };
     render() {
         const list_facility = Object.values(this.props.search_list_facility);
         const arrow = this.props.sortUp_facility ? <i className="fas fa-angle-down"> </i> :
             <i className="fas fa-angle-up"> </i>;
 
+        /*Опции для выбора локации*/
+        const options = this.getLocationsOptions(this.props.list_locations);
         return (
             <Fragment>
                 <div className="row">
@@ -211,11 +224,16 @@ class Facility extends Component {
                                            value={this.state.contractor}/>
                                 </div>
                                 <div className="modal-body pt-2 pb-2">
-                                    <label htmlFor="interactFacilityLocation">Локация</label>
-                                    <input className="form-control" id="interactFacilityLocation" type="text"
-                                           placeholder="Выберите локацию"
-                                           onChange={this.handleSelectLocationFacility}
-                                           value={this.state.location}/>
+
+                                    <p>Локация</p>
+                                    <Select
+                                        value={this.state.location}
+                                        onChange={this.handleChangeLocationFacility}
+                                        options={options}
+                                        //isMulti={true}
+                                        placeholder={"Выберите локацию"}
+                                        className={"multiselect"}
+                                    />
                                 </div>
                                 <div className="modal-body pt-2 pb-2">
                                     <label htmlFor="interactFacilityAddress">Адрес</label>
@@ -238,10 +256,11 @@ class Facility extends Component {
     }
 }
 
-const mapStateToProps = ({listFacility}) => ({
+const mapStateToProps = ({listFacility, listLocations}) => ({
     list_facility: listFacility.list_facility,
     search_list_facility: listFacility.search_list_facility,
-    sortUp_facility: listFacility.sortUp_facility
+    sortUp_facility: listFacility.sortUp_facility,
+    list_locations: listLocations.list_locations,
 });
 
 const mapDispatchToProps = dispatch =>
@@ -252,7 +271,8 @@ const mapDispatchToProps = dispatch =>
             reverse_list_facility,
             add_facility,
             edit_facility,
-            delete_facility
+            delete_facility,
+            get_list_locations
         },
         dispatch
     );
