@@ -3,7 +3,7 @@ import {
     ALL_LOCATIONS_PATH,
     DELETE_LOCATION_PATH,
     IP_HOST,
-    LOCATION_UPDATE_PATH, TECHNICIANS_UPDATE_PATH
+    LOCATION_UPDATE_PATH
 } from "../../commonComponents/Const";
 import $ from 'jquery';
 import * as allConst from "../../commonComponents/Const";
@@ -12,7 +12,6 @@ export const GET_LIST_LOCATIONS = 'GET_LIST_LOCATIONS';
 export const GET_SEARCH_LIST_LOCATIONS = 'GET_SEARCH_LIST_LOCATIONS';
 export const REVERSE_LIST_LOCATIONS = 'REVERSE_LIST_LOCATIONS';
 export const ADD_LOCATION = 'ADD_LOCATION';
-export const ADD_LOCATION2 = 'ADD_LOCATION2';
 export const EDIT_LOCATION = 'EDIT_LOCATION';
 export const DELETE_LOCATION = 'DELETE_LOCATION';
 
@@ -111,7 +110,7 @@ export const get_list_locations = () => {
     }
 };
 
-export const add_location = (body, list_technicians, add_technicians) => {
+export const add_location = (body) => {
     return dispatch => {
         fetch(`${IP_HOST}${ADD_LOCATION_PATH}`, {
             method: "POST",
@@ -127,48 +126,12 @@ export const add_location = (body, list_technicians, add_technicians) => {
                 $('#interactLocation').modal('toggle');
             });
             body = Object.assign(JSON.parse(body), {oid: data});
-            body["technicians"] = [];
 
-            /*В promises добавляются промисы каждого добавленного техника к локации
-            * Только после добавления всех техников будет вызван callback, при котором
-            * все техники будут задиспатчены и отображены*/
-            let promises = [];
-            add_technicians.map(technician => {
-                let ind = list_technicians.findIndex(t => t.oid === technician.id);
-                list_technicians[ind].zones = [...list_technicians[ind].zones, {oid: data}];
-
-                let promise = fetch(`${IP_HOST}${TECHNICIANS_UPDATE_PATH}`, {
-                    method: "POST",
-                    headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
-                    body: JSON.stringify(list_technicians[ind])
-                }).then(function (response) {
-                    return response.json()
-                }).then(d => {
-
-                    body["technicians"] = [...body["technicians"], {
-                        user: {
-                            ref: {
-                                lastName: technician.value.split(" ")[0],
-                                firstName: technician.value.split(" ")[1][0],
-                                middleName: technician.value.split(" ")[1][2]
-                            }
-                        }
-                    }];
-                    console.log("Прикреплен техник к локации \n", d);
-                }).catch(function (e) {
-                    console.log('Не прикреплен техник к локации \n', e.message);
-                });
-                promises.push(promise);
+            dispatch({
+                type: ADD_LOCATION,
+                new_location: body
             });
-            Promise.all(promises)
-                .then(() => {
-                    dispatch({
-                        type: ADD_LOCATION,
-                        new_location: body
-                    });
-                    console.log('Все техники прикреплены к локации')
-                })
-                .catch((e) => console.error('Не все техники прикрепились к локации'));
+
             console.log("Локация добавлена \n", data);
         }).catch(function (e) {
             console.log('Локация не добавлена \n', e.message);
@@ -176,7 +139,7 @@ export const add_location = (body, list_technicians, add_technicians) => {
     }
 };
 
-export const edit_location = (body, pos, list_technicians, edit_technicians) => {
+export const edit_location = (body, pos) => {
     return dispatch => {
         fetch(`${IP_HOST}${LOCATION_UPDATE_PATH}`, {
             method: "POST",
@@ -192,45 +155,12 @@ export const edit_location = (body, pos, list_technicians, edit_technicians) => 
                 $('#interactLocation').modal('toggle');
             });
 
-            let promises = [];
-            edit_technicians.map(technician => {
-                let ind = list_technicians.findIndex(t => t.oid === technician.id);
-                list_technicians[ind].zones = [...list_technicians[ind].zones, {oid: body.oid}];
-
-                let promise = fetch(`${IP_HOST}${TECHNICIANS_UPDATE_PATH}`, {
-                    method: "POST",
-                    headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
-                    body: JSON.stringify(list_technicians[ind])
-                }).then(function (response) {
-                    return response.json()
-                }).then(d => {
-
-                    body["technicians"] = [...body["technicians"], {
-                        user: {
-                            ref: {
-                                lastName: technician.value.split(" ")[0],
-                                firstName: technician.value.split(" ")[1][0],
-                                middleName: technician.value.split(" ")[1][2]
-                            }
-                        }
-                    }];
-                    console.log("Прикреплен техник к локации \n", d);
-                }).catch(function (e) {
-                    console.log('Не прикреплен техник к локации \n', e.message);
-                });
-                promises.push(promise);
+            dispatch({
+                type: EDIT_LOCATION,
+                new_edit_location: body,
+                pos: pos
             });
 
-            Promise.all(promises)
-                .then(() => {
-                    dispatch({
-                        type: EDIT_LOCATION,
-                        new_edit_location: body,
-                        pos: pos
-                    });
-                    console.log('Все техники изменены у локации')
-                })
-                .catch((e) => console.error('Не все техники изменены у локации'));
             console.log("Локация изменена \n", data);
         }).catch(function (e) {
             console.log('Локация не изменена \n', e.message);

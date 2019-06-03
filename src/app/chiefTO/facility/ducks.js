@@ -6,7 +6,6 @@ import {
 } from "../../commonComponents/Const";
 import * as allConst from '../../commonComponents/Const';
 import $ from "jquery";
-import {DELETE_LOCATION} from "../locations/ducks";
 
 export const GET_LIST_FACILITY = 'GET_LIST_FACILITY';
 export const GET_SEARCH_LIST_FACILITY = 'GET_SEARCH_LIST_FACILITY';

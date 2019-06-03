@@ -63,11 +63,11 @@ class Technicians extends Component {
 
         deletedLocation.map(location => {
             let ind = technicians[this.state.posEditElement].zones.findIndex(x => x.oid === location.id);
-            technicians[this.state.posEditElement].zones.splice(ind, 1);
+            return technicians[this.state.posEditElement].zones.splice(ind, 1);
         });
 
         addedLocations.map(location => {
-            technicians[this.state.posEditElement].zones = [...technicians[this.state.posEditElement].zones, {
+            return technicians[this.state.posEditElement].zones = [...technicians[this.state.posEditElement].zones, {
                 oid: location.id,
                 ref: {name: location.name}
             }];
