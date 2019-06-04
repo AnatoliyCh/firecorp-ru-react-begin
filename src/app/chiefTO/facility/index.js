@@ -8,7 +8,8 @@ import {
     add_facility,
     edit_facility,
     delete_facility,
-    get_list_contractor
+    get_list_contractor,
+    add_technician_to_facility
 } from './ducks'
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -59,7 +60,7 @@ class Facility extends Component {
             technician: ""
         });
     };
-    handleSelectEditFacility = (id, pos, identifier, name, contractor, address, location) => {
+    handleSelectEditFacility = (id, pos, identifier, name, contractor, address, location, technician) => {
         this.setState({
             popupState: "edit",
             idEditElement: id,
@@ -68,6 +69,7 @@ class Facility extends Component {
             name: name,
             contractor: contractor,
             address: address,
+            technician: technician,
             location: location,
         })
     };
@@ -79,8 +81,21 @@ class Facility extends Component {
             oid: this.state.contractor.id,
             ref: {name: this.state.contractor.value, INN: this.state.contractor.INN}
         };
+        let idTechnician = this.state.technician.id;
+        let nameTechnician = this.state.technician.value.split(" ");
+        data["technecian"] = {oid: 0,
+            ref: {
+                user: {
+                    ref: {
+                        lastName: nameTechnician[0],
+                        firstName: nameTechnician[1][0],
+                        middleName: nameTechnician[1][2]
+                    }
+                }
+            }
+        };
         let pos = this.props.list_facility.length - 1;
-        this.props.add_facility(JSON.stringify(data), pos);
+        this.props.add_facility(JSON.stringify(data), pos, idTechnician);
     };
     handleSubmitEditFacility = event => {
         event.preventDefault();
@@ -92,11 +107,23 @@ class Facility extends Component {
             oid: this.state.contractor.id,
             ref: {name: this.state.contractor.value, INN: this.state.contractor.INN}
         };
+        let idTechnician = this.state.technician.id;
+        let nameTechnician = this.state.technician.value.split(" ");
+        data["technecian"] = {oid: 0,
+            ref: {
+                user: {
+                    ref: {
+                        lastName: nameTechnician[0],
+                        firstName: nameTechnician[1][0],
+                        middleName: nameTechnician[1][2]
+                    }
+                }
+            }
+        };
 
         /*Потребуется потом!*/
         //data[this.state.posEditElement].address = this.state.address;
-        //data[this.state.posEditElement].location = this.state.location;
-        this.props.edit_facility(data, this.state.posEditElement);
+        this.props.edit_facility(data, this.state.posEditElement,idTechnician);
     };
     handleSubmitDeleteFacility = (id, pos) => {
         this.props.delete_facility(id, pos);
@@ -112,6 +139,9 @@ class Facility extends Component {
     handleChangeContractorFacility = (contractor) => {
         this.setState({contractor: contractor});
     };
+    handleChangeTechnicianFacility = (technician) => {
+        this.setState({technician: technician});
+    };
     handleChangeLocationFacility = (location) => {
         this.setState({location: location});
     };
@@ -119,16 +149,18 @@ class Facility extends Component {
         event.preventDefault();
         this.setState({address: event.target.value});
     };
+
     getLocationOption = (list) => {
         list = list.map(location => {
-            let id = location.oid;
             return {
-                id: id,
+                id: location.oid,
                 value: location.name,
-                label: location.name
+                label: location.name,
+                technicians: location.technicians
             };
         });
-        list.unshift({id: 0, value: '', label: 'Выберите локацию'});
+
+        list.unshift({id: 0, value: '', label: 'Выберите локацию', technicians: []});
         return list;
     };
     getContractorOption = (list) => {
@@ -143,15 +175,35 @@ class Facility extends Component {
         list.unshift({id: 0, value: '', label: 'Выберите контрагент'});
         return list;
     };
+    getTechnicianOption = (list) => {
+        console.log(list, "before")
+        if (list) {
+            list = list.map(technician => {
+                return {
+                    id: technician.oid,
+                    value: getFIO((technician.user || {}).ref),
+                    label: getFIO((technician.user || {}).ref)
+                };
+            });
+            list.unshift({id: 0, value: '', label: 'Выберите техника'});
+            console.log(list, "list is exist")
+        } else {
+            list = [];
+            console.log(list, "list is not exist")
+        }
+        return list;
+    };
 
     render() {
         const list_facility = Object.values(this.props.search_list_facility);
         const arrow = this.props.sortUp_facility ? <i className="fas fa-angle-down"> </i> :
             <i className="fas fa-angle-up"> </i>;
 
-        /*Опции для выбора локации*/
+        /*Опции для выбора*/
         const options = this.getLocationOption(this.props.list_locations);
         const contractorOptions = this.getContractorOption(this.props.list_contractor);
+        const technicianOptions = this.getTechnicianOption(this.state.location.technicians);
+        console.log(this.state.location.technicians, "state")
         return (
             <Fragment>
                 <div className="row">
@@ -184,10 +236,17 @@ class Facility extends Component {
                     </thead>
                     <tbody>
                     {list_facility.map((facility, i) => {
+                        /*Обосрись сколько доделывать*/
                         let locationOption = facility.zone.ref ? {
                             id: facility.zone.oid,
                             value: facility.zone.ref.name,
-                            label: facility.zone.ref.name
+                            label: facility.zone.ref.name,
+                            //technicians: this.props.list_locations
+
+                                /*facility.technecian.oid !== 0 ? [{
+                                oid: facility.technecian.oid,
+                                user: {ref: facility.technecian.ref.user.ref}
+                            }] : []*/
                         } : {id: 0, value: '', label: 'Введите локацию'};
                         let contractorOption = facility.contractor.ref ? {
                             id: facility.contractor.oid,
@@ -195,6 +254,12 @@ class Facility extends Component {
                             value: facility.contractor.ref.name,
                             label: facility.contractor.ref.name
                         } : {id: 0, value: '', label: 'Введите контрагент'};
+                        let technicianOption = facility.technecian.ref ? {
+                            id: facility.technecian.oid,
+                            value: getFIO(facility.technecian.ref.user.ref),
+                            label: getFIO(facility.technecian.ref.user.ref),
+                        } : {id: 0, value: '', label: 'Введите техника'};
+
                         const street = (facility.address || {}).street;
                         const home = (facility.address || {}).home;
                         const office = (facility.address || {}).office === "" ? "" : `оф. ${(facility.address || {}).office}`;
@@ -206,7 +271,8 @@ class Facility extends Component {
                             <tr key={i.toString()} className="d-flex">
                                 <td className="col-1">{facility.identifier}</td>
                                 <td className="col-1">{facility.name}</td>
-                                <td className="col-2">{contractorName} {<br/>} {contractorINN ? `ИНН: ${contractorINN}` : ""}</td>
+                                <td className="col-2">{contractorName} {
+                                    <br/>} {contractorINN ? `ИНН: ${contractorINN}` : ""}</td>
                                 <td className="col-2">{street} {home} {office}</td>
                                 <td className="col-1">{location}</td>
                                 <td className="col-1">Кол-во работ</td>
@@ -215,7 +281,7 @@ class Facility extends Component {
                                 <td className="col-1">
                                     <button className="font-awesome-button" data-toggle="modal"
                                             data-target="#interactFacility"
-                                            onClick={() => this.handleSelectEditFacility(facility.oid, i, facility.identifier, facility.name, contractorOption, `${street} ${home} ${office}`, locationOption)}>
+                                            onClick={() => this.handleSelectEditFacility(facility.oid, i, facility.identifier, facility.name, contractorOption, `${street} ${home} ${office}`, locationOption, technicianOption)}>
                                         <i className="fas fa-pencil-alt"/>
                                     </button>
                                     <button type="button" className="btn delete_button"
@@ -275,6 +341,16 @@ class Facility extends Component {
                                     />
                                 </div>
                                 <div className="modal-body pt-2 pb-2">
+                                    <p>Техник</p>
+                                    <Select
+                                        value={this.state.technician}
+                                        onChange={this.handleChangeTechnicianFacility}
+                                        options={technicianOptions}
+                                        placeholder={"Выберите техника"}
+                                        className={"multiselect"}
+                                    />
+                                </div>
+                                <div className="modal-body pt-2 pb-2">
                                     <label htmlFor="interactFacilityAddress">Адрес</label>
                                     <input className="form-control" id="interactFacilityAddress" type="text"
                                            placeholder="Введите адрес"
@@ -313,7 +389,8 @@ const mapDispatchToProps = dispatch =>
             edit_facility,
             delete_facility,
             get_list_locations,
-            get_list_contractor
+            get_list_contractor,
+            add_technician_to_facility
         },
         dispatch
     );

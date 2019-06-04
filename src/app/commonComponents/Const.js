@@ -60,6 +60,7 @@ export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
 export const ADD_FACILITY_PATH = "/api/facility/add";
 export const DELETE_FACILITY_PATH = "/api/entity/delete?entity=Объект";
 export const FACILITY_UPDATE_PATH = "/api/facility/update";
+export const ADD_TECHNICIAN_TO_FACILITY_PATH = '/api/facility/technecian/assign';
 
 export const ALL_LOCATIONS_PATH = "/api/servicezone/list?mode=0&level=7";
 export const ADD_LOCATION_PATH = "/api/servicezone/add";

@@ -3,6 +3,7 @@ import {
     ALL_FACILITY_PATH, DELETE_FACILITY_PATH,
     FACILITY_UPDATE_PATH,
     IP_HOST,
+    ADD_TECHNICIAN_TO_FACILITY_PATH,
 } from "../../commonComponents/Const";
 import * as allConst from '../../commonComponents/Const';
 import $ from "jquery";
@@ -14,6 +15,7 @@ export const ADD_FACILITY = 'ADD_FACILITY';
 export const EDIT_FACILITY = 'EDIT_FACILITY';
 export const DELETE_FACILITY = 'DELETE_FACILITY';
 export const GET_LIST_CONTRACTOR = 'GET_LIST_CONTRACTOR';
+export const ADD_TECHNICIAN_TO_FACILITY = 'ADD_TECHNICIAN_TO_FACILITY';
 
 const initialState = {
     list_facility: [],
@@ -67,6 +69,11 @@ export default (state = initialState, action) => {
                 ...state,
                 list_contractor: action.list_contractor
             };
+        case ADD_TECHNICIAN_TO_FACILITY:
+            return {
+                ...state,
+                list_contractor: action.list_contractor
+            };
         default:
             return state
     }
@@ -100,8 +107,9 @@ export const get_list_facility = () => {
     });
 };
 
-export const add_facility = (body, pos) => {
+export const add_facility = (body, pos, technicianid) => {
     return dispatch => {
+
         fetch(`${IP_HOST}${ADD_FACILITY_PATH}`, {
             method: "POST",
             headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
@@ -117,14 +125,26 @@ export const add_facility = (body, pos) => {
             });
             body = Object.assign(JSON.parse(body), {oid: data});
 
-            dispatch({
-                type: ADD_FACILITY,
-                new_facility: body
+            fetch(`${IP_HOST}${ADD_TECHNICIAN_TO_FACILITY_PATH}?id=${data}&technicianid=${technicianid}&datems=0`, {
+                method: "POST",
+                headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
+            }).then(function (response) {
+                if (response.status === 401) {
+                    document.location.href = "/";
+                }
+                return response.json()
+            }).then(data => {
+
+
+                dispatch({
+                    type: ADD_FACILITY,
+                    new_facility: body
+                });
+
+                console.log("Объекту назначен техник \n", data);
+            }).catch(function (error) {
+                console.log('Объекту не назначен техник \n', error.message);
             });
-
-            edit_facility(body, pos);
-            console.log(body);
-
 
             console.log("Объект добавлен \n", data);
         }).catch(function (error) {
@@ -133,7 +153,7 @@ export const add_facility = (body, pos) => {
     }
 };
 
-export const edit_facility = (body, pos) => {
+export const edit_facility = (body, pos, technicianid) => {
     return dispatch => {
         fetch(`${IP_HOST}${FACILITY_UPDATE_PATH}`, {
             method: "POST",
@@ -149,10 +169,26 @@ export const edit_facility = (body, pos) => {
                 $('#interactFacility').modal('toggle');
             });
 
-            dispatch({
-                type: EDIT_FACILITY,
-                new_edit_facility: body,
-                pos: pos
+            fetch(`${IP_HOST}${ADD_TECHNICIAN_TO_FACILITY_PATH}?id=${data}&technicianid=${technicianid}&datems=0`, {
+                method: "POST",
+                headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
+            }).then(function (response) {
+                if (response.status === 401) {
+                    document.location.href = "/";
+                }
+                return response.json()
+            }).then(data => {
+
+
+                dispatch({
+                    type: EDIT_FACILITY,
+                    new_edit_facility: body,
+                    pos: pos
+                });
+
+                console.log("Объекту назначен техник \n", data);
+            }).catch(function (error) {
+                console.log('Объекту не назначен техник \n', error.message);
             });
 
             console.log("Объект изменен \n", data);
@@ -221,5 +257,27 @@ export const get_list_contractor = () => {
         console.log("Список контрагентов получен \n", data);
     }).catch(function (error) {
         console.log('Список контрагентов не получен \n', error.message);
+    });
+};
+
+export const add_technician_to_facility = (id, technicianid) => {
+    fetch(`${IP_HOST}${ADD_TECHNICIAN_TO_FACILITY_PATH}?id=${id}&technicianid=${technicianid}&datems=0`, {
+        method: "POST",
+        headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
+    }).then(function (response) {
+        if (response.status === 401) {
+            document.location.href = "/";
+        }
+        return response.json()
+    }).then(data => {
+
+        /*dispatch({
+            type: GET_LIST_CONTRACTOR,
+            list_contractor: data
+        });*/
+
+        console.log("Объекту назначен техник \n", data);
+    }).catch(function (error) {
+        console.log('Объекту не назначен техник \n', error.message);
     });
 };
