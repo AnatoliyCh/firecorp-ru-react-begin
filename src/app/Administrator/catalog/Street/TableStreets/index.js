@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
+import $ from 'jquery';
 
 class TableStreets extends Component {
 
@@ -20,7 +21,7 @@ class TableStreets extends Component {
         return (
             <Fragment>
                 {rows.length ?
-                    <table className="table table-sm table-hover">
+                    <table id="tblStreets" className="table table-sm table-hover">
                         <thead className="thead-light">
                         <tr>
                             <th className="oidTHead" scope="col">oid</th>
