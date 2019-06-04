@@ -16,6 +16,7 @@ let typeStreet = new Map([
 class Street extends Component {
     state = {
         isLoading: false,//загрузка
+        isUpdate: false,//обновление данных
     };
 
     componentDidMount() {
@@ -31,9 +32,31 @@ class Street extends Component {
             return response.json();
         }).then(data => {
             this.props.setArrStreetFunc(this.sortData(data));
+            setTimeout(this.updateStreets, allConst.getTiming(2));//подключаем обновление списка
             this.setState({isLoading: false});
         }).catch((error) => {
             console.log(error.message);
+            setTimeout(this.getAPIStreets, allConst.getTiming(1));
+            this.setState({isLoading: false});
+        });
+    };
+
+    updateStreets = () => {
+        console.log("updateStreets");
+        this.setState({isUpdate: true});
+        fetch(`${allConst.IP_HOST}${allConst.PATH_STREETS_ACTUAL}`, {
+            method: 'GET',
+            headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
+        }).then(function (response) {
+            return response.json();
+        }).then(data => {
+            this.props.setArrStreetFunc(this.sortData(data));
+            setTimeout(this.updateStreets, allConst.getTiming(2));
+            this.setState({isUpdate: false});
+        }).catch((error) => {
+            console.log(error.message);
+            setTimeout(this.getAPIStreets, allConst.getTiming(1));
+            this.setState({isUpdate: false});
         });
     };
 

@@ -101,6 +101,10 @@ export const ROLES = new Map([
     [9, "Заказчик"],
 ]);
 
+export function getTiming (min) {
+    return (min * 60000);
+}
+
 export function redirect(typeId) {
     if (getCurrentUser().typeId !== typeId)
         switch (getCurrentUser().typeId) {
