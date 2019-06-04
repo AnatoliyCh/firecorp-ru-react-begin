@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
+import $ from 'jquery';
 import '../styles.css';
 import '../../../commonComponents/styles.css';
 import * as allConst from "../../../commonComponents/Const";
@@ -16,7 +17,9 @@ let typeStreet = new Map([
 class Street extends Component {
     state = {
         isLoading: false,//загрузка
+        arrStreet: [],//массив всех сущностей
         isUpdate: false,//обновление данных
+        isSearch: false, //поиск
     };
 
     componentDidMount() {
@@ -31,7 +34,9 @@ class Street extends Component {
         }).then(function (response) {
             return response.json();
         }).then(data => {
-            this.props.setArrStreetFunc(this.sortData(data));
+            this.setState({arrStreet: this.sortData(data)});//сохраняем полный массив
+            if (this.state.isSearch) this.props.setArrStreetFunc(this.filtration());//если поиск то фильтруем и показываем
+            else this.props.setArrStreetFunc(this.state.arrStreet);//иначе показываем полный массив
             setTimeout(this.updateStreets, allConst.getTiming(2));//подключаем обновление списка
             this.setState({isLoading: false});
         }).catch((error) => {
@@ -50,7 +55,9 @@ class Street extends Component {
         }).then(function (response) {
             return response.json();
         }).then(data => {
-            this.props.setArrStreetFunc(this.sortData(data));
+            this.setState({arrStreet: this.sortData(data)});
+            if (this.state.isSearch) this.props.setArrStreetFunc(this.filtration());
+            else this.props.setArrStreetFunc(this.state.arrStreet);
             setTimeout(this.updateStreets, allConst.getTiming(2));
             this.setState({isUpdate: false});
         }).catch((error) => {
@@ -72,22 +79,44 @@ class Street extends Component {
         return data;
     };
 
+    search = () => {
+        let tmpStr = $('#search').val();
+        if (tmpStr === "" || tmpStr === " ") {
+            this.setState({isSearch: false});
+            this.props.setArrStreetFunc(this.state.arrStreet);
+        }
+        else {
+            this.setState({isSearch: true});
+            this.filtration();
+        }
+    };
+
+    filtration = () => {
+        let filteredArr = [];
+        let regExp = new RegExp($('#search').val());
+        this.state.arrStreet.forEach((itemData, iData) =>{
+            if (itemData.name.search(regExp) !== -1) filteredArr.push(itemData);
+        });
+        this.props.setArrStreetFunc(filteredArr);
+    };
+
     render() {
-        //<div className="row"> испрвить
         return (
             <Fragment>
-                <div className="row">
-                    <form className="col-sm-8 col-xl-10 mt-3">
-                        <input className="form-control" type="search" placeholder="Поиск по названию улиц"
-                               aria-label="Search" onChange=""/>
-                    </form>
-                    <div className="btn-group col-sm-4 col-xl-2 mt-3">
-                        <div className="form-group">
-                            <select className="form-control" id="addProfessor">
-                                <option className="dropdown-item" hidden value=''>Статус</option>
-                                <option className="dropdown-item">Уволен</option>
-                                <option className="dropdown-item">В отпуске</option>
-                            </select>
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-sm-8 col-xl-10 mt-3">
+                            <input id="search" className="form-control" type="search" placeholder="Поиск по названию улиц"
+                                   aria-label="Search" onChange={this.search}/>
+                        </div>
+                        <div className="btn-group col-sm-4 col-xl-2 mt-3">
+                            <div className="form-group">
+                                <select className="form-control" id="addProfessor">
+                                    <option className="dropdown-item" hidden value=''>Тип</option>
+                                    <option className="dropdown-item">Уволен</option>
+                                    <option className="dropdown-item">В отпуске</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
