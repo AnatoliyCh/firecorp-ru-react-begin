@@ -23,7 +23,7 @@ const Header = ({match}) => (
                     <Link to={`${match.url}/notifications`} className="nav-item nav-link">Уведомления</Link>
                     <Link to={`${match.url}/locations`} className="nav-item nav-link">Локации</Link>
                     <Link to={`${match.url}/technicians`} className="nav-item nav-link">Техники</Link>
-                    <Link to={`${match.url}/monthlyto`} className="nav-item nav-link">Ежемесячное ТО</Link>
+                    <Link to={`${match.url}/order`} className="nav-item nav-link">Регламентные работы</Link>
                     <Link to={`${match.url}/facility`} className="nav-item nav-link">Объекты</Link>
                     <Link to={`${match.url}/calendar`} className="nav-item nav-link">Календарь</Link>
                     <Link to={`${match.url}/map`} className="nav-item nav-link">Карта</Link>

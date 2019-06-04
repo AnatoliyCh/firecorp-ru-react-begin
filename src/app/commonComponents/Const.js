@@ -54,7 +54,7 @@ export const PATH_JOBTYPE_ALL = "/api/jobtype/list?mode=1";
 export const PATH_JOBTYPE_DELETED = "/api/jobtype/list?mode=2";
 
 export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
-export const ALL_MAINTENANCE_PATH = "/api/maintenance/list?mode=0&level=7";
+export const ALL_MAINTENANCE_PATH = "/api/order/list?mode=0&level=7";
 
 export const ALL_FACILITY_PATH = "/api/facility/list?mode=0&level=7";
 export const ADD_FACILITY_PATH = "/api/facility/add";
@@ -66,6 +66,8 @@ export const ALL_LOCATIONS_PATH = "/api/servicezone/list?mode=0&level=7";
 export const ADD_LOCATION_PATH = "/api/servicezone/add";
 export const DELETE_LOCATION_PATH = "/api/entity/delete?entity=Локация";
 export const LOCATION_UPDATE_PATH = "/api/servicezone/update";
+
+export const ALL_ORDER_PATH = '/api/order/list?mode=0&level=7';
 
 export const ALL_TECHNICIANS_PATH = "/api/technician/list?mode=0&level=7";
 export const TECHNICIANS_UPDATE_PATH = "/api/technician/update";
