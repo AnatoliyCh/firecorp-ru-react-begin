@@ -1,10 +1,20 @@
-import {ADD_LOCATION_PATH, ALL_LOCATIONS_PATH, IP_HOST} from "../../commonComponents/Const";
+import {
+    ADD_LOCATION_PATH,
+    ALL_LOCATIONS_PATH,
+    DELETE_LOCATION_PATH,
+    IP_HOST,
+    LOCATION_UPDATE_PATH
+} from "../../commonComponents/Const";
 import $ from 'jquery';
 import * as allConst from "../../commonComponents/Const";
+
 export const GET_LIST_LOCATIONS = 'GET_LIST_LOCATIONS';
 export const GET_SEARCH_LIST_LOCATIONS = 'GET_SEARCH_LIST_LOCATIONS';
 export const REVERSE_LIST_LOCATIONS = 'REVERSE_LIST_LOCATIONS';
 export const ADD_LOCATION = 'ADD_LOCATION';
+export const EDIT_LOCATION = 'EDIT_LOCATION';
+export const DELETE_LOCATION = 'DELETE_LOCATION';
+
 
 const initialState = {
     list_locations: [],
@@ -51,7 +61,21 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 list_locations: [...state.list_locations, action.new_location],
-                search_list_locations: [...state.search_list_locations, action.new_location]
+                search_list_locations: [...state.list_locations, action.new_location]
+            };
+        case EDIT_LOCATION:
+            state.list_locations[action.pos] = action.new_edit_location;
+            return {
+                ...state,
+                list_locations: [...state.list_locations],
+                search_list_locations: [...state.list_locations]
+            };
+        case DELETE_LOCATION:
+            state.list_locations.splice(action.pos, 1);
+            return {
+                ...state,
+                list_locations: [...state.list_locations],
+                search_list_locations: [...state.list_locations]
             };
         default:
             return state
@@ -86,7 +110,7 @@ export const get_list_locations = () => {
     }
 };
 
-export const add_location = body => {
+export const add_location = (body) => {
     return dispatch => {
         fetch(`${IP_HOST}${ADD_LOCATION_PATH}`, {
             method: "POST",
@@ -99,20 +123,73 @@ export const add_location = body => {
             return response.json()
         }).then(data => {
             $(function () {
-                $('#addLocation').modal('toggle');
+                $('#interactLocation').modal('toggle');
             });
+            body = Object.assign(JSON.parse(body), {oid: data});
 
             dispatch({
                 type: ADD_LOCATION,
-                new_location: JSON.parse(body)
+                new_location: body
             });
 
             console.log("Локация добавлена \n", data);
-        }).catch(function (error) {
-            console.log('Локация не добавлена \n', error.message);
+        }).catch(function (e) {
+            console.log('Локация не добавлена \n', e.message);
         });
     }
+};
 
+export const edit_location = (body, pos) => {
+    return dispatch => {
+        fetch(`${IP_HOST}${LOCATION_UPDATE_PATH}`, {
+            method: "POST",
+            headers: {'SessionToken': allConst.getCurrentUser().sessionToken},
+            body: JSON.stringify(body)
+        }).then(function (response) {
+            if (response.status === 401) {
+                document.location.href = "/";
+            }
+            return response.json()
+        }).then(data => {
+            $(function () {
+                $('#interactLocation').modal('toggle');
+            });
+
+            dispatch({
+                type: EDIT_LOCATION,
+                new_edit_location: body,
+                pos: pos
+            });
+
+            console.log("Локация изменена \n", data);
+        }).catch(function (e) {
+            console.log('Локация не изменена \n', e.message);
+        });
+    }
+};
+
+export const delete_location = (id, pos) => {
+    return dispatch => {
+        fetch(encodeURI(`${IP_HOST}${DELETE_LOCATION_PATH}&id=${id}`), {
+            method: "POST",
+            headers: {'SessionToken': allConst.getCurrentUser().sessionToken}
+        }).then(function (response) {
+            if (response.status === 401) {
+                document.location.href = "/";
+            }
+            return response.json()
+        }).then(data => {
+
+            dispatch({
+                type: DELETE_LOCATION,
+                pos: pos
+            });
+
+            console.log("Локация удалена \n", data);
+        }).catch(function (error) {
+            console.log('Локация не удалена \n', error.message);
+        });
+    }
 };
 
 export const get_search_list_locations = (data) => {

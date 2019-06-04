@@ -7,20 +7,30 @@
     width: 36%;
 }
 
-#tdButton {
-    padding: 5px;
-    width: 12%;
-    text-align: center;
-}
-#tdLogin #tdPassword #tdLoginPhone{
+#tdLogin #tdPassword #tdLoginPhone {
     width: 16%;
 }
 
+#tdArchive {
+    padding: 5px 5px 5px 0px;
+    width: 3%;
+    height: 1em;
+}
 
-#tdButton button {
-    width: 40px;
-    height: 40px;
+#tdArchive button {
+    min-width: 40px;
+    min-height: 100%;
     padding: 0px;
-    margin-left: 5px;
-    margin-right: 5px;
+}
+
+#tdEdit {
+    padding: 5px 5px 5px 0px;
+    width: 3%;
+    height: 1em;
+}
+
+#tdEdit button {
+    min-width: 40px;
+    min-height: 100%;
+    padding: 0px;
 }

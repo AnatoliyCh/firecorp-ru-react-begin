@@ -6,6 +6,8 @@ import Home from "./home";
 import Locations from "./locations";
 import Technicians from "./technicians";
 import Facility from "./facility";
+import Calender from "./calendar";
+import Map from "./maps";
 
 const ChiefTO = ({match}) => (
     <Fragment>
@@ -17,8 +19,8 @@ const ChiefTO = ({match}) => (
                 <Route path={`${match.path}/technicians`} component={Technicians}/>
                 <Route path={`${match.path}/monthlyto`} component={Home}/>
                 <Route path={`${match.path}/facility`} component={Facility}/>
-                <Route path={`${match.path}/calendar`} component={About}/>
-                <Route path={`${match.path}/map`} component={About}/>
+                <Route path={`${match.path}/calendar`} component={Calender}/>
+                <Route path={`${match.path}/map`} component={Map}/>
             </Switch>
         </div>
     </Fragment>

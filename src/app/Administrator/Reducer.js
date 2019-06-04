@@ -4,6 +4,13 @@ const initialState = {
     arrayUserArrays: [],//итоговый массив групп пользователей (<title>, <data>)
     isSetAPIAddUser: false,//если добавляем пользователя
     indexUserToArray: [-1, -1],//id user в arrayUserArrays
+
+    //списки
+    arrStreet: [], //улицы
+    arrCities: [], //нас. пункты
+    arrImplements: [], //инвентарь
+    arrComponentType: [], //комплектующие
+    arrJobType: [], //типы работ
 };
 
 export default (state = initialState, action) => {
@@ -41,6 +48,17 @@ export default (state = initialState, action) => {
             return {...state, isSetAPIAddUser: action.payload};
         case 'SET_INDEX_USER_TO_ARRAY':
             return {...state, indexUserToArray: action.payload};
+        //списки
+        case 'SET_ARRAY_STREET':
+            return {...state, arrStreet: action.payload};
+        case 'SET_ARRAY_CITIES':
+            return {...state, arrCities: action.payload};
+        case 'SET_ARRAY_IMPLEMENTS':
+            return {...state, arrImplements: action.payload};
+        case 'SET_ARRAY_COMPONENTTYPE':
+            return {...state, arrComponentType: action.payload};
+        case 'SET_ARRAY_JOBTYPE':
+            return {...state, arrJobType: action.payload};
         default:
             return state
     }
@@ -91,5 +109,47 @@ export function setIndexUserToArray(indUserArr) {
     return {
         type: 'SET_INDEX_USER_TO_ARRAY',
         payload: indUserArr,
+    }
+};
+
+
+//списки
+//действиe для сущности arrStreet(добавление списка улиц)
+export function setArrStreet(arr) {
+    return {
+        type: 'SET_ARRAY_STREET',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrCities(добавление списка нас. пунктов)
+export function setArrCities(arr) {
+    return {
+        type: 'SET_ARRAY_CITIES',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrImplements(добавление списка инвентаря)
+export function setArrImplements(arr) {
+    return {
+        type: 'SET_ARRAY_IMPLEMENTS',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrComponentType(добавление списка комплектующих)
+export function setArrComponentType(arr) {
+    return {
+        type: 'SET_ARRAY_COMPONENTTYPE',
+        payload: arr,
+    }
+};
+
+//действиe для сущности arrJobType(добавление списка типов работ)
+export function setArrJobType(arr) {
+    return {
+        type: 'SET_ARRAY_JOBTYPE',
+        payload: arr,
     }
 };

@@ -20,6 +20,7 @@ class AddEditDialogBoxUsers extends Component {
             $('#addLoginPhone').val('');
             $('#selectRole').val(2);
             $('#headerModal').html("Создание");
+            $('#btn').html("Добавить");
             //dialogMode = 0 применяется в пользователях
         });
     };
@@ -65,6 +66,7 @@ class AddEditDialogBoxUsers extends Component {
             newUser.lastName = newDataUser.lastName;
             newUser.middleName = newDataUser.middleName;
             newUser.account = newDataUser.account;
+            console.log(newUser)
             fetch(`${allConst.IP_HOST}${allConst.PATH_API_USER_UPDATE}`, {
                 method: 'POST',
                 headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},

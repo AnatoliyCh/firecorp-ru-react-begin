@@ -5,11 +5,12 @@ import {setArrayUserArrays} from '../../Reducer';
 import {setDialogMode} from '../../../commonComponents/Reducer';
 import './styles.css';
 import * as allConst from '../../../commonComponents/Const';
+import AddEditDialogBoxUsers from '../../Users/AddEditDialogBoxUsers';
 import Loading from '../../../commonComponents/Loading/SpinnerCustom/index';
 import SpinnerDanger from '../../../commonComponents/Loading/BootstrapBorderSpinnerDangerSmall';
 import Footer from '../../../commonComponents/Footer';
 
-class Users extends Component {
+class UsersActual extends Component {
     state = {
         isLoading: false,//загрузка
     };
@@ -35,11 +36,15 @@ class Users extends Component {
         let usersLists = [];//итоговый массив групп пользователей
         allConst.ROLES.forEach(function (itemMap, i) {
             let usersNew = [];//отсортированные и обработанные пользователи
-            data.forEach(function (itemData) {
+            data.forEach(function (itemData, iData) {
                 if (i === itemData.typeId) usersNew.push(itemData);//сортировка
             });
             usersLists.push({title: itemMap, data: usersNew});
         });
+        let othersUsersNew = [];
+        data.forEach(function (itemData, iData) { if (!allConst.ROLES.has(+(itemData.typeId))) othersUsersNew.push(itemData); });
+        usersLists.sort((a, b) => { return a.data.length - b.data.length; });
+        usersLists.push({title: "Другие", data: othersUsersNew});
         this.props.setArrayUserArraysInStore(usersLists);
         this.setState({isLoading: false});
     };
@@ -63,13 +68,13 @@ class Users extends Component {
                     this.state.isLoading ? <Loading/>
                         :
                         <Fragment>
+                            <AddEditDialogBoxUsers/>
                             <div className="container">
                                 <div className="row justify-content-center">
-                                    <div className="col-12 col-md-12">
+                                    <div className="col-md-12">
                                         <div className="div_UsersRowBtnNewUser">
                                             <div className="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                                <button id="btnNewUser" className="btn btn-outline-secondary" onClick={this.btnNewUserOnClick}
-                                                        data-toggle="modal" data-target="#myModal" disabled={this.props.isSetAPIAddUser}>
+                                                <button id="btnNewUser" className="btn btn-outline-secondary" onClick={this.btnNewUserOnClick} data-toggle="modal" data-target="#myModal" disabled={this.props.isSetAPIAddUser}>
                                                     <i className="fas fa-user-plus fa-lg"/> Создание нового пользователя
                                                 </button>
                                                 {this.props.isSetAPIAddUser === true ?
@@ -92,7 +97,10 @@ class Users extends Component {
 
 // приклеиваем данные из store
 const mapStateToProps = store => {
-    return store.administratorReducer;
+    return {
+        arrayUserArrays: store.administratorReducer.arrayUserArrays,
+        isSetAPIAddUser: store.administratorReducer.isSetAPIAddUser,
+    }
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
@@ -104,4 +112,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Users)
+)(UsersActual)
