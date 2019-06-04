@@ -7,7 +7,9 @@ import {
     reverse_list_facility,
     add_facility,
     edit_facility,
-    delete_facility
+    delete_facility,
+    get_list_contractor,
+    add_technician_to_facility
 } from './ducks'
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -32,6 +34,7 @@ class Facility extends Component {
     componentDidMount() {
         this.props.get_list_facility();
         this.props.get_list_locations();
+        this.props.get_list_contractor();
     }
 
     /*Функция для поиска объектов (фильтрование списков объектов)*/
@@ -57,7 +60,7 @@ class Facility extends Component {
             technician: ""
         });
     };
-    handleSelectEditFacility = (id, pos, identifier, name, contractor, address, location) => {
+    handleSelectEditFacility = (id, pos, identifier, name, contractor, address, location, technician) => {
         this.setState({
             popupState: "edit",
             idEditElement: id,
@@ -66,25 +69,61 @@ class Facility extends Component {
             name: name,
             contractor: contractor,
             address: address,
-            location: location
+            technician: technician,
+            location: location,
         })
     };
     handleSubmitAddFacility = event => {
         event.preventDefault();
-        const data = JSON.stringify({identifier: this.state.id, name: this.state.name});
-        this.props.add_facility(data);
+        let data = {identifier: this.state.id, name: this.state.name};
+        data["zone"] = {oid: this.state.location.id, ref: {name: this.state.location.value}};
+        data["contractor"] = {
+            oid: this.state.contractor.id,
+            ref: {name: this.state.contractor.value, INN: this.state.contractor.INN}
+        };
+        let idTechnician = this.state.technician.id;
+        let nameTechnician = this.state.technician.value.split(" ");
+        data["technecian"] = {oid: 0,
+            ref: {
+                user: {
+                    ref: {
+                        lastName: nameTechnician[0],
+                        firstName: nameTechnician[1][0],
+                        middleName: nameTechnician[1][2]
+                    }
+                }
+            }
+        };
+        let pos = this.props.list_facility.length - 1;
+        this.props.add_facility(JSON.stringify(data), pos, idTechnician);
     };
     handleSubmitEditFacility = event => {
         event.preventDefault();
-        const data = this.props.search_list_facility;
-        data[this.state.posEditElement].identifier = this.state.id;
-        data[this.state.posEditElement].name = this.state.name;
+        const data = this.props.list_facility[this.state.posEditElement];
+        data.identifier = this.state.id;
+        data.name = this.state.name;
+        data["zone"] = {oid: this.state.location.id, ref: {name: this.state.location.value}};
+        data["contractor"] = {
+            oid: this.state.contractor.id,
+            ref: {name: this.state.contractor.value, INN: this.state.contractor.INN}
+        };
+        let idTechnician = this.state.technician.id;
+        let nameTechnician = this.state.technician.value.split(" ");
+        data["technecian"] = {oid: 0,
+            ref: {
+                user: {
+                    ref: {
+                        lastName: nameTechnician[0],
+                        firstName: nameTechnician[1][0],
+                        middleName: nameTechnician[1][2]
+                    }
+                }
+            }
+        };
+
         /*Потребуется потом!*/
-        //data[this.state.posEditElement].contractor = this.state.contractor;
         //data[this.state.posEditElement].address = this.state.address;
-        //data[this.state.posEditElement].location = this.state.location;
-        const body = data[this.state.posEditElement];
-        this.props.edit_facility(body, this.state.posEditElement);
+        this.props.edit_facility(data, this.state.posEditElement,idTechnician);
     };
     handleSubmitDeleteFacility = (id, pos) => {
         this.props.delete_facility(id, pos);
@@ -97,9 +136,11 @@ class Facility extends Component {
         event.preventDefault();
         this.setState({name: event.target.value});
     };
-    handleSelectContractorFacility = event => {
-        event.preventDefault();
-        this.setState({contractor: event.target.value});
+    handleChangeContractorFacility = (contractor) => {
+        this.setState({contractor: contractor});
+    };
+    handleChangeTechnicianFacility = (technician) => {
+        this.setState({technician: technician});
     };
     handleChangeLocationFacility = (location) => {
         this.setState({location: location});
@@ -108,23 +149,61 @@ class Facility extends Component {
         event.preventDefault();
         this.setState({address: event.target.value});
     };
-    getLocationsOptions = (list) => {
-        return list.map(location => {
-            let id = location.oid;
+
+    getLocationOption = (list) => {
+        list = list.map(location => {
             return {
-                id: id,
+                id: location.oid,
                 value: location.name,
-                label: location.name
+                label: location.name,
+                technicians: location.technicians
             };
         });
+
+        list.unshift({id: 0, value: '', label: 'Выберите локацию', technicians: []});
+        return list;
     };
+    getContractorOption = (list) => {
+        list = list.map(contractor => {
+            return {
+                id: contractor.oid,
+                value: contractor.name,
+                INN: contractor.INN,
+                label: contractor.name
+            };
+        });
+        list.unshift({id: 0, value: '', label: 'Выберите контрагент'});
+        return list;
+    };
+    getTechnicianOption = (list) => {
+        console.log(list, "before")
+        if (list) {
+            list = list.map(technician => {
+                return {
+                    id: technician.oid,
+                    value: getFIO((technician.user || {}).ref),
+                    label: getFIO((technician.user || {}).ref)
+                };
+            });
+            list.unshift({id: 0, value: '', label: 'Выберите техника'});
+            console.log(list, "list is exist")
+        } else {
+            list = [];
+            console.log(list, "list is not exist")
+        }
+        return list;
+    };
+
     render() {
         const list_facility = Object.values(this.props.search_list_facility);
         const arrow = this.props.sortUp_facility ? <i className="fas fa-angle-down"> </i> :
             <i className="fas fa-angle-up"> </i>;
 
-        /*Опции для выбора локации*/
-        const options = this.getLocationsOptions(this.props.list_locations);
+        /*Опции для выбора*/
+        const options = this.getLocationOption(this.props.list_locations);
+        const contractorOptions = this.getContractorOption(this.props.list_contractor);
+        const technicianOptions = this.getTechnicianOption(this.state.location.technicians);
+        console.log(this.state.location.technicians, "state")
         return (
             <Fragment>
                 <div className="row">
@@ -157,18 +236,43 @@ class Facility extends Component {
                     </thead>
                     <tbody>
                     {list_facility.map((facility, i) => {
+                        /*Обосрись сколько доделывать*/
+                        let locationOption = facility.zone.ref ? {
+                            id: facility.zone.oid,
+                            value: facility.zone.ref.name,
+                            label: facility.zone.ref.name,
+                            //technicians: this.props.list_locations
+
+                                /*facility.technecian.oid !== 0 ? [{
+                                oid: facility.technecian.oid,
+                                user: {ref: facility.technecian.ref.user.ref}
+                            }] : []*/
+                        } : {id: 0, value: '', label: 'Введите локацию'};
+                        let contractorOption = facility.contractor.ref ? {
+                            id: facility.contractor.oid,
+                            INN: facility.contractor.ref.INN,
+                            value: facility.contractor.ref.name,
+                            label: facility.contractor.ref.name
+                        } : {id: 0, value: '', label: 'Введите контрагент'};
+                        let technicianOption = facility.technecian.ref ? {
+                            id: facility.technecian.oid,
+                            value: getFIO(facility.technecian.ref.user.ref),
+                            label: getFIO(facility.technecian.ref.user.ref),
+                        } : {id: 0, value: '', label: 'Введите техника'};
+
                         const street = (facility.address || {}).street;
                         const home = (facility.address || {}).home;
                         const office = (facility.address || {}).office === "" ? "" : `оф. ${(facility.address || {}).office}`;
                         const technician = getFIO((((facility.technecian || {}).ref || {}).user || {}).ref);
-                        const location = ((((facility.technecian || {}).ref || {}).zone || {}).ref || {}).name;
+                        const location = ((facility.zone || {}).ref || {}).name;
                         const contractorName = ((facility.contractor || {}).ref || {}).name;
                         const contractorINN = ((facility.contractor || {}).ref || {}).INN;
                         return (
                             <tr key={i.toString()} className="d-flex">
                                 <td className="col-1">{facility.identifier}</td>
                                 <td className="col-1">{facility.name}</td>
-                                <td className="col-2">{contractorName} {<br/>} {`ИНН: ${contractorINN}`}</td>
+                                <td className="col-2">{contractorName} {
+                                    <br/>} {contractorINN ? `ИНН: ${contractorINN}` : ""}</td>
                                 <td className="col-2">{street} {home} {office}</td>
                                 <td className="col-1">{location}</td>
                                 <td className="col-1">Кол-во работ</td>
@@ -177,7 +281,7 @@ class Facility extends Component {
                                 <td className="col-1">
                                     <button className="font-awesome-button" data-toggle="modal"
                                             data-target="#interactFacility"
-                                            onClick={() => this.handleSelectEditFacility(facility.oid, i, facility.identifier, facility.name, contractorName, `${street} ${home} ${office}`, location)}>
+                                            onClick={() => this.handleSelectEditFacility(facility.oid, i, facility.identifier, facility.name, contractorOption, `${street} ${home} ${office}`, locationOption, technicianOption)}>
                                         <i className="fas fa-pencil-alt"/>
                                     </button>
                                     <button type="button" className="btn delete_button"
@@ -217,21 +321,32 @@ class Facility extends Component {
                                            onChange={this.handleChangeNameFacility} required value={this.state.name}/>
                                 </div>
                                 <div className="modal-body pt-2 pb-2">
-                                    <label htmlFor="interactContractorName">Контрагент</label>
-                                    <input className="form-control" id="interactContractorName" type="text"
-                                           placeholder="Выберите контрагента"
-                                           onChange={this.handleSelectContractorFacility}
-                                           value={this.state.contractor}/>
+                                    <p>Контрагент</p>
+                                    <Select
+                                        value={this.state.contractor}
+                                        onChange={this.handleChangeContractorFacility}
+                                        options={contractorOptions}
+                                        placeholder={"Выберите контрагент"}
+                                        className={"multiselect"}
+                                    />
                                 </div>
                                 <div className="modal-body pt-2 pb-2">
-
                                     <p>Локация</p>
                                     <Select
                                         value={this.state.location}
                                         onChange={this.handleChangeLocationFacility}
                                         options={options}
-                                        //isMulti={true}
                                         placeholder={"Выберите локацию"}
+                                        className={"multiselect"}
+                                    />
+                                </div>
+                                <div className="modal-body pt-2 pb-2">
+                                    <p>Техник</p>
+                                    <Select
+                                        value={this.state.technician}
+                                        onChange={this.handleChangeTechnicianFacility}
+                                        options={technicianOptions}
+                                        placeholder={"Выберите техника"}
                                         className={"multiselect"}
                                     />
                                 </div>
@@ -260,6 +375,7 @@ const mapStateToProps = ({listFacility, listLocations}) => ({
     list_facility: listFacility.list_facility,
     search_list_facility: listFacility.search_list_facility,
     sortUp_facility: listFacility.sortUp_facility,
+    list_contractor: listFacility.list_contractor,
     list_locations: listLocations.list_locations,
 });
 
@@ -272,7 +388,9 @@ const mapDispatchToProps = dispatch =>
             add_facility,
             edit_facility,
             delete_facility,
-            get_list_locations
+            get_list_locations,
+            get_list_contractor,
+            add_technician_to_facility
         },
         dispatch
     );
