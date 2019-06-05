@@ -1,13 +1,13 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
-import {setArrStreet} from "../../../Reducer";
+import {setArrStreet, setSortHeader} from "../../../Reducer";
 
 class TableStreets extends Component {
     state = {
         headersMap: new Map([
-            [0, {name: "oid", sortMode: "no"}],
-            [1, {name: "Тип", sortMode: "no"}],
-            [2, {name: "Название", sortMode: "no"}],
+            [0, {name: "oid", th: "oid", sortMode: "no"}],
+            [1, {name: "Тип", th: "type",sortMode: "no"}],
+            [2, {name: "Название" ,th: "name", sortMode: "no"}],
         ]),
     };
 
@@ -28,11 +28,12 @@ class TableStreets extends Component {
         let tmpHeadersMap = this.state.headersMap;
         let tmpArrStreet = this.props.arrStreet;
         switch (e.currentTarget.id) {
-            case this.state.headersMap.get(0).name:
+            case this.state.headersMap.get(0).th:
                 if (tmpHeadersMap.get(0).sortMode === "up") {
                     tmpHeadersMap.get(0).sortMode = "down";
                     tmpHeadersMap.get(1).sortMode = "no";
                     tmpHeadersMap.get(2).sortMode = "no";
+                    this.props.setSortHeaderStreetFunc(this.state.headersMap.get(0).th, "down");
                     tmpArrStreet.sort((a, b) => {
                         return a.oid > b.oid ? 1 : -1;
                     });
@@ -42,16 +43,18 @@ class TableStreets extends Component {
                     tmpHeadersMap.get(0).sortMode = "up";
                     tmpHeadersMap.get(1).sortMode = "no";
                     tmpHeadersMap.get(2).sortMode = "no";
+                    this.props.setSortHeaderStreetFunc(this.state.headersMap.get(0).th, "up");
                     tmpArrStreet.sort((a, b) => {
                         return a.oid > b.oid ? 1 : -1;
                     });
                 }
                 break;
-            case this.state.headersMap.get(1).name:
+            case this.state.headersMap.get(1).th:
                 if (tmpHeadersMap.get(1).sortMode === "up") {
                     tmpHeadersMap.get(0).sortMode = "no";
                     tmpHeadersMap.get(1).sortMode = "down";
                     tmpHeadersMap.get(2).sortMode = "no";
+                    this.props.setSortHeaderStreetFunc(this.state.headersMap.get(1).th, "down");
                     tmpArrStreet.sort((a, b) => {
                         return a.typeStr.toLowerCase() > b.typeStr.toLowerCase() ? 1 : -1;
                     });
@@ -61,16 +64,18 @@ class TableStreets extends Component {
                     tmpHeadersMap.get(0).sortMode = "no";
                     tmpHeadersMap.get(1).sortMode = "up";
                     tmpHeadersMap.get(2).sortMode = "no";
+                    this.props.setSortHeaderStreetFunc(this.state.headersMap.get(1).th, "up");
                     tmpArrStreet.sort((a, b) => {
                         return a.typeStr.toLowerCase() > b.typeStr.toLowerCase() ? 1 : -1;
                     });
                 }
                 break;
-            case this.state.headersMap.get(2).name:
+            case this.state.headersMap.get(2).th:
                 if (tmpHeadersMap.get(2).sortMode === "up") {
                     tmpHeadersMap.get(0).sortMode = "no";
                     tmpHeadersMap.get(1).sortMode = "no";
                     tmpHeadersMap.get(2).sortMode = "down";
+                    this.props.setSortHeaderStreetFunc(this.state.headersMap.get(2).th, "down");
                     tmpArrStreet.sort((a, b) => {
                         return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
                     });
@@ -80,10 +85,13 @@ class TableStreets extends Component {
                     tmpHeadersMap.get(0).sortMode = "no";
                     tmpHeadersMap.get(1).sortMode = "no";
                     tmpHeadersMap.get(2).sortMode = "up";
+                    this.props.setSortHeaderStreetFunc(this.state.headersMap.get(2).th, "up");
                     tmpArrStreet.sort((a, b) => {
                         return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
                     });
                 }
+                break;
+            default:
                 break;
         }
         this.setState({headersMap: tmpHeadersMap});
@@ -105,11 +113,11 @@ class TableStreets extends Component {
                     <table id="tblStreets" className="table table-sm table-hover">
                         <thead className="thead-light">
                         <tr>
-                            <th id={this.state.headersMap.get(0).name} className="oidTHead tableHeader" scope="col"
+                            <th id={this.state.headersMap.get(0).th} className="oidTHead tableHeader" scope="col"
                                 onClick={this.sort}>{this.state.headersMap.get(0).name} {arrowOid}</th>
-                            <th id={this.state.headersMap.get(1).name} className="width_10 tableHeader" scope="col"
+                            <th id={this.state.headersMap.get(1).th} className="width_10 tableHeader" scope="col"
                                 onClick={this.sort}>{this.state.headersMap.get(1).name} {arrowType}</th>
-                            <th id={this.state.headersMap.get(2).name} className="tableHeader" scope="col"
+                            <th id={this.state.headersMap.get(2).th} className="tableHeader" scope="col"
                                 onClick={this.sort}>{this.state.headersMap.get(2).name} {arrowName}</th>
                         </tr>
                         </thead>
@@ -142,12 +150,14 @@ class TableStreets extends Component {
 const mapStateToProps = store => {
     return {
         arrStreet: store.administratorReducer.arrStreet,
+        sortHeaderStreet: store.administratorReducer.sortHeaderStreet,
     }
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
     return {
         setArrStreetFunc: arr => dispatch(setArrStreet(arr)),
+        setSortHeaderStreetFunc: (th,mode) => dispatch(setSortHeader(th, mode)),
     }
 };
 export default connect(

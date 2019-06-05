@@ -71,11 +71,10 @@ class Street extends Component {
         data.forEach(function (itemData, iData) {
             itemData.typeStr = typeStreet.get(itemData.type);
         });
-        data.sort((a, b) => {
-            if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
-            if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-            return 0;
-        });
+        if (this.props.sortHeaderStreet[0] === "oid") data.sort((a, b) => { return a.oid > b.oid ? 1 : -1; });
+        else if (this.props.sortHeaderStreet[0] === "type") data.sort((a, b) => { return a.typeStr.toLowerCase() > b.typeStr.toLowerCase() ? 1 : -1; });
+        else if (this.props.sortHeaderStreet[0] === "name") data.sort((a, b) => {  return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1; });
+        if (this.props.sortHeaderStreet[1] === "down") data.reverse();
         return data;
     };
 
@@ -130,6 +129,7 @@ class Street extends Component {
 const mapStateToProps = store => {
     return {
         arrStreet: store.administratorReducer.arrStreet,
+        sortHeaderStreet: store.administratorReducer.sortHeaderStreet,
     }
 };
 //функции для ассинхронного ввода
