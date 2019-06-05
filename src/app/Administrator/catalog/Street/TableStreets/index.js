@@ -1,8 +1,15 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
-import $ from 'jquery';
+import {setArrStreet} from "../../../Reducer";
 
 class TableStreets extends Component {
+    state = {
+        headersMap: new Map([
+            [0, {name: "oid", sortMode: "no"}],
+            [1, {name: "Тип", sortMode: "no"}],
+            [2, {name: "Название", sortMode: "no"}],
+        ]),
+    };
 
     getRowsTable = () => {
         return this.props.arrStreet.map((item, i) => {
@@ -16,17 +23,94 @@ class TableStreets extends Component {
         })
     };
 
+    sort = (e) => {
+        e.preventDefault();
+        let tmpHeadersMap = this.state.headersMap;
+        let tmpArrStreet = this.props.arrStreet;
+        switch (e.currentTarget.id) {
+            case this.state.headersMap.get(0).name:
+                if (tmpHeadersMap.get(0).sortMode === "up") {
+                    tmpHeadersMap.get(0).sortMode = "down";
+                    tmpHeadersMap.get(1).sortMode = "no";
+                    tmpHeadersMap.get(2).sortMode = "no";
+                    tmpArrStreet.sort((a, b) => {
+                        return a.oid > b.oid ? 1 : -1;
+                    });
+                    tmpArrStreet.reverse();
+                }
+                else {
+                    tmpHeadersMap.get(0).sortMode = "up";
+                    tmpHeadersMap.get(1).sortMode = "no";
+                    tmpHeadersMap.get(2).sortMode = "no";
+                    tmpArrStreet.sort((a, b) => {
+                        return a.oid > b.oid ? 1 : -1;
+                    });
+                }
+                break;
+            case this.state.headersMap.get(1).name:
+                if (tmpHeadersMap.get(1).sortMode === "up") {
+                    tmpHeadersMap.get(0).sortMode = "no";
+                    tmpHeadersMap.get(1).sortMode = "down";
+                    tmpHeadersMap.get(2).sortMode = "no";
+                    tmpArrStreet.sort((a, b) => {
+                        return a.typeStr.toLowerCase() > b.typeStr.toLowerCase() ? 1 : -1;
+                    });
+                    tmpArrStreet.reverse();
+                }
+                else {
+                    tmpHeadersMap.get(0).sortMode = "no";
+                    tmpHeadersMap.get(1).sortMode = "up";
+                    tmpHeadersMap.get(2).sortMode = "no";
+                    tmpArrStreet.sort((a, b) => {
+                        return a.typeStr.toLowerCase() > b.typeStr.toLowerCase() ? 1 : -1;
+                    });
+                }
+                break;
+            case this.state.headersMap.get(2).name:
+                if (tmpHeadersMap.get(2).sortMode === "up") {
+                    tmpHeadersMap.get(0).sortMode = "no";
+                    tmpHeadersMap.get(1).sortMode = "no";
+                    tmpHeadersMap.get(2).sortMode = "down";
+                    tmpArrStreet.sort((a, b) => {
+                        return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+                    });
+                    tmpArrStreet.reverse();
+                }
+                else {
+                    tmpHeadersMap.get(0).sortMode = "no";
+                    tmpHeadersMap.get(1).sortMode = "no";
+                    tmpHeadersMap.get(2).sortMode = "up";
+                    tmpArrStreet.sort((a, b) => {
+                        return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+                    });
+                }
+                break;
+        }
+        this.setState({headersMap: tmpHeadersMap});
+        this.props.setArrStreetFunc(tmpArrStreet);
+    };
+
     render() {
         let rows = this.getRowsTable();
+        let arrow_oidMode = this.state.headersMap.get(0).sortMode;
+        let arrow_TypeMode = this.state.headersMap.get(1).sortMode;
+        let arrow_NameMode = this.state.headersMap.get(2).sortMode;
+        let arrowOid = arrow_oidMode === "no" ? null : arrow_oidMode === "up" ? <i className="fas fa-angle-up"> </i> : <i className="fas fa-angle-down"> </i>;
+        let arrowType = arrow_TypeMode === "no" ? null : arrow_TypeMode === "up" ? <i className="fas fa-angle-up"> </i> : <i className="fas fa-angle-down"> </i>;
+        let arrowName = arrow_NameMode === "no" ? null : arrow_NameMode === "up" ? <i className="fas fa-angle-up"> </i> : <i className="fas fa-angle-down"> </i>;
+
         return (
             <Fragment>
                 {rows.length ?
                     <table id="tblStreets" className="table table-sm table-hover">
                         <thead className="thead-light">
                         <tr>
-                            <th className="oidTHead" scope="col">oid</th>
-                            <th className="width_10" scope="col">Тип</th>
-                            <th scope="col">Название</th>
+                            <th id={this.state.headersMap.get(0).name} className="oidTHead tableHeader" scope="col"
+                                onClick={this.sort}>{this.state.headersMap.get(0).name} {arrowOid}</th>
+                            <th id={this.state.headersMap.get(1).name} className="width_10 tableHeader" scope="col"
+                                onClick={this.sort}>{this.state.headersMap.get(1).name} {arrowType}</th>
+                            <th id={this.state.headersMap.get(2).name} className="tableHeader" scope="col"
+                                onClick={this.sort}>{this.state.headersMap.get(2).name} {arrowName}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -62,7 +146,9 @@ const mapStateToProps = store => {
 };
 //функции для ассинхронного ввода
 const mapDispatchToProps = dispatch => {
-    return {}
+    return {
+        setArrStreetFunc: arr => dispatch(setArrStreet(arr)),
+    }
 };
 export default connect(
     mapStateToProps,
