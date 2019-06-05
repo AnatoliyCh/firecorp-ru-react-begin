@@ -8,7 +8,7 @@ const initialState = {
 
     //списки
     arrStreet: [], //улицы
-    sortHeaderStreet: ["name", "up"],//по какому заголовку сортируем и как
+    sortHeaderStreet: ["name", "up"],//по какому заголовку сортируем и как [oid, type, name] [up, down]
 
     arrCities: [], //нас. пункты
     arrImplements: [], //инвентарь
