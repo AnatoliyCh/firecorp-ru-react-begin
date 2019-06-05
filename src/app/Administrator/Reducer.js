@@ -5,8 +5,11 @@ const initialState = {
     isSetAPIAddUser: false,//если добавляем пользователя
     indexUserToArray: [-1, -1],//id user в arrayUserArrays
 
+
     //списки
     arrStreet: [], //улицы
+    sortHeaderStreet: ["name", "up"],//по какому заголовку сортируем и как [oid, type, name] [up, down]
+
     arrCities: [], //нас. пункты
     arrImplements: [], //инвентарь
     arrComponentType: [], //комплектующие
@@ -51,6 +54,8 @@ export default (state = initialState, action) => {
         //списки
         case 'SET_ARRAY_STREET':
             return {...state, arrStreet: action.payload};
+        case 'SET_SORT_HEADER':
+            return {...state, sortHeaderStreet: action.payload};
         case 'SET_ARRAY_CITIES':
             return {...state, arrCities: action.payload};
         case 'SET_ARRAY_IMPLEMENTS':
@@ -119,6 +124,13 @@ export function setArrStreet(arr) {
     return {
         type: 'SET_ARRAY_STREET',
         payload: arr,
+    }
+};
+//действиe для сущности arrStreet(добавление поле по которому сортируем)
+export function setSortHeader(th, mode) {
+    return {
+        type: 'SET_SORT_HEADER',
+        payload: [th, mode],
     }
 };
 
