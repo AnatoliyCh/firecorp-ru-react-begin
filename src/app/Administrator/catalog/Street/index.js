@@ -20,6 +20,10 @@ class Street extends Component {
         arrStreet: [],//массив всех сущностей
         isUpdate: false,//обновление данных
         isSearch: false, //поиск
+
+
+        //для создания
+        type: 16,
     };
 
     componentDidMount() {
@@ -99,22 +103,86 @@ class Street extends Component {
         this.props.setArrStreetFunc(filteredArr);
     };
 
+    setType = (e) => {
+        this.setState({type: e.currentTarget.value});
+    };
+
+    //при нажатии кнопки id="btnNewStreet"
+    btnNewStreet = () => {
+        this.setState({type: 16});
+    };
+
+    ////при нажатии кнопки id="btnModal"
+    modalBtnClick = () => {
+        let title = $('#title').val();
+        let newStret = {};
+        if (title === "" || title === " ") return null;
+        else {
+            newStret = {
+                city: {oid: 2, operation: 0},
+                location: {state: 0, geoy: 0, geox: 0, gpsTime: {timeInMS: 1561563979078}},
+                name: title,
+                type: this.state.type,
+                valid: true,
+            };
+        }
+        fetch(`${allConst.IP_HOST}${allConst.PATH_STREET_ADD}`, {
+            method: 'POST',
+            headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
+            body: JSON.stringify(newStret),
+        }).then(function (response) {
+            return response.json();
+        }).then(data => {
+            window.location.reload();
+        }).catch((error) => {
+            console.log(error.message);
+        });
+    };
+
+
     render() {
+        let itemsTypes = [];
+        typeStreet.forEach(function (itemMap, i) {
+            itemsTypes.push(<option value={i} key={i}>{itemMap}</option>);
+        });
         return (
             <Fragment>
+                <div id="myModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 id="headerModal"
+                                    className="modal-title"> Создание </h4>
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div className="modal-body pt-4 pb-4">
+                                <label htmlFor="lastName"> Название </label>
+                                <input className="form-control" id="title" type="search"
+                                       placeholder="Введите название" aria-label="Search"/>
+                                <label htmlFor="role"> Тип </label>
+                                <select id="type" className="form-control" onClick={this.setType}>
+                                    {itemsTypes}
+                                </select>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" id="btnModal" className="btn btn-outline-danger" data-dismiss="modal"
+                                        onClick={this.modalBtnClick}>Добавить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-sm-8 col-xl-10 mt-3">
+                        <div className="col-sm-8 col-xl-5 mt-3">
                             <input id="search" className="form-control" type="search" placeholder="Поиск по названию улиц"
                                    aria-label="Search" onChange={this.search}/>
                         </div>
-                        <div className="btn-group col-sm-4 col-xl-2 mt-3">
+                        <div className="btn-group col-sm-4 col-xl-5 mt-3">
                             <div className="form-group">
-                                <select className="form-control" id="addProfessor">
-                                    <option className="dropdown-item" hidden value=''>Тип</option>
-                                    <option className="dropdown-item">Уволен</option>
-                                    <option className="dropdown-item">В отпуске</option>
-                                </select>
+                                <button id="btnNewStreet" className="btn btn-outline-secondary" onClick={this.btnNewStreet} data-toggle="modal" data-target="#myModal">
+                                    <i className="fas fa-plus fa-lg"/> Создание новой улицы
+                                </button>
                             </div>
                         </div>
                     </div>

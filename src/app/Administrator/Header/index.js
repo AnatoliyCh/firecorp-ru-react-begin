@@ -39,8 +39,6 @@ const Header = ({match}) => (
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_STREET}`}>Улицы</a>
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CYTY}`}>Нас. пункты</a>
-                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_FACILITY}`}>Объекты</a>
-                            <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_SERVICEZONE}`}>Локации</a>
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_IMPLEMENTS}`}>Инвентарь</a>
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE}`}>Комплектующие</a>
                             <a className="dropdown-item" href={`${match.url}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_JOBTYPE}`}>Типы работ</a>
