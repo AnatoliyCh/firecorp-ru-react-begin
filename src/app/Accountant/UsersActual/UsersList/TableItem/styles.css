@@ -1,0 +1,36 @@
+#tdImage {
+    padding: 5px;
+    width: 4%;
+}
+
+#tdName {
+    width: 36%;
+}
+
+#tdLogin #tdPassword #tdLoginPhone {
+    width: 16%;
+}
+
+#tdArchive {
+    padding: 5px 5px 5px 0px;
+    width: 3%;
+    height: 1em;
+}
+
+#tdArchive button {
+    min-width: 40px;
+    min-height: 100%;
+    padding: 0px;
+}
+
+#tdEdit {
+    padding: 5px 5px 5px 0px;
+    width: 3%;
+    height: 1em;
+}
+
+#tdEdit button {
+    min-width: 40px;
+    min-height: 100%;
+    padding: 0px;
+}

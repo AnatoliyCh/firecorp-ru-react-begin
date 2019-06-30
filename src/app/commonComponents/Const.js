@@ -77,6 +77,7 @@ export const PATH_CONTRACTOR_ALL = "/api/contractor/list?mode=1";
 export const PATH_CONTRACTOR_DELETED = "/api/contractor/list?mode=2";
 export const PATH_CONTRACTOR_ADD = "/api/contractor/add";
 export const PATH_CONTRACTOR_UPDATE = "/api/contractor/update";
+export const PATH_CONTRACTOR_ASIGN = "/api/user/contractor/assign";
 
 export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
 export const ALL_MAINTENANCE_PATH = "/api/order/list?mode=0&level=7";

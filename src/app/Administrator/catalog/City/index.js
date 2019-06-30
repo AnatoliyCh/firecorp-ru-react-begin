@@ -138,7 +138,7 @@ class City extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-8 col-xl-5 mt-3">
-                            <input id="search" className="form-control" type="search" placeholder="Поиск по названию улиц"
+                            <input id="search" className="form-control" type="search" placeholder="Поиск по городам"
                                    aria-label="Search" onChange={this.search}/>
                         </div>
                         <div className="btn-group col-sm-4 col-xl-2 mt-3">

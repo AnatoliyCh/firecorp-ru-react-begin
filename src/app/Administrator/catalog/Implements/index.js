@@ -17,10 +17,10 @@ class Implements extends Component {
 
     componentDidMount() {
         this.setState({isLoading: true});
-        this.getAPICities();
+        this.getAPIImplements();
     };
 
-    getAPICities = () => {
+    getAPIImplements = () => {
         fetch(`${allConst.IP_HOST}${allConst.PATH_IMPLEMENTS_ACTUAL}`, {
             method: 'GET',
             headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
@@ -117,7 +117,7 @@ class Implements extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-8 col-xl-5 mt-3">
-                            <input id="search" className="form-control" type="search" placeholder="Поиск по названию улиц"
+                            <input id="search" className="form-control" type="search" placeholder="Поиск по инвентарю"
                                    aria-label="Search" onChange={this.search}/>
                         </div>
                         <div className="btn-group col-sm-4 col-xl-5 mt-3">

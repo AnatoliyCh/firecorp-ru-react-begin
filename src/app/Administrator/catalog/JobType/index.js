@@ -8,7 +8,7 @@ import SpinnerDanger from '../../../commonComponents/Loading/BootstrapBorderSpin
 import TableJobTypes from "./TableJobTypes";
 import $ from "jquery";
 
-class City extends Component {
+class JobType extends Component {
     state = {
         isLoading: false,//загрузка
 
@@ -20,10 +20,10 @@ class City extends Component {
 
     componentDidMount() {
         this.setState({isLoading: true});
-        this.getAPICities();
+        this.getAPIJobType();
     };
 
-    getAPICities = () => {
+    getAPIJobType = () => {
         fetch(`${allConst.IP_HOST}${allConst.PATH_JOBTYPE_ACTUAL}`, {
             method: 'GET',
             headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
@@ -152,7 +152,7 @@ class City extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-8 col-xl-5 mt-3">
-                            <input id="search" className="form-control" type="search" placeholder="Поиск по названию улиц"
+                            <input id="search" className="form-control" type="search" placeholder="Поиск по типам работ"
                                    aria-label="Search" onChange={this.search}/>
                         </div>
                         <div className="btn-group col-sm-4 col-xl-5 mt-3">
@@ -186,4 +186,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(City)
+)(JobType)
