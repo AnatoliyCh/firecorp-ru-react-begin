@@ -16,6 +16,7 @@ class ComponentType extends Component {
 
         //для создания
         types: [],
+        type: -1,//выбранный в id="typeCmp"
     };
 
     componentDidMount() {
@@ -30,9 +31,11 @@ class ComponentType extends Component {
         }).then(function (response) {
             return response.json();
         }).then(data => {
-            console.log(data);
             data = this.sortData(data);
+            let tmpTypes = [];
+            data.forEach((itemData, i) =>{ tmpTypes.push({name: itemData.name, oid: itemData.oid}) });
             this.setState({arr: data});
+            this.setState({types: tmpTypes});
             this.props.setArrComponentTypeFunc(data);
             this.setState({isLoading: false});
         }).catch((error) => {
@@ -51,34 +54,68 @@ class ComponentType extends Component {
 
     search = () => {
         let tmpStr = $('#search').val();
-        if (tmpStr === "" || tmpStr === " ") this.props.setArrComponentTypeFunc(this.state.arrImplements);
+        if (tmpStr === "" || tmpStr === " ") this.props.setArrComponentTypeFunc(this.state.arr);
         else this.filtration();
     };
 
     filtration = () => {
-        /*
-
         let filteredArr = [];
         let regExp = new RegExp($('#search').val());
-        this.state.arrImplements.forEach((itemData, iData) =>{
-            if (itemData.name.search(regExp) !== -1) filteredArr.push(itemData);
+        this.state.arr.forEach((arrData, arr_i) => {
+            let tmpArr = Object.assign({}, arrData);
+            tmpArr.components = [];
+            arrData.components.forEach((cmData, cm_i) => {
+                if (cmData.name.search(regExp) !== -1) {
+                    tmpArr.components.push(cmData);
+                }
+            });
+            if (tmpArr.components.length) filteredArr.push(tmpArr);
         });
         this.props.setArrComponentTypeFunc(filteredArr);
-        */
     };
 
-    ////при нажатии кнопки id="btnModal"
-    modalBtnClick = () => {
+    setType = (e) => {
+        this.setState({type: e.currentTarget.value});
+    };
+
+    //при нажатии кнопки id="btnModal"
+    //новый компонент
+    btnNewCpm = () => {
         let title = $('#title').val();
         let count = $('#count').val();
+        let money = $('#countOne').val();
         let newObject = {};
         if (title === "" || title === " ") return null;
         else {
             newObject = {
-                currentNubmer: count,
+                costPerUnit: money,
                 name: title,
+                numberOnStore: count,
+                type: {oid: this.state.type, operation: 0}
             };
-            fetch(`${allConst.IP_HOST}${allConst.PATH_IMPLEMENTS_ADD}`, {
+            fetch(`${allConst.IP_HOST}${allConst.PATH_COMPONENT_ADD}`, {
+                method: 'POST',
+                headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
+                body: JSON.stringify(newObject),
+            }).then(function (response) {
+                return response.json();
+            }).then(data => {
+                window.location.reload();
+            }).catch((error) => {
+                console.log(error.message);
+            });
+        }
+    };
+
+    //при нажатии кнопки id="btnModal2"
+    //новый тип
+    btnNewType = () => {
+        let title = $('#titleType').val();
+        let newObject = {};
+        if (title === "" || title === " ") return null;
+        else {
+            newObject = {name: title};
+            fetch(`${allConst.IP_HOST}${allConst.PATH_COMPONENTTYPE_ADD}`, {
                 method: 'POST',
                 headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
                 body: JSON.stringify(newObject),
@@ -93,9 +130,13 @@ class ComponentType extends Component {
     };
 
     render() {
+        let itemType = [];
+        this.state.types.forEach(function (itemMap, i) {
+            itemType.push(<option value={itemMap.oid} key={itemMap.oid}>{itemMap.name}</option>);
+        });
         return (
             <Fragment>
-                <div id="myModal" className="modal fade" role="dialog">
+                <div id="myModal2" className="modal fade" role="dialog">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -104,16 +145,44 @@ class ComponentType extends Component {
                                 <button type="button" className="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div className="modal-body pt-4 pb-4">
-                                <label htmlFor="lastName"> Название </label>
-                                <input className="form-control" id="title" type="search"
+                                <label htmlFor="lastName"> Название типа </label>
+                                <input className="form-control" id="titleType" type="search"
                                        placeholder="Введите название" aria-label="Search"/>
-                                <label htmlFor="role"> Тип </label>
-                                <input className="form-control" id="count" type="number"
-                                       placeholder="Введите количество" aria-label="Search"/>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" id="btnModal" className="btn btn-outline-danger" data-dismiss="modal"
-                                        onClick={this.modalBtnClick}>Добавить
+                                <button type="button" id="btnModal2" className="btn btn-outline-danger" data-dismiss="modal"
+                                        onClick={this.btnNewType}>Добавить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="myModal1" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 id="headerModal"
+                                    className="modal-title"> Создание </h4>
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div className="modal-body pt-4 pb-4">
+                                <label htmlFor="lastName"> Марка </label>
+                                <input className="form-control" id="title" type="search"
+                                       placeholder="Введите название" aria-label="Search"/>
+                                <label htmlFor="role"> Кол-во на складе </label>
+                                <input className="form-control" id="count" type="number"
+                                       placeholder="Введите количество" aria-label="Search"/>
+                                <label htmlFor="role"> Стоимость единицы </label>
+                                <input className="form-control" id="countOne" type="number"
+                                       placeholder="Введите количество" aria-label="Search"/>
+                                <label htmlFor="role"> Тип </label>
+                                <select id="typeCmp" className="form-control" onClick={this.setType}>
+                                    {itemType}
+                                </select>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" id="btnModal1" className="btn btn-outline-danger" data-dismiss="modal"
+                                        onClick={this.btnNewCpm}>Добавить
                                 </button>
                             </div>
                         </div>
@@ -125,10 +194,15 @@ class ComponentType extends Component {
                             <input id="search" className="form-control" type="search" placeholder="Поиск по названию улиц"
                                    aria-label="Search" onChange={this.search}/>
                         </div>
-                        <div className="btn-group col-sm-4 col-xl-2 mt-3">
+                        <div className="btn-group col-sm-2 col-xl-3 mt-3">
                             <div className="form-group">
-                                <button id="btnNewStreet" className="btn btn-outline-secondary" onClick={null} data-toggle="modal" data-target="#myModal">
-                                    <i className="fas fa-plus fa-lg"/> Создание марки
+                                <button id="btnNewCpm" className="btn btn-outline-secondary" onClick={this.btnNewCpm} data-toggle="modal" data-target="#myModal1">
+                                    <i className="fas fa-plus fa-lg"/> Новая марка
+                                </button>
+                            </div>
+                            <div className="form-group">
+                                <button id="btnNewType" className="btn btn-outline-secondary" style={{marginLeft: 10}} onClick={null} data-toggle="modal" data-target="#myModal2">
+                                    <i className="fas fa-plus fa-lg"/> Новый тип
                                 </button>
                             </div>
                         </div>

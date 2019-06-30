@@ -64,10 +64,19 @@ export const PATH_IMPLEMENTS_ADD = "/api/implements/add";
 export const PATH_COMPONENTTYPE_ACTUAL = "/api/componenttype/list?mode=0";
 export const PATH_COMPONENTTYPE_ALL = "/api/componenttype/list?mode=1";
 export const PATH_COMPONENTTYPE_DELETED = "/api/componenttype/list?mode=2";
+export const PATH_COMPONENT_ADD = "/api/component/add";
+export const PATH_COMPONENTTYPE_ADD = "/api/componenttype/add";
 
 export const PATH_JOBTYPE_ACTUAL = "/api/jobtype/list?mode=0";
 export const PATH_JOBTYPE_ALL = "/api/jobtype/list?mode=1";
 export const PATH_JOBTYPE_DELETED = "/api/jobtype/list?mode=2";
+export const PATH_JOBTYPE_ADD = "/api/jobtype/add";
+
+export const PATH_CONTRACTOR_ACTUAL = "/api/contractor/list?mode=0";
+export const PATH_CONTRACTOR_ALL = "/api/contractor/list?mode=1";
+export const PATH_CONTRACTOR_DELETED = "/api/contractor/list?mode=2";
+export const PATH_CONTRACTOR_ADD = "/api/contractor/add";
+export const PATH_CONTRACTOR_UPDATE = "/api/contractor/update";
 
 export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
 export const ALL_MAINTENANCE_PATH = "/api/order/list?mode=0&level=7";

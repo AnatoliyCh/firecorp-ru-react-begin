@@ -16,9 +16,6 @@ const Header = ({match}) => (
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <div className="navbar-nav mr-auto">
-                    <button id="btnNewUser" className="btn btn-outline-secondary" data-toggle="modal" data-target="#myModal">
-                        <i className="fas fa-paperclip fa-lg"/> Редактирование контрагента
-                    </button>
                 </div>
                 <div className="textRight">
                     <div>{allConst.ROLES.get(allConst.getCurrentUser().typeId)}</div>

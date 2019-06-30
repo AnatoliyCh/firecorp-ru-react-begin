@@ -4,13 +4,6 @@ import {connect} from "react-redux";
 class TableComponentTypes extends Component {
 
     getTables = () => {
-        /*
-        let tmpArr = [];
-        this.props.arrComponentType.map((item, i) => {
-            tmpArr.push(item.name);
-        });
-        //this.props.getTypes(tmpArr);
-        */
         return this.props.arrComponentType.map((item, i) => {
             return (
                 <table key={i} className="table table-sm table-hover">
