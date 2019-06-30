@@ -10,6 +10,7 @@ import City from "./catalog/City";
 import Implements from "./catalog/Implements";
 import ComponentType from "./catalog/ComponentType";
 import JobType from "./catalog/JobType";
+import Contractor from "./catalog/Contractor";
 
 
 
@@ -31,7 +32,7 @@ const Administrator = ({match}) => {
                 <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_IMPLEMENTS}`} component={Implements}/>
                 <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_COMPONENTTYPE}`} component={ComponentType}/>
                 <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_JOBTYPE}`} component={JobType}/>
-                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CONTRACTOR}`} component={UsersArchive}/>
+                <Route path={`${match.path}${allConst.PATH_ADMINISTRATOR_CATALOG}${allConst.PATH_ADMINISTRATOR_CATALOG_CONTRACTOR}`} component={Contractor}/>
                 <Route component={Page404}/>
             </Switch>
         </Fragment>

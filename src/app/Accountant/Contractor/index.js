@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
-import '../styles.css';
-import '../../../commonComponents/styles.css';
-import * as allConst from "../../../commonComponents/Const";
-import SpinnerDanger from '../../../commonComponents/Loading/BootstrapBorderSpinnerDangerDefault';
+import '../../Administrator/catalog/styles.css';
+import '../../commonComponents/styles.css';
+import * as allConst from "../../commonComponents/Const";
+import SpinnerDanger from '../../commonComponents/Loading/BootstrapBorderSpinnerDangerDefault';
 import $ from "jquery";
 
 class Contractor extends Component {
@@ -12,13 +12,22 @@ class Contractor extends Component {
         arr: [],
         arrS: [],//при поиске
 
+        arrUser: [], //список заказчиков
+        arrContr: [], //список контрагентов (не заюзаных)
+
         //для модала
-        needPhoto: true
+        currentUser: 0,
+        currentContr: 0,
+
     };
 
     componentDidMount() {
         this.setState({isLoading: true});
         this.getAPIContractor();
+        this.getAPIUsers();
+
+
+
     };
 
     getAPIContractor = () => {
@@ -31,7 +40,27 @@ class Contractor extends Component {
             data = this.sortData(data);
             this.setState({arr: data});
             this.setState({arrS: data});
+            let fContr = [];
+            data.forEach((iData, i) => { if (iData.user.oid === 0) fContr.push(iData); });
+            this.setState({arrContr: fContr});
+            this.setState({currentContr: this.state.arrContr[0].oid});
             this.setState({isLoading: false});
+        }).catch((error) => {
+            console.log(error.message);
+        });
+    };
+
+    getAPIUsers = () => {
+        fetch(`${allConst.IP_HOST}${allConst.PATH_USERS_ACTUAL}`, {
+            method: 'GET',
+            headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
+        }).then(function (response) {
+            return response.json();
+        }).then(data => {
+            let tmpUser = [];
+            data.forEach((iData, i) => { if (iData.typeId === 9) tmpUser.push(iData); });
+            this.setState({arrUser: tmpUser});
+            this.setState({currentUser: this.state.arrUser[0].oid});
         }).catch((error) => {
             console.log(error.message);
         });
@@ -117,8 +146,40 @@ class Contractor extends Component {
         })
     };
 
+    contractorUser = () => {
+        /*не пашет, что-то не так с id*/
+        fetch(`${allConst.IP_HOST}${allConst.PATH_CONTRACTOR_ASIGN}`, {
+            method: 'POST',
+            headers: {SessionToken: `${allConst.getCurrentUser().sessionToken}`},
+            body: JSON.stringify({id: this.state.currentUser, contractorid: this.state.currentContr,}),
+        }).then(function (response) {
+            return response.json();
+        }).then(data => {
+            window.location.reload();
+        }).catch((error) => {
+            console.log(error.message);
+        });
+    };
+
+    setUser = (e) => {
+        this.setState({currentUser: e.currentTarget.value});
+    };
+    setContr = (e) => {
+        this.setState({currentContr: e.currentTarget.value});
+    };
+
     render() {
         let rows = this.getRowsTable();
+
+        let fContr = [];
+        this.state.arrContr.forEach(function (itemMap, i) {
+            fContr.push(<option value={itemMap.oid} key={i}>{itemMap.name}</option>);
+        });
+
+        let fUser = [];
+        this.state.arrUser.forEach(function (itemMap, i) {
+            fUser.push(<option value={itemMap.oid} key={i}>{itemMap.lastName} {itemMap.firstName} {itemMap.middleName}</option>);
+        });
         return (
             <Fragment>
                 <div id="myModal" className="modal fade" role="dialog">
@@ -146,6 +207,33 @@ class Contractor extends Component {
                     </div>
                 </div>
 
+                <div id="myModal1" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 id="headerModal"
+                                    className="modal-title"> Создание ЛК </h4>
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div className="modal-body pt-4 pb-4">
+                                <label htmlFor="role"> Контрагент </label>
+                                <select id="type" className="form-control" onClick={this.setContr}>
+                                    {fContr}
+                                </select>
+                                <label htmlFor="role"> Заказчик </label>
+                                <select id="type" className="form-control" onClick={this.setUser}>
+                                    {fUser}
+                                </select>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" id="btnModal" className="btn btn-outline-danger" data-dismiss="modal"
+                                        onClick={this.contractorUser}>Создать
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-8 col-xl-5 mt-3">
@@ -156,6 +244,11 @@ class Contractor extends Component {
                             <div className="form-group">
                                 <button id="btnNewStreet" className="btn btn-outline-secondary" onClick={null} data-toggle="modal" data-target="#myModal">
                                     <i className="fas fa-plus fa-lg"/> Создание контрагента
+                                </button>
+                            </div>
+                            <div className="form-group" style={{marginLeft: "10px"}}>
+                                <button id="btnNewLK" className="btn btn-outline-secondary" onClick={null} data-toggle="modal" data-target="#myModal1">
+                                    <i className="fas fa-plus fa-lg"/> Создание ЛК
                                 </button>
                             </div>
                         </div>

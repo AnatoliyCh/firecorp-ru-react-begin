@@ -23,9 +23,21 @@ export const PATH_CHIEFTO_TECHNICIANS = "/technicians";//техники
 
 
 export const PATH_CHIEF = "/chief";//начальник
+
+
 export const PATH_ACCOUNTANT = "/accountant";//бухгалтер
+export const PATH_ACCOUNTANT_CATALOG_CONTRACTOR = "/contractor";//контрагенты
+export const PATH_ACCOUNTANT_USERS = "/users";//корневой путь к заказчикам
+export const PATH_ACCOUNTANT_USERS_ACTUAL = "/actual";//актуальные заказчики
+export const PATH_ACCOUNTANT_USERS_ARCHIVED = "/archive";//удаленные заказчики
+
+
 export const PATH_STOREKEEPER = "/storekeeper";//кладовщик
 export const PATH_LAWYER = "/lawyer";//юрист
+
+
+export const PATH_CUSTOMER = "/customer";//заказчик
+export const PATH_CUSTOMER_FORM = "/contractor";//контрагент
 
 
 /*Requests constants*/
@@ -36,22 +48,36 @@ export const PATH_USERS_DELETED = "/api/user/list?mode=2";
 export const PATH_STREETS_ACTUAL = "/api/street/list?mode=0";
 export const PATH_STREETS_ALL = "/api/street/list?mode=1";
 export const PATH_STREETS_DELETED = "/api/street/list?mode=2";
+export const PATH_STREET_ADD = "/api/street/add";
+
 
 export const PATH_CITY_ACTUAL = "/api/city/list?mode=0";
 export const PATH_CITY_ALL = "/api/city/list?mode=1";
 export const PATH_CITY_DELETED = "/api/city/list?mode=2";
+export const PATH_CITY_ADD = "/api/city/add";
 
 export const PATH_IMPLEMENTS_ACTUAL = "/api/implements/list?mode=0";
 export const PATH_IMPLEMENTS_ALL = "/api/implements/list?mode=1";
 export const PATH_IMPLEMENTS_DELETED = "/api/implements/list?mode=2";
+export const PATH_IMPLEMENTS_ADD = "/api/implements/add";
 
 export const PATH_COMPONENTTYPE_ACTUAL = "/api/componenttype/list?mode=0";
 export const PATH_COMPONENTTYPE_ALL = "/api/componenttype/list?mode=1";
 export const PATH_COMPONENTTYPE_DELETED = "/api/componenttype/list?mode=2";
+export const PATH_COMPONENT_ADD = "/api/component/add";
+export const PATH_COMPONENTTYPE_ADD = "/api/componenttype/add";
 
 export const PATH_JOBTYPE_ACTUAL = "/api/jobtype/list?mode=0";
 export const PATH_JOBTYPE_ALL = "/api/jobtype/list?mode=1";
 export const PATH_JOBTYPE_DELETED = "/api/jobtype/list?mode=2";
+export const PATH_JOBTYPE_ADD = "/api/jobtype/add";
+
+export const PATH_CONTRACTOR_ACTUAL = "/api/contractor/list?mode=0";
+export const PATH_CONTRACTOR_ALL = "/api/contractor/list?mode=1";
+export const PATH_CONTRACTOR_DELETED = "/api/contractor/list?mode=2";
+export const PATH_CONTRACTOR_ADD = "/api/contractor/add";
+export const PATH_CONTRACTOR_UPDATE = "/api/contractor/update";
+export const PATH_CONTRACTOR_ASIGN = "/api/user/contractor/assign";
 
 export const ALL_SHIFTS_PATH = "/api/shift/list?mode=0&level=7";
 export const ALL_MAINTENANCE_PATH = "/api/order/list?mode=0&level=7";
@@ -72,7 +98,7 @@ export const ALL_ORDER_PATH = '/api/order/list?mode=0&level=7';
 export const ALL_TECHNICIANS_PATH = "/api/technician/list?mode=0&level=7";
 export const TECHNICIANS_UPDATE_PATH = "/api/technician/update";
 
-export const ALL_CONTRACTOR_PATH = "/api/contractor/list?mode=0";
+export const ALL_CONTRACTOR_PATH = "/api/contractor/list?mode=1";
 
 export const PATH_API_USER_LOGIN = "/api/user/login";//авторизация пользователя
 export const PATH_API_USER_ADD = "/api/user/add";//создание пользователя
@@ -127,6 +153,9 @@ export function redirect(typeId) {
                 break;
             case 8:
                 document.location.href = `${PATH_LAWYER}`;
+                break;
+            case 9:
+                document.location.href = `${PATH_CUSTOMER}`;
                 break;
             default://если нет такого id => на вход
                 //setCurrentUser({});
